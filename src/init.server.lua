@@ -50,8 +50,8 @@ local WidgetArgs = DockWidgetPluginGuiInfo.new(
 	true,
 	250,
 	300,
-	0,
-	0
+	220,
+	220
 )
 
 local Widget = PluginMaid:GiveTask(

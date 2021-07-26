@@ -19,7 +19,7 @@ local defaultConfig = {
 	-- Enables stricter type asserts for Roact's public API.
 	["typeChecks"] = false,
 	-- Enables storage of `debug.traceback()` values on elements for debugging.
-	["elementTracing"] = false,
+	["elementTracing"] = true,
 	-- Enables validation of component props in stateful components.
 	["propValidation"] = false,
 

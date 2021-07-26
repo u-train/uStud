@@ -1,4 +1,5 @@
 local Roact = require(script.Parent.Libraries.Roact)
+local ListLayoutComponent = require(script.Parent.ListLayout)
 
 local App = Roact.Component:extend("App")
 
@@ -21,10 +22,18 @@ function App:render()
     end
 
     return Roact.createElement(
-        "TextLabel",
+        ListLayoutComponent,
         {
-            Text = "Hello world",
-            Size = UDim2.fromScale(1, 1)
+			Size = UDim2.fromScale(1, 1)
+		},
+        {
+            Roact.createElement(
+                "TextLabel",
+                {
+                    Text = "Hello world",
+                    Size = UDim2.new(1, 0, 0, 25)
+                }
+            ),
         }
     )
 end

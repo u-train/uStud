@@ -116,3 +116,4 @@ PluginMaid:GiveTask(
 )
 
 Interface.Loaded(Widget)
+Activating()

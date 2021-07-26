@@ -1,6 +1,25 @@
 local Roact = require(script.Parent.Libraries.Roact)
 local ControlledInputComponent = require(script.Parent.ControlledInput)
 
+local ColorIsDark = function(Color)
+	-- https://awik.io/determine-color-bright-dark-using-javascript/
+	local R = Color.R * 255
+	local G = Color.G * 255
+	local B = Color.B * 255
+
+	if 
+		math.sqrt(
+			0.299 * R * R +
+			0.587 * G * G +
+			0.114 * B * B
+		) > 127.5
+	then
+		return false
+	else
+		return true
+	end
+end
+
 local FormatColor = function(Input)
 	return ("%.1f"):format(tostring(Input))* 255
 end
@@ -66,6 +85,8 @@ return function(Props)
 		{
 			Text = Props.Label,
 			Size = UDim2.new(0, Props.TextWidth or 100, 1, 0),
+			BackgroundColor3 = Props.Color,
+			TextColor3 = ColorIsDark(Props.Color) and Color3.new(1, 1, 1) or Color3.new(0, 0, 0)
 		}
 	)
 

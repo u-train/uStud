@@ -1,4 +1,4 @@
-local Roact = require(script.Parent.Parent.Libraries.Roact)
+local Roact = require(script.Parent.Libraries.Roact)
 
 local ControlledInput = Roact.Component:extend("ControlledInput")
 
@@ -33,6 +33,7 @@ function ControlledInput:render()
 			end,
 			[Roact.Event.FocusLost] = function(Rbx)
 				self.props.OnValueChanged(Rbx.Text)
+				Rbx.Text=self.props.Value
 			end,
 
 			ClearTextOnFocus = false,

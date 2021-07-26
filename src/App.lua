@@ -169,7 +169,6 @@ function App:render()
 					Label = "Part Color",
 					Size = UDim2.new(1, 0, 0, 25),
 					OnColorChanged = function(NewColor)
-						print(NewColor)
 						self:setState({
 							PartColor = NewColor
 						})

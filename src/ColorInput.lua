@@ -30,18 +30,6 @@ local Colors = {
 	"B"
 }
 
-local CreateColorChannelInput = function(Props)
-	return Roact.createElement(
-		ControlledInputComponent,
-		{
-			Value = FormatColor(Props.ColorValue),
-			OnValueChanged = Props.OnChannelChanged,
-			Size = Props.Size,
-			Position = Props.Position
-		}
-	)
-end
-
 local CreateColorChannelChanged = function(Props)
 	return function(Channel)
 		return function(Text)
@@ -71,13 +59,17 @@ end
 return function(Props)
 	local Children = {}
 	local GivenColorChannelChanged = CreateColorChannelChanged(Props)
+
 	for Key, Color in next, Colors do
-		Children[Color] = CreateColorChannelInput {
-			ColorValue = Props.Color[Color],
-			OnChannelChanged = GivenColorChannelChanged(Key),
-			Size = UDim2.new(1/3, -(Props.TextWidth or 100), 1, 0),
-			Position = UDim2.new(1/3 * (Key - 1), (Props.TextWidth or 100), 0, 0),
-		}
+		Children[Color] = Roact.createElement(
+			ControlledInputComponent,
+			{
+				Value = FormatColor(Props.Color[Color]),
+				OnValueChanged = GivenColorChannelChanged(Key),
+				Size = UDim2.new(1/3, -(Props.TextWidth or 100) / 3, 1, 0),
+				Position = UDim2.new(1/3 * (Key - 1), (Props.TextWidth or 100) - (Props.TextWidth or 100) / 3 * (Key - 1), 0, 0),
+			}
+		)
 	end
 
 	Children.Label = Roact.createElement(
@@ -86,7 +78,9 @@ return function(Props)
 			Text = Props.Label,
 			Size = UDim2.new(0, Props.TextWidth or 100, 1, 0),
 			BackgroundColor3 = Props.Color,
-			TextColor3 = ColorIsDark(Props.Color) and Color3.new(1, 1, 1) or Color3.new(0, 0, 0)
+			TextColor3 = ColorIsDark(Props.Color) and Color3.new(1, 1, 1) or Color3.new(0, 0, 0),
+			BorderSizePixel = 1,
+			ZIndex = 1,
 		}
 	)
 

@@ -2,6 +2,7 @@ local Roact = require(script.Parent.Libraries.Roact)
 local ListLayoutComponent = require(script.Parent.ListLayout)
 local LabelledInputComponent = require(script.Parent.LabelledInput)
 local ColorInputComponent = require(script.Parent.ColorInput)
+local StudderMouseControl = require(script.Parent.StudderMouseControl)
 
 local App = Roact.Component:extend("App")
 local AppStates = {
@@ -103,13 +104,13 @@ function App:render()
 
 						if NewValue == nil then
 							return
-						end 
+						end
 
 					   self:setState({
 						   HeightOffset = math.clamp(
 							   NewValue,
-							   MaxHeightOffset,
-							   MinHeightOffset
+							   MinHeightOffset,
+							   MaxHeightOffset
 							)
 					   })
 
@@ -130,7 +131,7 @@ function App:render()
 							return
 						end
 
-					   NewValue = math.clamp(NewValue, MaxHeight, MinHeight)
+					   NewValue = math.clamp(NewValue, MinHeight, MaxHeight)
 
 					   self:setState({
 						   PartHeight = NewValue
@@ -174,6 +175,10 @@ function App:render()
 						})
 					end
 				}
+			),
+			Roact.createElement(
+				StudderMouseControl,
+				self.state
 			)
 		}
 	)

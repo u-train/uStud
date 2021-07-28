@@ -27,6 +27,7 @@ function App:init()
 		PartColor = Color3.new(0.5, 0.5, 0.5),
 		PartHeight = 1,
 		HeightOffset = 0.5,
+		Deleting = false,
 
 		EditingIn = workspace:FindFirstChild("Studs") or workspace
 	})
@@ -163,7 +164,7 @@ function App:render()
 					end
 				}
 			),
-			Roact.createElement(
+			ColorInput = Roact.createElement(
 				ColorInputComponent,
 				{
 					Color = self.state.PartColor,
@@ -172,6 +173,20 @@ function App:render()
 					OnColorChanged = function(NewColor)
 						self:setState({
 							PartColor = NewColor
+						})
+					end
+				}
+			),
+			ToggleDelete = Roact.createElement(
+				"TextButton",
+				{
+					Text = not self.state.Deleting
+						and "Toggle to start deleting"
+						or "Toggle to start placing",
+						Size = UDim2.new(1, 0, 0, 25),
+					[Roact.Event.MouseButton1Click] = function()
+						self:setState({
+							Deleting = not self.state.Deleting
 						})
 					end
 				}

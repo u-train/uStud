@@ -65,6 +65,10 @@ function StudderMouseControl:init()
 			self.BaseplateRef.current
 		)
 
+		if Result == nil then
+			return
+		end
+
 		self.UpdateTargetPosition(
 			Vector3.new(
 				RoundMidway(Result.Position.X, self.props.SnappingInterval),
@@ -74,10 +78,6 @@ function StudderMouseControl:init()
 		)
 
 		if not self.MousePressed then
-			return
-		end
-
-		if Result.Instance == nil then
 			return
 		end
 

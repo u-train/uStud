@@ -20,10 +20,24 @@ local MODES_TO_COMPONENT = {
 	StudderComponent
 }
 
+local SelectInstance = function(SelectedInstance, Selection)
+	for ChildName in ("." .. Selection):gmatch("%.([%w%d]+)") do
+		local NextInstance = SelectedInstance:FindFirstChild(ChildName)
+		if NextInstance then
+			SelectedInstance = NextInstance
+		else
+			return SelectedInstance
+		end
+	end
+end
+
 function App:init()
 	self:setState({
 		Mode = MODES.Studding,
-		EditingIn = workspace:FindFirstChild("Studs") or workspace
+		EditingIn = SelectInstance(
+			game,
+			self.props.SettingManager.Get("DefaultEditingIn")
+		)
 	})
 end
 
@@ -90,22 +104,9 @@ function App:render()
 					Label = "Editing In",
 
 					OnValueChanged = function(Text)
-						local SelectedInstance = game; do
-							for
-								ChildName in ("." .. Text):gmatch("%.([%w%d]+)")
-							do
-								local NextInstance =
-									SelectedInstance:FindFirstChild(ChildName)
-								if NextInstance then
-									SelectedInstance = NextInstance
-								else
-									break
-								end
-							end
-						end
-
 						self:setState({
-							EditingIn = SelectedInstance
+							EditingIn = SelectInstance(game, Text)
+
 						})
 					end
 				}

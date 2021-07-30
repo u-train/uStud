@@ -1,5 +1,5 @@
 local Maid = require(script.Libraries.Maid)
-local Interface = require(script.Main)
+local Interface = require(script.Main)(plugin)
 
 --[[
 	What happens when button is pressed

@@ -21,7 +21,7 @@ function App:init()
 		PartSize = 1,
 		PartColor = Color3.new(0.5, 0.5, 0.5),
 		PartHeight = 1,
-		HeightOffset = 0.5,
+		HeightOffset = 1,
 		Deleting = false,
 	})
 end

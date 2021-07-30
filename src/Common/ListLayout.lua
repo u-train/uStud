@@ -1,5 +1,4 @@
-
-local Roact = require(script.Parent.Libraries.Roact)
+local Roact = require(script.Parent.Parent.Libraries.Roact)
 
 local Merge = function(Destination, ...)
 	for _, Source in next, {...} do
@@ -68,7 +67,7 @@ function ListLayout:render()
 						UIListLayout = Roact.createElement(
 							"UIListLayout",
 							{
-								Padding = UDim.new(0, 5),
+								Padding = self.props.Padding or UDim.new(0, 5),
 								SortOrder = Enum.SortOrder.LayoutOrder,
 								[Roact.Change.AbsoluteContentSize] = function(Rbx)
 									self.UpdateSizeBinding(

@@ -1,4 +1,4 @@
-local Roact = require(script.Parent.Libraries.Roact)
+local Roact = require(script.Parent.Parent.Libraries.Roact)
 local ControlledInputComponent = require(script.Parent.ControlledInput)
 
 local ColorIsDark = function(Color)

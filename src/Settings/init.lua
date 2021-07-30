@@ -6,7 +6,6 @@ local Prefix = "uStud."
 
 return function(plugin)
 	if plugin:GetSetting("uStud") == nil then
-		print"Good"
 		for SettingName, Value in next, Settings do
 			plugin:SetSetting(Prefix .. SettingName, Value)
 		end

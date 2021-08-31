@@ -1,5 +1,8 @@
+local ServerScriptService = game:GetService("ServerScriptService")
 local UserInputService = game:GetService("UserInputService")
 local Roact = require(script.Parent.Parent.Libraries.Roact)
+
+local MAX_PART_SIZE = 2048
 
 local GetRaycastResultFromMouse = function(MousePosition, Baseplate)
 	local Camera = workspace.CurrentCamera
@@ -16,7 +19,6 @@ local GetRaycastResultFromMouse = function(MousePosition, Baseplate)
 		TargetRaycastParam
 	)
 end
-
 
 local function RoundMidway(Value, Interval)
 	Interval = Interval or 1
@@ -152,6 +154,10 @@ function StudderMouseControl:willUnmount()
 end
 
 function StudderMouseControl:render()
+	local RoundedSize = math.floor(
+		MAX_PART_SIZE / self.props.PartSize
+	) * self.props.PartSize
+
 	return Roact.createElement(
 		Roact.Portal,
 		{
@@ -162,7 +168,11 @@ function StudderMouseControl:render()
 				"Part",
 				{
 					[Roact.Ref] = self.BaseplateRef,
-					Size = Vector3.new(2048, 1, 2048),
+					Size = Vector3.new(
+						RoundedSize,
+						1,
+						RoundedSize
+					),
 					Position = Vector3.new(0, self.props.HeightOffset - 0.5, 0),
 					Anchored = true,
 					CanCollide = false,
@@ -187,7 +197,11 @@ function StudderMouseControl:render()
 					Anchored = true,
 					CanCollide = true,
 					Transparency = 0.5,
-					Size = Vector3.new(self.props.PartSize, self.props.PartHeight, self.props.PartSize),
+					Size = Vector3.new(
+						self.props.PartSize,
+						self.props.PartHeight,
+						self.props.PartSize
+					),
 					Position = self.TargetPosition
 				}
 			)

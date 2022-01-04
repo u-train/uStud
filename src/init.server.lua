@@ -47,7 +47,7 @@ local Button = PluginMaid:GiveTask(
 local WidgetArgs = DockWidgetPluginGuiInfo.new(
 	Enum.InitialDockState.Float,
 	false,
-	true,
+	false,
 	250,
 	300,
 	220,

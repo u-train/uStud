@@ -7,7 +7,7 @@ local ColorIsDark = function(Color)
 	local G = Color.G * 255
 	local B = Color.B * 255
 
-	if 
+	if
 		math.sqrt(
 			0.299 * R * R +
 			0.587 * G * G +
@@ -21,7 +21,7 @@ local ColorIsDark = function(Color)
 end
 
 local FormatColor = function(Input)
-	return ("%.1f"):format(tostring(Input))* 255
+	return ("%.1f"):format(Input * 255)
 end
 
 local Colors = {

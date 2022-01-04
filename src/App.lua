@@ -29,10 +29,10 @@ local SelectInstance = function(SelectedInstance, Selection)
 		local NextInstance = SelectedInstance:FindFirstChild(ChildName)
 		if NextInstance then
 			SelectedInstance = NextInstance
-		else
-			return SelectedInstance
 		end
 	end
+
+	return SelectedInstance
 end
 
 function App:init()
@@ -41,7 +41,7 @@ function App:init()
 		EditingIn = SelectInstance(
 			game,
 			self.props.SettingManager.Get("DefaultEditingIn")
-		)
+		) or warn("Malformed default place to edit in. Fix in settings.") or workspace
 	})
 end
 

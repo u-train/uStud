@@ -3,9 +3,8 @@ local Common = script.Parent.Common
 local ListLayoutComponent = require(Common.ListLayout)
 local LabelledInputComponent = require(Common.LabelledInput)
 local ColorInputComponent = require(Common.ColorInput)
--- local StudderMouseControl = require(script.MouseController)
 
-local UserInputService = game:GetService("UserInputService")
+local StudderMouseControl = require(script.MouseController)
 
 local Painter = Roact.Component:extend("Painter")
 
@@ -13,7 +12,7 @@ function Painter:init()
 	self:setState({
 		PrimaryColor = Color3.new(1, 1, 1),
 		SecondaryColor = Color3.new(1, 1, 1),
-		BrushRadius = 2,
+		BrushDiameter = 2,
 		SecondaryOnly = false,
 	})
 end
@@ -32,7 +31,7 @@ function Painter:render()
 					Color = self.state.PrimaryColor,
 					Label = "Primary",
 					Size = UDim2.new(1, 0, 0, 25),
-					OnColorchanged = function(NewColor)
+					OnColorChanged = function(NewColor)
 						self:setState({
 							PrimaryColor = NewColor
 						})
@@ -45,7 +44,7 @@ function Painter:render()
 					Color = self.state.SecondaryColor,
 					Label = "Secondary",
 					Size = UDim2.new(1, 0, 0, 25),
-					OnColorchanged = function(NewColor)
+					OnColorChanged = function(NewColor)
 						self:setState({
 							SecondaryColor = NewColor
 						})
@@ -67,10 +66,10 @@ function Painter:render()
 					end
 				}
 			),
-			BrushRadius = Roact.createElement(
+			BrushDiameter = Roact.createElement(
 				LabelledInputComponent,
 				{
-					Value = self.state.BrushRadius,
+					Value = self.state.BrushDiameter,
 					Size = UDim2.new(1, 0, 0, 25),
 					Label = "Brush Radius",
 
@@ -82,9 +81,19 @@ function Painter:render()
 						end
 
 						self:setState({
-							BrushRadius = NewInterval,
+							BrushDiameter = NewInterval,
 						})
 					end
+				}
+			),
+			StudderMouseControl = Roact.createElement(
+				StudderMouseControl,
+				{
+					EditingIn = self.props.EditingIn,
+					PrimaryColor = self.state.PrimaryColor,
+					BrushDiameter = self.state.BrushDiameter,
+					SecondaryColor = self.state.SecondaryColor,
+					SecondaryOnly = self.state.SecondaryOnly
 				}
 			)
 		}

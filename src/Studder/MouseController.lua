@@ -178,13 +178,23 @@ function StudderMouseControl:render()
 					Transparency = 1,
 				},
 				{
-					Texture = Roact.createElement(
+					Grid = Roact.createElement(
 						"Texture",
 						{
 							Texture = "http://www.roblox.com/asset/?id=6601217742",
 							StudsPerTileU = self.props.SnappingInterval,
 							StudsPerTileV = self.props.SnappingInterval,
 							Face = Enum.NormalId.Top,
+						}
+					),
+					Background = Roact.createElement(
+						"Texture",
+						{
+							Texture = "http://www.roblox.com/asset/?id=241685484",
+							Transparency = 0.8,
+							StudsPerTileU = 1,
+							StudsPerTileV = 2,
+							Face = Enum.NormalId.Top
 						}
 					)
 				}

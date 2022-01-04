@@ -61,6 +61,8 @@ local Widget = PluginMaid:GiveTask(
 	)
 )
 
+Widget.Enabled = false
+
 Widget.Title = "uStud Panel"
 Widget:BindToClose(
 	function()

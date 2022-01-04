@@ -1,5 +1,6 @@
 local Roact = require(script.Parent.Libraries.Roact)
 local StudderComponent = require(script.Parent.Studder)
+local PainterComponent = require(script.Parent.Painter)
 local LabelledInputComponent = require(script.Parent.Common.LabelledInput)
 local TopBarComponent = require(script.Parent.Common.Topbar)
 local MenuComponent = require(script.Parent.Menu)
@@ -8,6 +9,8 @@ local App = Roact.Component:extend("App")
 local MODES = {
 	Studding = 1,
 	"Studding",
+	Painting = 2,
+	"Painting",
 	-- Filling = 2,
 	-- "Filling",
 	-- Splice = 3,
@@ -17,7 +20,8 @@ local MODES = {
 }
 
 local MODES_TO_COMPONENT = {
-	StudderComponent
+	StudderComponent,
+	PainterComponent
 }
 
 local SelectInstance = function(SelectedInstance, Selection)

@@ -148,9 +148,10 @@ function App:render()
 			ToggleDelete = Roact.createElement(
 				"TextButton",
 				{
-					Text = not self.state.Deleting
-						and "Toggle to start deleting"
-						or "Toggle to start placing",
+					Text = "Toggle Deleting",
+					BackgroundColor3 = self.state.Deleting
+						and Color3.fromRGB(1148, 176, 149)
+						or Color3.fromRGB(163, 162, 165),
 					Size = UDim2.new(1, 0, 0, 25),
 					[Roact.Event.MouseButton1Click] = function()
 						self:setState({

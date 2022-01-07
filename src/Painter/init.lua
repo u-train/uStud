@@ -1,12 +1,23 @@
+local UserInputService = game:GetService("UserInputService")
+local ContextActionService = game:GetService("ContextActionService")
 local Roact = require(script.Parent.Libraries.Roact) :: Roact
 local Common = script.Parent.Common
 local ListLayoutComponent = require(Common.ListLayout)
 local LabelledInputComponent = require(Common.LabelledInput)
 local ColorInputComponent = require(Common.ColorInput)
+local GetRaycastResultFromMouse = require(script.Parent.Libraries.GetRaycastResultFromMouse)
 
 local StudderMouseControl = require(script.MouseController)
 
 local Painter = Roact.Component:extend("Painter")
+
+local ActionNames = {
+	IncreaseBrushDiameter = "IncreaseBrushDiameter",
+	DecreaseBrushDiameter = "DecreaseBrushDiameter",
+	ToggleSecondaryOnly = "ToggleSecondaryOnly",
+	SamplePrimaryColor = "SamplePrimaryColor",
+	SampleSecondaryColor = "SampleSecondaryColorColor"
+}
 
 function Painter:init()
 	self:setState({
@@ -15,6 +26,14 @@ function Painter:init()
 		BrushDiameter = 2,
 		SecondaryOnly = false,
 	})
+
+	self:BindHotkeys()
+end
+
+function Painter:willUnmount()
+	for _, ActionName in next, ActionNames do
+		ContextActionService:UnbindAction(ActionName)
+	end
 end
 
 function Painter:render()
@@ -98,6 +117,73 @@ function Painter:render()
 			)
 		}
 	)
+end
+
+function Painter:BindHotkeys()
+	ContextActionService:BindAction(ActionNames.SamplePrimaryColor, function(_, State)
+		if State ~= Enum.UserInputState.Begin then
+			return
+		end
+
+		local Result = GetRaycastResultFromMouse(UserInputService:GetMouseLocation(), self.props.EditingIn)
+
+		if Result == nil then
+			return
+		end
+
+		local HitInstance = Result.Instance
+
+		if HitInstance:IsA("BasePart") then
+			self:setState({
+				PrimaryColor = (HitInstance :: BasePart).Color,
+			})
+		end
+
+	end, false, Enum.KeyCode.Z)
+
+	ContextActionService:BindAction(ActionNames.SampleSecondaryColor, function(_, State)
+		if State ~= Enum.UserInputState.Begin then
+			return
+		end
+
+		local Result = GetRaycastResultFromMouse(UserInputService:GetMouseLocation(), self.props.EditingIn)
+
+		if Result == nil then
+			return
+		end
+
+		local HitInstance = Result.Instance
+
+		if HitInstance:IsA("BasePart") then
+			self:setState({
+				SecondaryColor = (HitInstance :: BasePart).Color,
+			})
+		end
+	end, false, Enum.KeyCode.X)
+
+	ContextActionService:BindAction(ActionNames.ToggleSecondaryOnly, function(_, State)
+		if State ~= Enum.UserInputState.Begin then
+			return
+		end
+
+		self:setState({ SecondaryOnly = not self.state.SecondaryOnly })
+	end, false, Enum.KeyCode.C)
+
+	ContextActionService:BindAction(ActionNames.IncreaseBrushDiameter, function(_, State)
+		if State ~= Enum.UserInputState.Begin then
+			return
+		end
+
+		self:setState({ BrushDiameter = math.max(self.state.BrushDiameter + 1, 0) })
+	end, false, Enum.KeyCode.R)
+
+	ContextActionService:BindAction(ActionNames.DecreaseBrushDiameter, function(_, State)
+		if State ~= Enum.UserInputState.Begin then
+			return
+		end
+
+		self:setState({ BrushDiameter = math.max(self.state.BrushDiameter - 1, 0) })
+	end, false, Enum.KeyCode.F)
 end
 
 return Painter

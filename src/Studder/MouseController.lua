@@ -27,13 +27,18 @@ local function CreateStud(Props)
 	NewPart.Parent = Props.Parent
 end
 
+-- local function AngleBetweenTwoVectors(a, b)
+-- 	return math.acos(a:Dot(b) / (a.Magnitude * b.Magnitude))
+-- end
+
 local StudderMouseControl = Roact.Component:extend("StudderMouseControl")
 
 function StudderMouseControl:init()
 	self.BaseplateRef = Roact.createRef()
 	self.BrushRef = Roact.createRef()
+
 	self.TargetPosition, self.UpdateTargetPosition = Roact.createBinding(
-		Vector3.new(0, 0, 0)
+		Vector3.new(0,0,0)
 	)
 
 	self.MousePressed = false
@@ -53,17 +58,26 @@ function StudderMouseControl:init()
 		)
 
 		if Result == nil then
-			return
-		end
-
-		self.UpdateTargetPosition(
-			Vector3.new(
-				RoundMidway(Result.Position.X, self.props.SnappingInterval),
-				self.props.HeightOffset - self.props.PartHeight / 2,
-				RoundMidway(Result.Position.Z, self.props.SnappingInterval)
+			-- TEMP: until I figure out how to do math, this will do to help
+			-- correct position of the board.
+			local NewPosition = workspace.CurrentCamera.CFrame.Position * Vector3.new(1, 0, 1)
+				+ Vector3.new(0, self.props.HeightOffset, 0)
+			self.UpdateTargetPosition(
+				Vector3.new(
+					RoundMidway(NewPosition.X, self.props.SnappingInterval),
+					self.props.HeightOffset - self.props.PartHeight / 2,
+					RoundMidway(NewPosition.Z, self.props.SnappingInterval)
+				)
 			)
-		)
-
+		else
+			self.UpdateTargetPosition(
+				Vector3.new(
+					RoundMidway(Result.Position.X, self.props.SnappingInterval),
+					self.props.HeightOffset - self.props.PartHeight / 2,
+					RoundMidway(Result.Position.Z, self.props.SnappingInterval)
+				)
+			)
+		end
 		if not self.MousePressed then
 			return
 		end

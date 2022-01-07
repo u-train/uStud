@@ -75,13 +75,13 @@ function App:render()
 							return
 						end
 
-					   self:setState({
-						   HeightOffset = math.clamp(
-							   NewValue,
-							   MinHeightOffset,
-							   MaxHeightOffset
+						self:setState({
+							HeightOffset = math.clamp(
+								NewValue,
+								MinHeightOffset,
+								MaxHeightOffset
 							)
-					   })
+						})
 
 					end,
 				}
@@ -100,11 +100,11 @@ function App:render()
 							return
 						end
 
-					   NewValue = math.clamp(NewValue, MinHeight, MaxHeight)
+						NewValue = math.clamp(NewValue, MinHeight, MaxHeight)
 
-					   self:setState({
-						   PartHeight = NewValue
-					   })
+						self:setState({
+							PartHeight = NewValue
+						})
 
 					end,
 				}

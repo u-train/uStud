@@ -98,9 +98,13 @@ function App:render()
 					Label = "Editing In",
 
 					OnValueChanged = function(Text)
-						self:setState({
-							EditingIn = InstanceSelector.Select(game, Text)
-						})
+						local Success, Value = pcall(InstanceSelector.Select, game, Text)
+
+						if Success then
+							self:setState({
+								EditingIn = Value
+							})
+						end
 					end
 				}
 			),

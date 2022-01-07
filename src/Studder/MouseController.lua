@@ -1,7 +1,7 @@
 local UserInputService = game:GetService("UserInputService")
 local Roact = require(script.Parent.Parent.Libraries.Roact)
 
-local MAX_PART_SIZE = 2048
+local MAX_PART_SIZE = 100
 
 local GetRaycastResultFromMouse = function(MousePosition, Baseplate)
 	local Camera = workspace.CurrentCamera
@@ -172,7 +172,11 @@ function StudderMouseControl:render()
 						1,
 						RoundedSize
 					),
-					Position = Vector3.new(0, self.props.HeightOffset - 0.5, 0),
+					Position = self.TargetPosition:map(
+						function(v)
+							return v * Vector3.new(1, 0, 1) + Vector3.new(-0.5, self.props.HeightOffset - 0.5, -0.5)
+						end
+					),
 					Anchored = true,
 					CanCollide = false,
 					Transparency = 1,

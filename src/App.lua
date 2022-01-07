@@ -4,6 +4,7 @@ local PainterComponent = require(script.Parent.Painter)
 local LabelledInputComponent = require(script.Parent.Common.LabelledInput)
 local TopBarComponent = require(script.Parent.Common.Topbar)
 local MenuComponent = require(script.Parent.Menu)
+local InstanceSelector = require(script.Parent.Libraries.InstanceSelector)
 
 local App = Roact.Component:extend("App")
 local MODES = {
@@ -24,21 +25,10 @@ local MODES_TO_COMPONENT = {
 	PainterComponent
 }
 
-local SelectInstance = function(SelectedInstance, Selection)
-	for ChildName in ("." .. Selection):gmatch("%.([%w%d]+)") do
-		local NextInstance = SelectedInstance:FindFirstChild(ChildName)
-		if NextInstance then
-			SelectedInstance = NextInstance
-		end
-	end
-
-	return SelectedInstance
-end
-
 function App:init()
 	self:setState({
 		Mode = MODES.Studding,
-		EditingIn = SelectInstance(
+		EditingIn = InstanceSelector.Select(
 			game,
 			self.props.SettingManager.Get("DefaultEditingIn")
 		) or warn("Malformed default place to edit in. Fix in settings.") or workspace
@@ -102,15 +92,14 @@ function App:render()
 			Bottombar = Roact.createElement(
 				LabelledInputComponent,
 				{
-					Value = self.state.EditingIn:GetFullName(),
+					Value = InstanceSelector.EscapeFullName(self.state.EditingIn),
 					Size = UDim2.new(1, 0, 0, 25),
 					Position = UDim2.new(0, 0, 1, -25),
 					Label = "Editing In",
 
 					OnValueChanged = function(Text)
 						self:setState({
-							EditingIn = SelectInstance(game, Text)
-
+							EditingIn = InstanceSelector.Select(game, Text)
 						})
 					end
 				}

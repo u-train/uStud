@@ -174,7 +174,7 @@ function StudderMouseControl:render()
 					),
 					Position = self.TargetPosition:map(
 						function(v)
-							return v * Vector3.new(1, 0, 1) + Vector3.new(-0.5, self.props.HeightOffset - 0.5, -0.5)
+							return v * Vector3.new(1, 0, 1) + Vector3.new(self.props.PartSize/2, self.props.HeightOffset - 0.5, self.props.PartSize/2)
 						end
 					),
 					Anchored = true,
@@ -197,7 +197,7 @@ function StudderMouseControl:render()
 							Texture = "http://www.roblox.com/asset/?id=241685484",
 							Transparency = 0.8,
 							StudsPerTileU = 1,
-							StudsPerTileV = 2,
+							StudsPerTileV = 1,
 							Face = Enum.NormalId.Top
 						}
 					)

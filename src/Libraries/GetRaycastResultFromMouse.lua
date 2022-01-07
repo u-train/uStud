@@ -1,7 +1,7 @@
 local GetRaycastResultFromMouse = function(MousePosition, Container)
 	local Camera = workspace.CurrentCamera
 
-	local NewUnitRay = Camera:ViewportPointToRay(MousePosition.X, MousePosition.Y, MousePosition.Z)
+	local NewUnitRay = Camera:ViewportPointToRay(MousePosition.X, MousePosition.Y, 0)
 
 	local TargetRaycastParam = RaycastParams.new()
 	TargetRaycastParam.FilterType = Enum.RaycastFilterType.Whitelist

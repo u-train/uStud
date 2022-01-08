@@ -27,7 +27,6 @@ local MODES_TO_COMPONENT = {
 
 function App:init()
 	self:setState({
-		Mode = MODES.Studding,
 		EditingIn = InstanceSelector.Select(
 			game,
 			self.props.SettingManager.Get("DefaultEditingIn")

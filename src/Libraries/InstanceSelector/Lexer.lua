@@ -1,3 +1,4 @@
+local ValidCharacters = "[%w%s%(%)%,%-]"
 local Lexer = function(Input)
 	local Tokens = {}
 
@@ -6,7 +7,7 @@ local Lexer = function(Input)
 	while #Input > Index do
 		local Character = Input:sub(Index, Index)
 
-		if Character:match("%w") or Character:match("/") then
+		if Character:match(ValidCharacters) or Character:match("/") then
 			local Identifier = {}
 
 			while true do
@@ -16,7 +17,7 @@ local Lexer = function(Input)
 					break
 				elseif MatchedCharacter:match("%.") then
 					break
-				elseif MatchedCharacter:match("%w") then
+				elseif MatchedCharacter:match(ValidCharacters) then
 					table.insert(Identifier, MatchedCharacter)
 					Index += 1
 				elseif MatchedCharacter:match("/") then

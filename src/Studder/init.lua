@@ -5,7 +5,7 @@ local Roact = require(script.Parent.Libraries.Roact)
 local Common = script.Parent.Common
 local ListLayoutComponent = require(Common.ListLayout)
 local LabelledInputComponent = require(Common.LabelledInput)
-local ColorInputComponent = require(Common.ColorInput)
+local ColorInputComponent = require(Common.TextColorInput)
 local StudderMouseControl = require(script.MouseController)
 
 local App = Roact.Component:extend("App")

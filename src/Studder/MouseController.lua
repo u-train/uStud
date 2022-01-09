@@ -2,6 +2,13 @@ local UserInputService = game:GetService("UserInputService")
 local Roact = require(script.Parent.Parent.Libraries.Roact)
 local Round = require(script.Parent.Parent.Libraries.Round)
 
+-- Round = function(Value, Interval)
+-- 	Interval = Interval or 1
+-- 	local AbsValue = math.abs(Value)
+-- 	local Low = AbsValue - math.fmod(AbsValue, Interval)
+-- 	return (Low + Interval / 2) * math.sign(Value)
+-- end
+
 local function CreateStud(Props)
 	local NewPart = Instance.new("Part")
 	NewPart.Size = Vector3.new(

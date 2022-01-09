@@ -1,15 +1,5 @@
 local Roact = require(script.Parent.Parent.Libraries.Roact)
 
-local Merge = function(Destination, ...)
-	for _, Source in next, {...} do
-		for Key, Value in next, Source do
-			Destination[Key] = Value
-		end
-	end
-
-	return Destination
-end
-
 local ListLayout = Roact.Component:extend("ListLayout")
 
 function ListLayout:init()
@@ -62,29 +52,27 @@ function ListLayout:render()
 						)
 					end
 				},
-				Merge(
-					{
-						UIListLayout = Roact.createElement(
-							"UIListLayout",
-							{
-								Padding = self.props.Padding or UDim.new(0, 5),
-								SortOrder = Enum.SortOrder.LayoutOrder,
-								[Roact.Change.AbsoluteContentSize] = function(Rbx)
-									self.UpdateSizeBinding(
-										UDim2.new(
-											self.props.Size.X,
-											UDim.new(
-												0,
-												Rbx.AbsoluteContentSize.Y + 10
-											)
+				{
+					UIListLayout = Roact.createElement(
+						"UIListLayout",
+						{
+							Padding = self.props.Padding or UDim.new(0, 5),
+							SortOrder = Enum.SortOrder.LayoutOrder,
+							[Roact.Change.AbsoluteContentSize] = function(Rbx)
+								self.UpdateSizeBinding(
+									UDim2.new(
+										self.props.Size.X,
+										UDim.new(
+											0,
+											Rbx.AbsoluteContentSize.Y + 10
 										)
 									)
-								end
-							}
-						),
-					},
-					self.props[Roact.Children]
-				)
+								)
+							end
+						}
+					),
+					Children = Roact.createFragment(self.props[Roact.Children])
+				}
 			)
 		}
 	)

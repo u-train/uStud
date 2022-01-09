@@ -1,9 +1,6 @@
 local UserInputService = game:GetService("UserInputService")
 local Roact = require(script.Parent.Parent.Libraries.Roact)
 local Round = require(script.Parent.Parent.Libraries.Round)
--- local MAX_PART_SIZE = 100
-
-local GetRaycastResultFromMouse = require(script.Parent.Parent.Libraries.GetRaycastResultFromMouse)
 
 local function CreateStud(Props)
 	local NewPart = Instance.new("Part")
@@ -45,32 +42,26 @@ function StudderMouseControl:init()
 			return
 		end
 
-		local Result = GetRaycastResultFromMouse(
-			InputObject.Position,
-			self.BaseplateRef.current
+		local NewUnitRay = workspace.CurrentCamera:ViewportPointToRay(InputObject.Position.X, InputObject.Position.Y, 0)
+
+		local MousePosition = NewUnitRay.Origin
+		local MouseDirection = NewUnitRay.Direction
+
+		local MultiplyBy = math.abs(
+			(MousePosition.Y - self.props.HeightOffset) / MouseDirection.Y
 		)
 
-		if Result == nil then
-			-- TEMP: until I figure out how to do math, this will do to help
-			-- correct position of the board.
-			local NewPosition = workspace.CurrentCamera.CFrame.Position * Vector3.new(1, 0, 1)
-				+ Vector3.new(0, self.props.HeightOffset, 0)
-			self.UpdateTargetPosition(
+		local Offset = MultiplyBy * MouseDirection
+		local NewPosition = MousePosition + Offset
+
+		self.UpdateTargetPosition(
 				Vector3.new(
 					Round(NewPosition.X, self.props.SnappingInterval),
 					self.props.HeightOffset - self.props.PartHeight / 2,
 					Round(NewPosition.Z, self.props.SnappingInterval)
 				)
 			)
-		else
-			self.UpdateTargetPosition(
-				Vector3.new(
-					Round(Result.Position.X, self.props.SnappingInterval),
-					self.props.HeightOffset - self.props.PartHeight / 2,
-					Round(Result.Position.Z, self.props.SnappingInterval)
-				)
-			)
-		end
+
 		if not self.MousePressed then
 			return
 		end

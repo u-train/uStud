@@ -68,12 +68,16 @@ function StudderMouseControl:init()
 
 		local IntersectingParts = self.BrushRef.current:GetTouchingParts()
 		if self.props.Deleting then
-			for _, IntersectingPart in next, IntersectingParts do
-				IntersectingPart:Destroy()
+			for _, IntersectingPart : Instance in next, IntersectingParts do
+				if IntersectingPart:IsDescendantOf(self.props.EditingIn) then
+					IntersectingPart:Destroy()
+				end
 			end
 		else
-			if #IntersectingParts > 0 then
-				return
+			for _, IntersectingPart: Instance in next, IntersectingParts do
+				if IntersectingPart:IsDescendantOf(self.props.EditingIn) then
+					return
+				end
 			end
 
 			CreateStud({

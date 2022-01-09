@@ -1,16 +1,9 @@
 local UserInputService = game:GetService("UserInputService")
 local Roact = require(script.Parent.Parent.Libraries.Roact)
-
-local MAX_PART_SIZE = 100
+local Round = require(script.Parent.Parent.Libraries.Round)
+-- local MAX_PART_SIZE = 100
 
 local GetRaycastResultFromMouse = require(script.Parent.Parent.Libraries.GetRaycastResultFromMouse)
-
-local function RoundMidway(Value, Interval)
-	Interval = Interval or 1
-	local AbsValue = math.abs(Value)
-	local Low = AbsValue - math.fmod(AbsValue, Interval)
-	return (Low + Interval / 2) * math.sign(Value)
-end
 
 local function CreateStud(Props)
 	local NewPart = Instance.new("Part")
@@ -64,17 +57,17 @@ function StudderMouseControl:init()
 				+ Vector3.new(0, self.props.HeightOffset, 0)
 			self.UpdateTargetPosition(
 				Vector3.new(
-					RoundMidway(NewPosition.X, self.props.SnappingInterval),
+					Round(NewPosition.X, self.props.SnappingInterval),
 					self.props.HeightOffset - self.props.PartHeight / 2,
-					RoundMidway(NewPosition.Z, self.props.SnappingInterval)
+					Round(NewPosition.Z, self.props.SnappingInterval)
 				)
 			)
 		else
 			self.UpdateTargetPosition(
 				Vector3.new(
-					RoundMidway(Result.Position.X, self.props.SnappingInterval),
+					Round(Result.Position.X, self.props.SnappingInterval),
 					self.props.HeightOffset - self.props.PartHeight / 2,
-					RoundMidway(Result.Position.Z, self.props.SnappingInterval)
+					Round(Result.Position.Z, self.props.SnappingInterval)
 				)
 			)
 		end
@@ -153,9 +146,7 @@ function StudderMouseControl:willUnmount()
 end
 
 function StudderMouseControl:render()
-	local RoundedSize = math.floor(
-		MAX_PART_SIZE / self.props.PartSize
-	) * self.props.PartSize
+	local CanvasSize = self.props.PartSize * 10
 
 	return Roact.createElement(
 		Roact.Portal,
@@ -168,9 +159,9 @@ function StudderMouseControl:render()
 				{
 					[Roact.Ref] = self.BaseplateRef,
 					Size = Vector3.new(
-						RoundedSize,
+						CanvasSize,
 						1,
-						RoundedSize
+						CanvasSize
 					),
 					Position = self.TargetPosition:map(
 						function(v)

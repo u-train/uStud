@@ -154,18 +154,18 @@ function App:UpdatePartSize(To)
 
 	self:setState({
 		PartSize = NewPartSize,
-		SnappingInterval = NewPartSize
+		SnappingInterval = NewPartSize,
 	})
 end
 
 function App:UpdateSnappingInterval(To)
 	self:setState({
-		SnappingInterval = math.min(math.clamp(To, MinSize, MaxSize), self.state.PartSize)
+		SnappingInterval = math.min(math.clamp(To, MinSize, MaxSize), self.state.PartSize),
 	})
 end
 
 function App:BindHotkeys()
-		ContextActionService:BindAction(ActionNames.IncreaseSnappingInterval, function(_, State)
+	ContextActionService:BindAction(ActionNames.IncreaseSnappingInterval, function(_, State)
 		if State ~= Enum.UserInputState.Begin then
 			return
 		end
@@ -186,7 +186,7 @@ function App:BindHotkeys()
 			return
 		end
 
-		self:UpdatePartSize( self.state.PartSize * 2 )
+		self:UpdatePartSize(self.state.PartSize * 2)
 	end, false, Enum.KeyCode.Z)
 
 	ContextActionService:BindAction(ActionNames.DecreasePartSize, function(_, State)

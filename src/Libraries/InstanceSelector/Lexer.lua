@@ -57,5 +57,4 @@ local Lexer = function(Input)
 	return Tokens
 end
 
-
 return Lexer

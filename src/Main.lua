@@ -7,13 +7,10 @@ return function(plugin)
 
 	Module.Loaded = function(Widget)
 		Module.RoactHandle = Roact.mount(
-			Roact.createElement(
-				AppComponent,
-				{
-					Active = false,
-					SettingManager = Settings
-				}
-			),
+			Roact.createElement(AppComponent, {
+				Active = false,
+				SettingManager = Settings,
+			}),
 			Widget
 		)
 	end
@@ -21,26 +18,20 @@ return function(plugin)
 	Module.Activated = function()
 		Roact.update(
 			Module.RoactHandle,
-			Roact.createElement(
-				AppComponent,
-				{
-					Active = true,
-					SettingManager = Settings
-				}
-			)
+			Roact.createElement(AppComponent, {
+				Active = true,
+				SettingManager = Settings,
+			})
 		)
 	end
 
 	Module.Deactivated = function()
 		Roact.update(
 			Module.RoactHandle,
-			Roact.createElement(
-				AppComponent,
-				{
-					Active = false,
-					SettingManager = Settings
-				}
-			)
+			Roact.createElement(AppComponent, {
+				Active = false,
+				SettingManager = Settings,
+			})
 		)
 	end
 

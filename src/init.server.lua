@@ -32,43 +32,22 @@ local Interface = require(script.Main)(plugin)
 local PluginMaid = Maid.new()
 local Active = false
 
-local Toolbar = PluginMaid:GiveTask(
-	plugin:CreateToolbar("uStud")
-)
+local Toolbar = PluginMaid:GiveTask(plugin:CreateToolbar("uStud"))
 
 local Button = PluginMaid:GiveTask(
-	Toolbar:CreateButton(
-		"ActivatePlugin",
-		"Start uStud",
-		"http://www.roblox.com/asset/?id=118532704"
-	)
+	Toolbar:CreateButton("ActivatePlugin", "Start uStud", "http://www.roblox.com/asset/?id=118532704")
 )
 
-local WidgetArgs = DockWidgetPluginGuiInfo.new(
-	Enum.InitialDockState.Float,
-	false,
-	false,
-	250,
-	300,
-	220,
-	220
-)
+local WidgetArgs = DockWidgetPluginGuiInfo.new(Enum.InitialDockState.Float, false, false, 250, 300, 220, 220)
 
-local Widget = PluginMaid:GiveTask(
-	plugin:CreateDockWidgetPluginGui(
-		"uStud Control Panel",
-		WidgetArgs
-	)
-)
+local Widget = PluginMaid:GiveTask(plugin:CreateDockWidgetPluginGui("uStud Control Panel", WidgetArgs))
 
 Widget.Enabled = false
 
 Widget.Title = "uStud Panel"
-Widget:BindToClose(
-	function()
-		plugin:Deactivate()
-	end
-)
+Widget:BindToClose(function()
+	plugin:Deactivate()
+end)
 
 local function Unloading()
 	plugin:Deactivate()
@@ -97,24 +76,16 @@ local function Activating()
 	Widget.Enabled = true
 end
 
-PluginMaid:GiveTask(
-	Button.Click:Connect(
-		function()
-			if Active then
-				plugin:Deactivate()
-			else
-				Activating()
-			end
-		end
-	)
-)
+PluginMaid:GiveTask(Button.Click:Connect(function()
+	if Active then
+		plugin:Deactivate()
+	else
+		Activating()
+	end
+end))
 
-PluginMaid:GiveTask(
-	plugin.Deactivation:Connect(Deactivating)
-)
+PluginMaid:GiveTask(plugin.Deactivation:Connect(Deactivating))
 
-PluginMaid:GiveTask(
-	plugin.Unloading:Connect(Unloading)
-)
+PluginMaid:GiveTask(plugin.Unloading:Connect(Unloading))
 
 Interface.Loaded(Widget)

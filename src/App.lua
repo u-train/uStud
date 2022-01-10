@@ -22,15 +22,14 @@ local MODES = {
 
 local MODES_TO_COMPONENT = {
 	StudderComponent,
-	PainterComponent
+	PainterComponent,
 }
 
 function App:init()
 	self:setState({
-		EditingIn = InstanceSelector.Select(
-			game,
-			self.props.SettingManager.Get("DefaultEditingIn")
-		) or warn("Malformed default place to edit in. Fix in settings.") or workspace
+		EditingIn = InstanceSelector.Select(game, self.props.SettingManager.Get("DefaultEditingIn")) or warn(
+			"Malformed default place to edit in. Fix in settings."
+		) or workspace,
 	})
 end
 
@@ -43,80 +42,61 @@ function App:render()
 
 	if self.state.Mode == nil then
 		Children = {
-			Topbar = Roact.createElement(
-				TopBarComponent,
-				{
-					Title = "Menu",
-					ShowReturnBack = false,
-					Size = UDim2.new(1, 0, 0, 25)
-				}
-			),
-			Menu = Roact.createElement(
-				MenuComponent,
-				{
-					Size = UDim2.new(1, 0, 1, -30),
-					Position = UDim2.new(0, 0, 0, 30),
-					Selections = MODES,
-					OnSelection = function(Selection)
-						self:setState({
-							Mode = MODES[Selection]
-						})
-					end
-				}
-			),
+			Topbar = Roact.createElement(TopBarComponent, {
+				Title = "Menu",
+				ShowReturnBack = false,
+				Size = UDim2.new(1, 0, 0, 25),
+			}),
+			Menu = Roact.createElement(MenuComponent, {
+				Size = UDim2.new(1, 0, 1, -30),
+				Position = UDim2.new(0, 0, 0, 30),
+				Selections = MODES,
+				OnSelection = function(Selection)
+					self:setState({
+						Mode = MODES[Selection],
+					})
+				end,
+			}),
 		}
 	else
 		Children = {
-			Topbar = Roact.createElement(
-				TopBarComponent,
-				{
-					Title = MODES[self.state.Mode],
-					ShowReturnBack = true,
-					Size = UDim2.new(1, 0, 0, 25),
-					OnReturn = function()
+			Topbar = Roact.createElement(TopBarComponent, {
+				Title = MODES[self.state.Mode],
+				ShowReturnBack = true,
+				Size = UDim2.new(1, 0, 0, 25),
+				OnReturn = function()
+					self:setState({
+						Mode = Roact.None,
+					})
+				end,
+			}),
+			View = Roact.createElement(MODES_TO_COMPONENT[self.state.Mode], {
+				EditingIn = self.state.EditingIn,
+				Size = UDim2.new(1, 0, 1, -55),
+				Position = UDim2.new(0, 0, 0, 25),
+			}),
+			Bottombar = Roact.createElement(LabelledInputComponent, {
+				Value = InstanceSelector.EscapeFullName(self.state.EditingIn),
+				Size = UDim2.new(1, 0, 0, 25),
+				Position = UDim2.new(0, 0, 1, -25),
+				Label = "Editing In",
+
+				OnValueChanged = function(Text)
+					local Success, Value = pcall(InstanceSelector.Select, game, Text)
+
+					if Success then
 						self:setState({
-							Mode = Roact.None
+							EditingIn = Value,
 						})
 					end
-				}
-			),
-			View = Roact.createElement(
-				MODES_TO_COMPONENT[self.state.Mode],
-				{
-					EditingIn = self.state.EditingIn,
-					Size = UDim2.new(1, 0, 1, -55),
-					Position = UDim2.new(0, 0, 0, 25),
-				}
-			),
-			Bottombar = Roact.createElement(
-				LabelledInputComponent,
-				{
-					Value = InstanceSelector.EscapeFullName(self.state.EditingIn),
-					Size = UDim2.new(1, 0, 0, 25),
-					Position = UDim2.new(0, 0, 1, -25),
-					Label = "Editing In",
-
-					OnValueChanged = function(Text)
-						local Success, Value = pcall(InstanceSelector.Select, game, Text)
-
-						if Success then
-							self:setState({
-								EditingIn = Value
-							})
-						end
-					end
-				}
-			),
+				end,
+			}),
 		}
 	end
 
-	return Roact.createElement(
-		"Frame",
-		{
-			Size = UDim2.fromScale(1, 1),
-		},
-		Children
-	)
+	return Roact.createElement("Frame", {
+		Size = UDim2.fromScale(1, 1),
+	}, Children)
 end
 
 return App

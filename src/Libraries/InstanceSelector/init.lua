@@ -27,5 +27,5 @@ end
 
 return {
 	Select = SelectInstance,
-	EscapeFullName = EscapeFullName
+	EscapeFullName = EscapeFullName,
 }

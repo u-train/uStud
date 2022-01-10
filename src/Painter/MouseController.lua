@@ -75,30 +75,23 @@ function MouseController:willUnmount()
 end
 
 function MouseController:render()
-	return Roact.createElement(
-		Roact.Portal,
-		{
-			target = workspace
-		},
-		{
-			Brush = Roact.createElement(
-				"Part",
-				{
-					[Roact.Ref] = self.BrushRef,
-					Anchored = true,
-					CanCollide = true,
-					Transparency = 0.8,
-					Material = Enum.Material.Neon,
+	return Roact.createElement(Roact.Portal, {
+		target = workspace,
+	}, {
+		Brush = Roact.createElement("Part", {
+			[Roact.Ref] = self.BrushRef,
+			Anchored = true,
+			CanCollide = true,
+			Transparency = 0.8,
+			Material = Enum.Material.Neon,
 
-					Shape = Enum.PartType.Cylinder,
-					Rotation = Vector3.new(0, 0, 90),
-					Position = self.BrushPositionBinding,
-					Size = Vector3.new(0.4, self.props.BrushDiameter, self.props.BrushDiameter),
-					Color = self.props.PrimaryColor
-				}
-			)
-		}
-	)
+			Shape = Enum.PartType.Cylinder,
+			Rotation = Vector3.new(0, 0, 90),
+			Position = self.BrushPositionBinding,
+			Size = Vector3.new(0.4, self.props.BrushDiameter, self.props.BrushDiameter),
+			Color = self.props.PrimaryColor,
+		}),
+	})
 end
 
 function MouseController:UpdateAndPaintBrush(Input)
@@ -136,7 +129,7 @@ function MouseController:UpdateAdorns()
 		end
 	end
 
-	for Key, Adorn in next, self.Adorns :: {[number]: PartAdornment} do
+	for Key, Adorn in next, self.Adorns :: { [number]: PartAdornment } do
 		Adorn.Adornee = Parts[Key]
 		Adorn.Color3 = self.props.PrimaryColor
 	end

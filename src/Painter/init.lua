@@ -16,7 +16,7 @@ local ActionNames = {
 	DecreaseBrushDiameter = "DecreaseBrushDiameter",
 	ToggleSecondaryOnly = "ToggleSecondaryOnly",
 	SamplePrimaryColor = "SamplePrimaryColor",
-	SampleSecondaryColor = "SampleSecondaryColorColor"
+	SampleSecondaryColor = "SampleSecondaryColorColor",
 }
 
 function Painter:init()
@@ -37,86 +37,69 @@ function Painter:willUnmount()
 end
 
 function Painter:render()
-	return Roact.createElement(
-		ListLayoutComponent,
-		{
-			Size = self.props.Size,
-			Position = self.props.Position,
-		},
-		{
-			PrimaryColor = Roact.createElement(
-				ColorInputComponent,
-				{
-					Color = self.state.PrimaryColor,
-					Label = "Primary",
-					Size = UDim2.new(1, 0, 0, 25),
-					OnColorChanged = function(NewColor)
-						self:setState({
-							PrimaryColor = NewColor
-						})
-					end
-				}
+	return Roact.createElement(ListLayoutComponent, {
+		Size = self.props.Size,
+		Position = self.props.Position,
+	}, {
+		PrimaryColor = Roact.createElement(ColorInputComponent, {
+			Color = self.state.PrimaryColor,
+			Label = "Primary",
+			Size = UDim2.new(1, 0, 0, 25),
+			OnColorChanged = function(NewColor)
+				self:setState({
+					PrimaryColor = NewColor,
+				})
+			end,
+		}),
+		SecondaryColor = Roact.createElement(ColorInputComponent, {
+			Color = self.state.SecondaryColor,
+			Label = "Secondary",
+			Size = UDim2.new(1, 0, 0, 25),
+			OnColorChanged = function(NewColor)
+				self:setState({
+					SecondaryColor = NewColor,
+				})
+			end,
+		}),
+		ToggleSecondaryOnly = Roact.createElement("TextButton", {
+			Text = "Toggle Secondary",
+			BackgroundColor3 = self.state.SecondaryOnly and Color3.fromRGB(1148, 176, 149) or Color3.fromRGB(
+				163,
+				162,
+				165
 			),
-			SecondaryColor = Roact.createElement(
-				ColorInputComponent,
-				{
-					Color = self.state.SecondaryColor,
-					Label = "Secondary",
-					Size = UDim2.new(1, 0, 0, 25),
-					OnColorChanged = function(NewColor)
-						self:setState({
-							SecondaryColor = NewColor
-						})
-					end
-				}
-			),
-			ToggleSecondaryOnly = Roact.createElement(
-				"TextButton",
-				{
-					Text = "Toggle Secondary",
-					BackgroundColor3 = self.state.SecondaryOnly
-						and Color3.fromRGB(1148, 176, 149)
-						or Color3.fromRGB(163, 162, 165),
-					Size = UDim2.new(1, 0, 0, 25),
-					[Roact.Event.MouseButton1Click] = function()
-						self:setState({
-							SecondaryOnly = not self.state.SecondaryOnly,
-						})
-					end
-				}
-			),
-			BrushDiameter = Roact.createElement(
-				LabelledInputComponent,
-				{
-					Value = self.state.BrushDiameter,
-					Size = UDim2.new(1, 0, 0, 25),
-					Label = "Brush Radius",
+			Size = UDim2.new(1, 0, 0, 25),
+			[Roact.Event.MouseButton1Click] = function()
+				self:setState({
+					SecondaryOnly = not self.state.SecondaryOnly,
+				})
+			end,
+		}),
+		BrushDiameter = Roact.createElement(LabelledInputComponent, {
+			Value = self.state.BrushDiameter,
+			Size = UDim2.new(1, 0, 0, 25),
+			Label = "Brush Radius",
 
-					OnValueChanged = function(Text)
-						local NewInterval = tonumber(Text)
+			OnValueChanged = function(Text)
+				local NewInterval = tonumber(Text)
 
-						if NewInterval == nil then
-							return
-						end
+				if NewInterval == nil then
+					return
+				end
 
-						self:setState({
-							BrushDiameter = NewInterval,
-						})
-					end
-				}
-			),
-			StudderMouseControl = Roact.createElement(
-				StudderMouseControl,
-				{
-					EditingIn = self.props.EditingIn,
-					PrimaryColor = self.state.PrimaryColor,
-					BrushDiameter = self.state.BrushDiameter,
-					SecondaryColor = self.state.SecondaryColor,
-					SecondaryOnly = self.state.SecondaryOnly
-				}
-			)
-		}
-	)
+				self:setState({
+					BrushDiameter = NewInterval,
+				})
+			end,
+		}),
+		StudderMouseControl = Roact.createElement(StudderMouseControl, {
+			EditingIn = self.props.EditingIn,
+			PrimaryColor = self.state.PrimaryColor,
+			BrushDiameter = self.state.BrushDiameter,
+			SecondaryColor = self.state.SecondaryColor,
+			SecondaryOnly = self.state.SecondaryOnly,
+		}),
+	})
 end
 
 function Painter:BindHotkeys()
@@ -138,7 +121,6 @@ function Painter:BindHotkeys()
 				PrimaryColor = (HitInstance :: BasePart).Color,
 			})
 		end
-
 	end, false, Enum.KeyCode.Z)
 
 	ContextActionService:BindAction(ActionNames.SampleSecondaryColor, function(_, State)

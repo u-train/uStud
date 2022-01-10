@@ -1,5 +1,5 @@
 local Settings = {
-	DefaultEditingIn = "Workspace.Studs"
+	DefaultEditingIn = "Workspace.Studs",
 }
 
 local Prefix = "uStud."
@@ -13,8 +13,7 @@ return function(plugin)
 		plugin:SetSetting("uStud", true)
 	else
 		for SettingName, _ in next, Settings do
-			Settings[SettingName] = plugin:GetSetting(SettingName)
-				or Settings[SettingName]
+			Settings[SettingName] = plugin:GetSetting(SettingName) or Settings[SettingName]
 		end
 	end
 
@@ -25,6 +24,6 @@ return function(plugin)
 		Set = function(SettingName, Value)
 			Settings[SettingName] = Value
 			plugin:SetSetting(Prefix .. SettingName, Value)
-		end
+		end,
 	}
 end

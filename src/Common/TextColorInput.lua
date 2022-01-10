@@ -7,13 +7,7 @@ local ColorIsDark = function(Color)
 	local G = Color.G * 255
 	local B = Color.B * 255
 
-	if
-		math.sqrt(
-			0.299 * R * R +
-			0.587 * G * G +
-			0.114 * B * B
-		) > 127.5
-	then
+	if math.sqrt(0.299 * R * R + 0.587 * G * G + 0.114 * B * B) > 127.5 then
 		return false
 	else
 		return true
@@ -27,7 +21,7 @@ end
 local Colors = {
 	"R",
 	"G",
-	"B"
+	"B",
 }
 
 local CreateColorChannelChanged = function(Props)
@@ -41,17 +35,11 @@ local CreateColorChannelChanged = function(Props)
 			local NewColor = {
 				Props.Color.R,
 				Props.Color.G,
-				Props.Color.B
+				Props.Color.B,
 			}
 
 			NewColor[Channel] = NewNumber / 255
-			Props.OnColorChanged(
-				Color3.new(
-					unpack(
-						NewColor
-					)
-				)
-			)
+			Props.OnColorChanged(Color3.new(unpack(NewColor)))
 		end
 	end
 end
@@ -61,35 +49,30 @@ return function(Props)
 	local GivenColorChannelChanged = CreateColorChannelChanged(Props)
 
 	for Key, Color in next, Colors do
-		Children[Color] = Roact.createElement(
-			ControlledInputComponent,
-			{
-				Value = FormatColor(Props.Color[Color]),
-				OnValueChanged = GivenColorChannelChanged(Key),
-				Size = UDim2.new(1/3, -(Props.TextWidth or 100) / 3, 1, 0),
-				Position = UDim2.new(1/3 * (Key - 1), (Props.TextWidth or 100) - (Props.TextWidth or 100) / 3 * (Key - 1), 0, 0),
-			}
-		)
+		Children[Color] = Roact.createElement(ControlledInputComponent, {
+			Value = FormatColor(Props.Color[Color]),
+			OnValueChanged = GivenColorChannelChanged(Key),
+			Size = UDim2.new(1 / 3, -(Props.TextWidth or 100) / 3, 1, 0),
+			Position = UDim2.new(
+				1 / 3 * (Key - 1),
+				(Props.TextWidth or 100) - (Props.TextWidth or 100) / 3 * (Key - 1),
+				0,
+				0
+			),
+		})
 	end
 
-	Children.Label = Roact.createElement(
-		"TextLabel",
-		{
-			Text = Props.Label,
-			Size = UDim2.new(0, Props.TextWidth or 100, 1, 0),
-			BackgroundColor3 = Props.Color,
-			TextColor3 = ColorIsDark(Props.Color) and Color3.new(1, 1, 1) or Color3.new(0, 0, 0),
-			BorderSizePixel = 1,
-			ZIndex = 1,
-		}
-	)
+	Children.Label = Roact.createElement("TextLabel", {
+		Text = Props.Label,
+		Size = UDim2.new(0, Props.TextWidth or 100, 1, 0),
+		BackgroundColor3 = Props.Color,
+		TextColor3 = ColorIsDark(Props.Color) and Color3.new(1, 1, 1) or Color3.new(0, 0, 0),
+		BorderSizePixel = 1,
+		ZIndex = 1,
+	})
 
-	return Roact.createElement(
-		"Frame",
-		{
-			Size = Props.Size,
-			Position = Props.Position,
-		},
-		Children
-	)
+	return Roact.createElement("Frame", {
+		Size = Props.Size,
+		Position = Props.Position,
+	}, Children)
 end

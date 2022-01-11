@@ -66,10 +66,6 @@ function MouseController:willUnmount()
 	self.InputBegan:Disconnect()
 	self.InputEnded:Disconnect()
 
-	for _, Adorn in next, self.Adorns do
-		Adorn:Destroy()
-	end
-
 	self.Adorns = nil
 	self.AdornContainer:Destroy()
 end

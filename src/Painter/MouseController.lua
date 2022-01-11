@@ -101,11 +101,10 @@ function MouseController:UpdateAndPaintBrush(Input)
 		return
 	end
 
-	if RaycastResults.Instance == self.BrushRef.current then
-		return
+	if RaycastResults.Instance ~= self.BrushRef.current then
+		self.UpdateBrushPosition(RaycastResults.Position)
 	end
 
-	self.UpdateBrushPosition(RaycastResults.Position)
 	self:UpdateAdorns()
 	if self.IsPainting then
 		for _, Part in next, self:QueryPaintableParts() do

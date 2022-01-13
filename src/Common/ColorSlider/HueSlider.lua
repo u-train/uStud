@@ -9,7 +9,7 @@ local CreateColorSequenceForHue = function(Color: Color3)
 		table.insert(Sequence, ColorSequenceKeypoint.new(i / 6, Color3.fromHSV(i / 6, Saturation, Value)))
 	end
 
-	return Sequence
+	return ColorSequence.new(Sequence)
 end
 
 return function(Props)
@@ -28,7 +28,7 @@ return function(Props)
 			Active = false,
 		}, {
 			UIGradient = Roact.createElement("UIGradient", {
-				Color = ColorSequence.new(CreateColorSequenceForHue(Props.Color)),
+				Color = CreateColorSequenceForHue(Props.Color),
 			}),
 		}),
 	})

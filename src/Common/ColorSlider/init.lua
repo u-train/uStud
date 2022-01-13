@@ -28,12 +28,3 @@ return function(Props)
 		})
 	})
 end
-
-
--- local ColorSliderComponent = Roact.Component:extend("ColorSliderComponent")
-
--- function ColorSliderComponent:init() end
-
--- function ColorSliderComponent:render() end
-
--- return ColorSliderComponent

@@ -18,7 +18,7 @@ function HelperComponent:render()
 			MinValue = 0,
 			MaxValue = 100,
 			Interval = 0.1,
-			ValueChanged = function(NewValue)
+			OnValueChanged = function(NewValue)
 				self:setState({
 					Value = NewValue,
 				})

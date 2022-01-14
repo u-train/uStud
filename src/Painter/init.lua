@@ -4,7 +4,7 @@ local Roact = require(script.Parent.Libraries.Roact) :: Roact
 local Common = script.Parent.Common
 local ListLayoutComponent = require(Common.ListLayout)
 local LabelledInputComponent = require(Common.LabelledInput)
-local ColorInputComponent = require(Common.TextColorInput)
+local ColorInputComponent = require(Common.ColorInput)
 local GetRaycastResultFromMouse = require(script.Parent.Libraries.GetRaycastResultFromMouse)
 
 local StudderMouseControl = require(script.MouseController)
@@ -44,7 +44,7 @@ function Painter:render()
 		PrimaryColor = Roact.createElement(ColorInputComponent, {
 			Color = self.state.PrimaryColor,
 			Label = "Primary",
-			Size = UDim2.new(1, 0, 0, 25),
+			Size = UDim2.new(1, 0, 0, 30),
 			OnColorChanged = function(NewColor)
 				self:setState({
 					PrimaryColor = NewColor,
@@ -54,7 +54,7 @@ function Painter:render()
 		SecondaryColor = Roact.createElement(ColorInputComponent, {
 			Color = self.state.SecondaryColor,
 			Label = "Secondary",
-			Size = UDim2.new(1, 0, 0, 25),
+			Size = UDim2.new(1, 0, 0, 30),
 			OnColorChanged = function(NewColor)
 				self:setState({
 					SecondaryColor = NewColor,

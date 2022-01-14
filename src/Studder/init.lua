@@ -5,7 +5,7 @@ local Roact = require(script.Parent.Libraries.Roact)
 local Common = script.Parent.Common
 local ListLayoutComponent = require(Common.ListLayout)
 local LabelledInputComponent = require(Common.LabelledInput)
-local ColorInputComponent = require(Common.TextColorInput)
+local ColorInputComponent = require(Common.ColorInput)
 local StudderMouseControl = require(script.MouseController)
 
 local App = Roact.Component:extend("App")
@@ -120,7 +120,7 @@ function App:render()
 		ColorInput = Roact.createElement(ColorInputComponent, {
 			Color = self.state.PartColor,
 			Label = "Part Color",
-			Size = UDim2.new(1, 0, 0, 25),
+			Size = UDim2.new(1, 0, 0, 30),
 			OnColorChanged = function(NewColor)
 				self:setState({
 					PartColor = NewColor,

@@ -20,10 +20,6 @@ local function CreateStud(Props)
 	NewPart.Parent = Props.Parent
 end
 
--- local function AngleBetweenTwoVectors(a, b)
--- 	return math.acos(a:Dot(b) / (a.Magnitude * b.Magnitude))
--- end
-
 local StudderMouseControl = Roact.Component:extend("StudderMouseControl")
 
 function StudderMouseControl:init()

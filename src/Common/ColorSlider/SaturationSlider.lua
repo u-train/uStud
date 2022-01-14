@@ -22,7 +22,7 @@ return function(Props)
 		end,
 		Background = Roact.createElement("Frame", {
 			Size = UDim2.fromScale(1, 1),
-			ZIndex = 0,
+			ZIndex = 1,
 			Active = false,
 		}, {
 			UIGradient = Roact.createElement("UIGradient", {

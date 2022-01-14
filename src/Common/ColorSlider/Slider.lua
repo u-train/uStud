@@ -5,7 +5,7 @@ local SliderComponent = Roact.Component:extend("HueSlider")
 SliderComponent.defaultProps = {
 	Background = Roact.createElement("Frame", {
 		Size = UDim2.fromScale(1, 1),
-		ZIndex = -1,
+		ZIndex = 1,
 		Active = false,
 	}, {
 		Line = Roact.createElement("Frame", {

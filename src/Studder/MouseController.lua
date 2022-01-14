@@ -1,13 +1,13 @@
 local UserInputService = game:GetService("UserInputService")
 local Roact = require(script.Parent.Parent.Libraries.Roact)
-local Round = require(script.Parent.Parent.Libraries.Round)
 
--- Round = function(Value, Interval)
--- 	Interval = Interval or 1
--- 	local AbsValue = math.abs(Value)
--- 	local Low = AbsValue - math.fmod(AbsValue, Interval)
--- 	return (Low + Interval / 2) * math.sign(Value)
--- end
+-- This is to align the studs correctly.
+local RoundMidway = function(Value, Interval)
+	Interval = Interval or 1
+	local AbsValue = math.abs(Value)
+	local Low = AbsValue - math.fmod(AbsValue, Interval)
+	return (Low + Interval / 2) * math.sign(Value)
+end
 
 local function CreateStud(Props)
 	local NewPart = Instance.new("Part")
@@ -55,9 +55,9 @@ function StudderMouseControl:init()
 
 		self.UpdateTargetPosition(
 			Vector3.new(
-				Round(NewPosition.X, self.props.SnappingInterval),
+				RoundMidway(NewPosition.X, self.props.SnappingInterval),
 				self.props.HeightOffset - self.props.PartHeight / 2,
-				Round(NewPosition.Z, self.props.SnappingInterval)
+				RoundMidway(NewPosition.Z, self.props.SnappingInterval)
 			)
 		)
 

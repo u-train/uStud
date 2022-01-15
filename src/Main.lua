@@ -1,13 +1,13 @@
 return function(plugin)
 	local Roact = require(script.Parent.Libraries.Roact)
-	local AppComponent = require(script.Parent.App)
+	local App = require(script.Parent.App)
 	local Settings = require(script.Parent.Settings)(plugin)
 
 	local Module = {}
 
 	Module.Loaded = function(Widget)
 		Module.RoactHandle = Roact.mount(
-			Roact.createElement(AppComponent, {
+			Roact.createElement(App, {
 				Active = false,
 				SettingManager = Settings,
 			}),
@@ -18,7 +18,7 @@ return function(plugin)
 	Module.Activated = function()
 		Roact.update(
 			Module.RoactHandle,
-			Roact.createElement(AppComponent, {
+			Roact.createElement(App, {
 				Active = true,
 				SettingManager = Settings,
 			})
@@ -28,7 +28,7 @@ return function(plugin)
 	Module.Deactivated = function()
 		Roact.update(
 			Module.RoactHandle,
-			Roact.createElement(AppComponent, {
+			Roact.createElement(App, {
 				Active = false,
 				SettingManager = Settings,
 			})

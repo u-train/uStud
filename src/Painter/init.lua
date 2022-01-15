@@ -2,9 +2,9 @@ local UserInputService = game:GetService("UserInputService")
 local ContextActionService = game:GetService("ContextActionService")
 local Roact = require(script.Parent.Libraries.Roact) :: Roact
 local Common = script.Parent.Common
-local ListLayoutComponent = require(Common.ListLayout)
-local LabelledInputComponent = require(Common.LabelledInput)
-local ColorInputComponent = require(Common.ColorInput)
+local ListLayout = require(Common.ListLayout)
+local LabelledInput = require(Common.LabelledInput)
+local ColorInput = require(Common.ColorInput)
 local GetRaycastResultFromMouse = require(script.Parent.Libraries.GetRaycastResultFromMouse)
 
 local StudderMouseControl = require(script.MouseController)
@@ -37,11 +37,11 @@ function Painter:willUnmount()
 end
 
 function Painter:render()
-	return Roact.createElement(ListLayoutComponent, {
+	return Roact.createElement(ListLayout, {
 		Size = self.props.Size,
 		Position = self.props.Position,
 	}, {
-		PrimaryColor = Roact.createElement(ColorInputComponent, {
+		PrimaryColor = Roact.createElement(ColorInput, {
 			Color = self.state.PrimaryColor,
 			Label = "Primary",
 			Size = UDim2.new(1, 0, 0, 30),
@@ -51,7 +51,7 @@ function Painter:render()
 				})
 			end,
 		}),
-		SecondaryColor = Roact.createElement(ColorInputComponent, {
+		SecondaryColor = Roact.createElement(ColorInput, {
 			Color = self.state.SecondaryColor,
 			Label = "Secondary",
 			Size = UDim2.new(1, 0, 0, 30),
@@ -75,7 +75,7 @@ function Painter:render()
 				})
 			end,
 		}),
-		BrushDiameter = Roact.createElement(LabelledInputComponent, {
+		BrushDiameter = Roact.createElement(LabelledInput, {
 			Value = self.state.BrushDiameter,
 			Size = UDim2.new(1, 0, 0, 25),
 			Label = "Brush Radius",

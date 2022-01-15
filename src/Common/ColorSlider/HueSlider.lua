@@ -1,5 +1,5 @@
 local Roact = require(script.Parent.Parent.Parent.Libraries.Roact) :: Roact
-local SliderComponent = require(script.Parent.Slider)
+local Slider = require(script.Parent.Slider)
 
 local CreateColorSequenceForHue = function(Color: Color3)
 	local Sequence = {}
@@ -15,7 +15,7 @@ end
 return function(Props)
 	local H, S, V = Props.Color:ToHSV()
 
-	return Roact.createElement(SliderComponent, {
+	return Roact.createElement(Slider, {
 		Position = Props.Position,
 		Size = Props.Size,
 		Value = H,

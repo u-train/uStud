@@ -1,5 +1,5 @@
 local Roact = require(script.Parent.Parent.Libraries.Roact) :: Roact
-local ColorSliderComponent = require(script.Parent.ColorSlider)
+local ColorSlider = require(script.Parent.ColorSlider)
 local TextColorInput = require(script.Parent.TextColorInput)
 
 return function(Props)
@@ -13,7 +13,7 @@ return function(Props)
 			Size = UDim2.new(1, 0, 0.5, 0),
 			OnColorChanged = Props.OnColorChanged
 		}),
-		Slider = Roact.createElement(ColorSliderComponent, {
+		Slider = Roact.createElement(ColorSlider, {
 			Size = UDim2.new(1, 0, 0.5, 0),
 			Position = UDim2.new(0, 0, 0.5, 0),
 			Color = Props.Color,

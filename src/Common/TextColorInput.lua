@@ -1,5 +1,5 @@
 local Roact = require(script.Parent.Parent.Libraries.Roact)
-local ControlledInputComponent = require(script.Parent.ControlledInput)
+local ControlledInput = require(script.Parent.ControlledInput)
 
 local ColorIsDark = function(Color)
 	-- https://awik.io/determine-color-bright-dark-using-javascript/
@@ -49,7 +49,7 @@ return function(Props)
 	local GivenColorChannelChanged = CreateColorChannelChanged(Props)
 
 	for Key, Color in next, Colors do
-		Children[Color] = Roact.createElement(ControlledInputComponent, {
+		Children[Color] = Roact.createElement(ControlledInput, {
 			Value = FormatColor(Props.Color[Color]),
 			OnValueChanged = GivenColorChannelChanged(Key),
 			Size = UDim2.new(1 / 3, -(Props.TextWidth or 100) / 3, 1, 0),

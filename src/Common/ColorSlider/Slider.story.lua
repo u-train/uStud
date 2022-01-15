@@ -1,15 +1,15 @@
 local Roact = require(script.Parent.Parent.Parent.Libraries.Roact) :: Roact
 local Slider = require(script.Parent.Slider)
 
-local HelperComponent = Roact.Component:extend("Helper")
+local Helper = Roact.Component:extend("Helper")
 
-function HelperComponent:init()
+function Helper:init()
 	self:setState({
 		Value = 0,
 	})
 end
 
-function HelperComponent:render()
+function Helper:render()
 	return Roact.createFragment({
 		Slider = Roact.createElement(Slider, {
 			Size = UDim2.new(1, 0, 0, 25),
@@ -33,7 +33,7 @@ function HelperComponent:render()
 end
 
 return function(Parent)
-	local Handle = Roact.mount(Roact.createElement(HelperComponent, {}), Parent)
+	local Handle = Roact.mount(Roact.createElement(Helper, {}), Parent)
 
 	return function()
 		Roact.unmount(Handle)

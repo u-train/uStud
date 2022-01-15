@@ -3,9 +3,9 @@ local ContextActionService = game:GetService("ContextActionService")
 local Roact = require(script.Parent.Libraries.Roact)
 
 local Common = script.Parent.Common
-local ListLayoutComponent = require(Common.ListLayout)
-local LabelledInputComponent = require(Common.LabelledInput)
-local ColorInputComponent = require(Common.ColorInput)
+local ListLayout = require(Common.ListLayout)
+local LabelledInput = require(Common.LabelledInput)
+local ColorInput = require(Common.ColorInput)
 local StudderMouseControl = require(script.MouseController)
 
 local App = Roact.Component:extend("App")
@@ -45,11 +45,11 @@ function App:willUnmount()
 end
 
 function App:render()
-	return Roact.createElement(ListLayoutComponent, {
+	return Roact.createElement(ListLayout, {
 		Size = self.props.Size,
 		Position = self.props.Position,
 	}, {
-		PartSizeInput = Roact.createElement(LabelledInputComponent, {
+		PartSizeInput = Roact.createElement(LabelledInput, {
 			Value = self.state.PartSize,
 			Size = UDim2.new(1, 0, 0, 25),
 			Label = "Part Size",
@@ -64,7 +64,7 @@ function App:render()
 				self:UpdatePartSize(NewSize)
 			end,
 		}),
-		HeightOffsetInput = Roact.createElement(LabelledInputComponent, {
+		HeightOffsetInput = Roact.createElement(LabelledInput, {
 			Value = self.state.HeightOffset,
 			Size = UDim2.new(1, 0, 0, 25),
 			Label = "Height offset",
@@ -81,7 +81,7 @@ function App:render()
 				})
 			end,
 		}),
-		PartHeightInput = Roact.createElement(LabelledInputComponent, {
+		PartHeightInput = Roact.createElement(LabelledInput, {
 			Value = self.state.PartHeight,
 			Size = UDim2.new(1, 0, 0, 25),
 			Label = "Part Height",
@@ -100,7 +100,7 @@ function App:render()
 				})
 			end,
 		}),
-		SnappingInput = Roact.createElement(LabelledInputComponent, {
+		SnappingInput = Roact.createElement(LabelledInput, {
 			Value = self.state.SnappingInterval,
 			Size = UDim2.new(1, 0, 0, 25),
 			Label = "Snapping Interval",
@@ -117,7 +117,7 @@ function App:render()
 				})
 			end,
 		}),
-		ColorInput = Roact.createElement(ColorInputComponent, {
+		ColorInput = Roact.createElement(ColorInput, {
 			Color = self.state.PartColor,
 			Label = "Part Color",
 			Size = UDim2.new(1, 0, 0, 30),

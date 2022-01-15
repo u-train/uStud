@@ -1,15 +1,15 @@
 local Roact = require(script.Parent.Parent.Libraries.Roact) :: Roact
 local ColorSlider = require(script.Parent.ColorSlider)
 
-local HelperComponent = Roact.Component:extend("Helper")
+local Helper = Roact.Component:extend("Helper")
 
-function HelperComponent:init()
+function Helper:init()
 	self:setState({
 		Color = Color3.fromHSV(0.417475, 0.530927, 0.760784),
 	})
 end
 
-function HelperComponent:render()
+function Helper:render()
 	return Roact.createFragment({
 		Slider = Roact.createElement(ColorSlider, {
 			Size = UDim2.new(1, -4, 0, 25),
@@ -30,7 +30,7 @@ function HelperComponent:render()
 end
 
 return function(Parent)
-	local Handle = Roact.mount(Roact.createElement(HelperComponent, {}), Parent)
+	local Handle = Roact.mount(Roact.createElement(Helper, {}), Parent)
 	return function()
 		Roact.unmount(Handle)
 	end

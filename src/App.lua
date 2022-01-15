@@ -1,9 +1,9 @@
 local Roact = require(script.Parent.Libraries.Roact)
-local StudderComponent = require(script.Parent.Studder)
-local PainterComponent = require(script.Parent.Painter)
-local LabelledInputComponent = require(script.Parent.Common.LabelledInput)
-local TopBarComponent = require(script.Parent.Common.Topbar)
-local MenuComponent = require(script.Parent.Menu)
+local Studder = require(script.Parent.Studder)
+local Painter = require(script.Parent.Painter)
+local LabelledInput = require(script.Parent.Common.LabelledInput)
+local TopBar = require(script.Parent.Common.Topbar)
+local Menu = require(script.Parent.Menu)
 local InstanceSelector = require(script.Parent.Libraries.InstanceSelector)
 
 local App = Roact.Component:extend("App")
@@ -20,9 +20,9 @@ local MODES = {
 	-- "Merge"
 }
 
-local MODES_TO_COMPONENT = {
-	StudderComponent,
-	PainterComponent,
+local MODES_TO_ = {
+	Studder,
+	Painter,
 }
 
 function App:init()
@@ -42,12 +42,12 @@ function App:render()
 
 	if self.state.Mode == nil then
 		Children = {
-			Topbar = Roact.createElement(TopBarComponent, {
+			Topbar = Roact.createElement(TopBar, {
 				Title = "Menu",
 				ShowReturnBack = false,
 				Size = UDim2.new(1, 0, 0, 25),
 			}),
-			Menu = Roact.createElement(MenuComponent, {
+			Menu = Roact.createElement(Menu, {
 				Size = UDim2.new(1, 0, 1, -30),
 				Position = UDim2.new(0, 0, 0, 30),
 				Selections = MODES,
@@ -60,7 +60,7 @@ function App:render()
 		}
 	else
 		Children = {
-			Topbar = Roact.createElement(TopBarComponent, {
+			Topbar = Roact.createElement(TopBar, {
 				Title = MODES[self.state.Mode],
 				ShowReturnBack = true,
 				Size = UDim2.new(1, 0, 0, 25),
@@ -70,12 +70,12 @@ function App:render()
 					})
 				end,
 			}),
-			View = Roact.createElement(MODES_TO_COMPONENT[self.state.Mode], {
+			View = Roact.createElement(MODES_TO_[self.state.Mode], {
 				EditingIn = self.state.EditingIn,
 				Size = UDim2.new(1, 0, 1, -55),
 				Position = UDim2.new(0, 0, 0, 25),
 			}),
-			Bottombar = Roact.createElement(LabelledInputComponent, {
+			Bottombar = Roact.createElement(LabelledInput, {
 				Value = InstanceSelector.EscapeFullName(self.state.EditingIn),
 				Size = UDim2.new(1, 0, 0, 25),
 				Position = UDim2.new(0, 0, 1, -25),

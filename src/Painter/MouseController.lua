@@ -1,4 +1,4 @@
-local Roact = require(script.Parent.Parent.Libraries.Roact)
+local Roact = require(script.Parent.Parent.Packages.roact)
 local UserInputService = game:GetService("UserInputService")
 
 local GetRaycastResultFromMouse = require(script.Parent.Parent.Common.GetRaycastResultFromMouse)

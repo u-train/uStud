@@ -1,4 +1,4 @@
-local Roact = require(script.Parent.Parent.Libraries.Roact) :: Roact
+local Roact = require(script.Parent.Parent.Packages.roact) :: Roact
 local HueSlider = require(script.HueSlider)
 local SaturationSlider = require(script.SaturationSlider)
 local ValueSlider = require(script.ValueSlider)

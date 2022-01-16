@@ -1,6 +1,6 @@
 local UserInputService = game:GetService("UserInputService")
 local ContextActionService = game:GetService("ContextActionService")
-local Roact = require(script.Parent.Libraries.Roact) :: Roact
+local Roact = require(script.Parent.Packages.roact) :: Roact
 local Common = script.Parent.Common
 local ListLayout = require(Common.ListLayout)
 local LabelledInput = require(Common.LabelledInput)

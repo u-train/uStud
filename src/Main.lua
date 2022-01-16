@@ -1,5 +1,5 @@
 return function(plugin)
-	local Roact = require(script.Parent.Libraries.Roact)
+	local Roact = require(script.Parent.Packages.roact)
 	local App = require(script.Parent.App)
 	local Settings = require(script.Parent.Settings)(plugin)
 

@@ -1,5 +1,5 @@
 local UserInputService = game:GetService("UserInputService")
-local Roact = require(script.Parent.Parent.Libraries.Roact)
+local Roact = require(script.Parent.Parent.Packages.roact)
 
 -- This is to align the studs correctly.
 local RoundMidway = function(Value, Interval)

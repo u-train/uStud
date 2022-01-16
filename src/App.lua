@@ -1,4 +1,4 @@
-local Roact = require(script.Parent.Libraries.Roact)
+local Roact = require(script.Parent.Packages.roact)
 local Studder = require(script.Parent.Studder)
 local Painter = require(script.Parent.Painter)
 local LabelledInput = require(script.Parent.Common.LabelledInput)

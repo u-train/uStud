@@ -1,6 +1,6 @@
 local ContextActionService = game:GetService("ContextActionService")
 
-local Roact = require(script.Parent.Libraries.Roact)
+local Roact = require(script.Parent.Packages.roact)
 
 local Common = script.Parent.Common
 local ListLayout = require(Common.ListLayout)

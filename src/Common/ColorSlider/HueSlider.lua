@@ -1,4 +1,4 @@
-local Roact = require(script.Parent.Parent.Parent.Libraries.Roact) :: Roact
+local Roact = require(script.Parent.Parent.Parent.Packages.roact) :: Roact
 local Slider = require(script.Parent.Slider)
 
 local CreateColorSequenceForHue = function(Color: Color3)

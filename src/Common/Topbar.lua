@@ -1,4 +1,4 @@
-local Roact = require(script.Parent.Parent.Libraries.Roact)
+local Roact = require(script.Parent.Parent.Packages.roact)
 
 return function(Props)
 	if Props.ShowReturnBack then

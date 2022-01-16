@@ -21,8 +21,8 @@ local ActionNames = {
 
 function Painter:init()
 	self:setState({
-		PrimaryColor = Color3.new(1, 1, 1),
-		SecondaryColor = Color3.new(1, 1, 1),
+		PrimaryColor = Color3.fromRGB(163, 162, 165),
+		SecondaryColor = Color3.fromRGB(163, 162, 165),
 		BrushDiameter = 2,
 		SecondaryOnly = false,
 	})

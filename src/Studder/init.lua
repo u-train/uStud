@@ -29,7 +29,7 @@ function App:init()
 	self:setState({
 		SnappingInterval = 1,
 		PartSize = 1,
-		PartColor = Color3.new(0.5, 0.5, 0.5),
+		PartColor = Color3.fromRGB(163, 162, 165),
 		PartHeight = 1,
 		HeightOffset = 1,
 		Deleting = false,

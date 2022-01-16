@@ -36,10 +36,6 @@ function App:init()
 	})
 end
 
-function App:willUnmount()
-	self.Folder:Destroy()
-end
-
 function App:render()
 	if not self.props.Active then
 		return

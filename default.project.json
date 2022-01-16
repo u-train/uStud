@@ -5,7 +5,10 @@
 		"ServerStorage": {
 			"$className": "ServerStorage",
 			"uStud": {
-				"$path": "src"
+				"$path": "src",
+				"Libraries": {
+					"$path": "Packages"
+				}
 			}
 		}
 	}

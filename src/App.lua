@@ -112,8 +112,9 @@ function App:render()
 			Children = {
 				View = Roact.createElement("TextLabel", {
 					Text = "Instance that was targetted to be edited in is no longer valid! Please set a valid location (workspace is not valid either).",
-					Size = UDim2.new(1, 0, 1, -30),
-					Position = UDim2.new(0, 0, 0, 0),
+					Size = UDim2.new(1, -20, 1, -30),
+					Position = UDim2.new(0, 10, 0, 0),
+					BorderSizePixel = 0,
 					TextWrap = true,
 				}),
 				Bottombar = Roact.createElement(LabelledInput, {

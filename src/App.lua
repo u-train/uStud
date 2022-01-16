@@ -97,9 +97,12 @@ function App:render()
 					local Success, Value = pcall(InstanceSelector.Select, game, Text)
 
 					if Success then
-						if Value == workspace then
-							return
-						end
+						-- Return back to when there's a way to handle the case.
+						-- Essentially want to somehow communicate that it isn't
+						-- a valid location.
+						-- if Value == workspace then
+						-- 	return
+						-- end
 
 						self:setState({
 							EditingIn = Value,

@@ -34,11 +34,6 @@ function App:init()
 			"Malformed default place to edit in. Fix in settings."
 		),
 	})
-
-	self.Folder = Instance.new("Folder")
-	self.Folder.Name = "uStudContainer"
-	self.Folder.Archivable = false
-	self.Folder.Parent = workspace
 end
 
 function App:willUnmount()

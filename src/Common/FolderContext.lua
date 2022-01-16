@@ -4,14 +4,19 @@ local FolderContext = Roact.createContext()
 local FolderContextComponent = Roact.Component:extend("FolderContextComponent")
 
 function FolderContextComponent:init()
-	self:setState({
-		Value = self.props.Value,
-	})
+	self.Folder = Instance.new("Folder")
+	self.Folder.Name = "uStudContainer"
+	self.Folder.Archivable = false
+	self.Folder.Parent = workspace
+end
+
+function FolderContextComponent:willUnmount()
+	self.Folder:Destroy()
 end
 
 function FolderContextComponent:render()
 	return Roact.createElement(FolderContext.Provider, {
-		value = self.state.Value,
+		value = self.Folder,
 	}, self.props[Roact.Children])
 end
 

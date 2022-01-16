@@ -1,7 +1,7 @@
 local Roact = require(script.Parent.Parent.Libraries.Roact)
 local UserInputService = game:GetService("UserInputService")
 
-local GetRaycastResultFromMouse = require(script.Parent.Parent.Libraries.GetRaycastResultFromMouse)
+local GetRaycastResultFromMouse = require(script.Parent.Parent.Common.GetRaycastResultFromMouse)
 
 local function CreateAdorn(Parent)
 	local Adorn = Instance.new("SelectionBox")

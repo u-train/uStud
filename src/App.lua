@@ -4,7 +4,7 @@ local Painter = require(script.Parent.Painter)
 local LabelledInput = require(script.Parent.Common.LabelledInput)
 local TopBar = require(script.Parent.Common.Topbar)
 local Menu = require(script.Parent.Menu)
-local InstanceSelector = require(script.Parent.Libraries.InstanceSelector)
+local InstanceSelector = require(script.Parent.Common.InstanceSelector)
 
 local App = Roact.Component:extend("App")
 local MODES = {

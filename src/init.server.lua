@@ -1,4 +1,4 @@
-local Maid = require(script.Libraries.Maid)
+local Maid = require(script.Common.Maid)
 local Interface = require(script.Main)(plugin)
 
 --[[

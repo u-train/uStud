@@ -5,7 +5,7 @@ local Common = script.Parent.Common
 local ListLayout = require(Common.ListLayout)
 local LabelledInput = require(Common.LabelledInput)
 local ColorInput = require(Common.ColorInput)
-local GetRaycastResultFromMouse = require(script.Parent.Libraries.GetRaycastResultFromMouse)
+local GetRaycastResultFromMouse = require(script.Parent.Common.GetRaycastResultFromMouse)
 
 local StudderMouseControl = require(script.MouseController)
 

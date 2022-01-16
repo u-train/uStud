@@ -41,6 +41,10 @@ function App:init()
 	self.Folder.Parent = workspace
 end
 
+function App:willUnmount()
+	self.Folder:Destroy()
+end
+
 function App:render()
 	if not self.props.Active then
 		return
@@ -93,6 +97,10 @@ function App:render()
 					local Success, Value = pcall(InstanceSelector.Select, game, Text)
 
 					if Success then
+						if Value == workspace then
+							return
+						end
+
 						self:setState({
 							EditingIn = Value,
 						})

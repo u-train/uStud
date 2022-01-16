@@ -9,22 +9,22 @@ return function(Props)
 		Position = Props.Position,
 	}, {
 		Hue = Roact.createElement(HueSlider, {
-			Size = UDim2.fromScale(1/3, 1),
+			Size = UDim2.fromScale(1 / 3, 1),
 			Position = UDim2.fromScale(0, 0),
 			Color = Props.Color,
 			OnHueChanged = Props.OnColorChanged,
 		}),
 		Saturation = Roact.createElement(SaturationSlider, {
-			Size = UDim2.fromScale(1/3, 1),
-			Position = UDim2.fromScale(1/3, 0),
+			Size = UDim2.fromScale(1 / 3, 1),
+			Position = UDim2.fromScale(1 / 3, 0),
 			OnSaturationChanged = Props.OnColorChanged,
-			Color = Props.Color
+			Color = Props.Color,
 		}),
 		Value = Roact.createElement(ValueSlider, {
-			Size = UDim2.fromScale(1/3, 1),
-			Position = UDim2.fromScale(2/3, 0),
+			Size = UDim2.fromScale(1 / 3, 1),
+			Position = UDim2.fromScale(2 / 3, 0),
 			OnValueChanged = Props.OnColorChanged,
-			Color = Props.Color
-		})
+			Color = Props.Color,
+		}),
 	})
 end

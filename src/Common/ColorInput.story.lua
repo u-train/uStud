@@ -21,7 +21,7 @@ function Helper:render()
 					Color = Color,
 				})
 			end,
-		})
+		}),
 	})
 end
 

@@ -6,7 +6,7 @@ local CreateColorSequenceForSaturation = function(Color: Color3)
 
 	return ColorSequence.new({
 		ColorSequenceKeypoint.new(0, Color3.fromHSV(Hue, 0, Value)),
-		ColorSequenceKeypoint.new(1, Color3.fromHSV(Hue, 1, Value))
+		ColorSequenceKeypoint.new(1, Color3.fromHSV(Hue, 1, Value)),
 	})
 end
 

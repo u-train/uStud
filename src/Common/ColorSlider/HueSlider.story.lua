@@ -25,7 +25,6 @@ function Helper:render()
 			BackgroundColor3 = self.state.Color,
 			Size = UDim2.new(0, 25, 0, 25),
 			Position = UDim2.new(0, 0, 0, 0),
-
 		}),
 	})
 end

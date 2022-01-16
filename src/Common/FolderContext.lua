@@ -5,13 +5,13 @@ local FolderContextComponent = Roact.Component:extend("FolderContextComponent")
 
 function FolderContextComponent:init()
 	self:setState({
-		Value = self.props.Value
+		Value = self.props.Value,
 	})
 end
 
 function FolderContextComponent:render()
 	return Roact.createElement(FolderContext.Provider, {
-		value = self.state.Value
+		value = self.state.Value,
 	}, self.props[Roact.Children])
 end
 

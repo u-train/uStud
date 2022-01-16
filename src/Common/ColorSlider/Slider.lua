@@ -75,7 +75,7 @@ function Slider:render()
 			AnchorPoint = Vector2.new(0.5, 0),
 			Position = UDim2.new(self:ConvertValueToPercentage(self.props.Value), 0, 0, 0),
 			Active = false,
-			ZIndex = 2
+			ZIndex = 2,
 		}),
 	})
 end

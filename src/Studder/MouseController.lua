@@ -1,4 +1,5 @@
 local UserInputService = game:GetService("UserInputService")
+local ChangeHistoryService = game:GetService("ChangeHistoryService")
 local Roact = require(script.Parent.Parent.Packages.roact)
 
 -- This is to align the studs correctly.
@@ -106,6 +107,7 @@ function StudderMouseControl:init()
 			return
 		end
 
+		ChangeHistoryService:SetWaypoint("uStud.StudsPlaced")
 		self.MousePressed = false
 	end)
 
@@ -143,6 +145,7 @@ function StudderMouseControl:render()
 					+ Vector3.new(self.props.PartSize / 2, self.props.HeightOffset - 0.5, self.props.PartSize / 2)
 			end),
 			Anchored = true,
+			Archivable = false,
 			CanCollide = false,
 			Transparency = 1,
 		}, {
@@ -151,6 +154,7 @@ function StudderMouseControl:render()
 				StudsPerTileU = self.props.SnappingInterval,
 				StudsPerTileV = self.props.SnappingInterval,
 				Face = Enum.NormalId.Top,
+				Archivable = false,
 			}),
 			Background = Roact.createElement("Texture", {
 				Texture = "http://www.roblox.com/asset/?id=241685484",
@@ -158,11 +162,13 @@ function StudderMouseControl:render()
 				StudsPerTileU = 1,
 				StudsPerTileV = 1,
 				Face = Enum.NormalId.Top,
+				Archivable = false,
 			}),
 		}),
 		Brush = Roact.createElement("Part", {
 			[Roact.Ref] = self.BrushRef,
 			Anchored = true,
+			Archivable = false,
 			CanCollide = true,
 			Transparency = 0.5,
 			Size = Vector3.new(self.props.PartSize, self.props.PartHeight, self.props.PartSize),

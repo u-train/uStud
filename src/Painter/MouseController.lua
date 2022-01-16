@@ -1,5 +1,6 @@
 local Roact = require(script.Parent.Parent.Packages.roact)
 local UserInputService = game:GetService("UserInputService")
+local ChangeHistoryService = game:GetService("ChangeHistoryService")
 
 local GetRaycastResultFromMouse = require(script.Parent.Parent.Common.GetRaycastResultFromMouse)
 
@@ -57,6 +58,7 @@ function MouseController:init()
 		end
 
 		self.IsPainting = false
+		ChangeHistoryService:SetWaypoint("uStud.Paint")
 	end)
 end
 
@@ -78,6 +80,7 @@ function MouseController:render()
 			[Roact.Ref] = self.BrushRef,
 			Anchored = true,
 			CanCollide = true,
+			Archivable = false,
 			Transparency = 0.8,
 			Material = Enum.Material.Neon,
 

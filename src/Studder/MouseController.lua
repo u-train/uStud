@@ -45,7 +45,8 @@ function StudderMouseControl:init()
 		local MousePosition = NewUnitRay.Origin
 		local MouseDirection = NewUnitRay.Direction
 
-		local MultiplyBy = math.abs((MousePosition.Y - self.props.HeightOffset) / MouseDirection.Y)
+		-- Offset by down as the grid down by one for the canvas offset.
+		local MultiplyBy = math.abs((MousePosition.Y - (self.props.HeightOffset - 1)) / MouseDirection.Y)
 
 		local Offset = MultiplyBy * MouseDirection
 		local NewPosition = MousePosition + Offset
@@ -142,7 +143,7 @@ function StudderMouseControl:render()
 			Size = Vector3.new(CanvasSize, 1, CanvasSize),
 			Position = self.TargetPosition:map(function(v)
 				return v * Vector3.new(1, 0, 1)
-					+ Vector3.new(self.props.PartSize / 2, self.props.HeightOffset - 0.5, self.props.PartSize / 2)
+					+ Vector3.new(self.props.PartSize / 2, self.props.HeightOffset - 1.5, self.props.PartSize / 2)
 			end),
 			Anchored = true,
 			Archivable = false,

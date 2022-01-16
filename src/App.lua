@@ -1,4 +1,4 @@
-local Roact = require(script.Parent.Packages.roact)
+local Roact = require(script.Parent.Packages.roact) :: Roact
 local Studder = require(script.Parent.Studder)
 local Painter = require(script.Parent.Painter)
 local Menu = require(script.Parent.Menu)
@@ -32,7 +32,7 @@ function App:init()
 	self:setState({
 		EditingIn = InstanceSelector.Select(game, self.props.SettingManager.Get("DefaultEditingIn")) or warn(
 			"Malformed default place to edit in. Fix in settings."
-		) or workspace,
+		),
 	})
 
 	self.Folder = Instance.new("Folder")
@@ -71,46 +71,73 @@ function App:render()
 			}),
 		}
 	else
-		Children = {
-			Topbar = Roact.createElement(TopBar, {
-				Title = MODES[self.state.Mode],
-				ShowReturnBack = true,
-				Size = UDim2.new(1, 0, 0, 25),
-				OnReturn = function()
-					self:setState({
-						Mode = Roact.None,
-					})
-				end,
-			}),
-			View = Roact.createElement(MODES_TO_[self.state.Mode], {
-				EditingIn = self.state.EditingIn,
-				Size = UDim2.new(1, 0, 1, -55),
-				Position = UDim2.new(0, 0, 0, 25),
-			}),
-			Bottombar = Roact.createElement(LabelledInput, {
-				Value = InstanceSelector.EscapeFullName(self.state.EditingIn),
-				Size = UDim2.new(1, 0, 0, 25),
-				Position = UDim2.new(0, 0, 1, -25),
-				Label = "Editing In",
-
-				OnValueChanged = function(Text)
-					local Success, Value = pcall(InstanceSelector.Select, game, Text)
-
-					if Success then
-						-- Return back to when there's a way to handle the case.
-						-- Essentially want to somehow communicate that it isn't
-						-- a valid location.
-						-- if Value == workspace then
-						-- 	return
-						-- end
-
+		if self.state.EditingIn then
+			Children = {
+				Topbar = Roact.createElement(TopBar, {
+					Title = MODES[self.state.Mode],
+					ShowReturnBack = true,
+					Size = UDim2.new(1, 0, 0, 25),
+					OnReturn = function()
 						self:setState({
-							EditingIn = Value,
+							Mode = Roact.None,
 						})
-					end
-				end,
-			}),
-		}
+					end,
+				}),
+				View = Roact.createElement(MODES_TO_[self.state.Mode], {
+					EditingIn = self.state.EditingIn,
+					Size = UDim2.new(1, 0, 1, -55),
+					Position = UDim2.new(0, 0, 0, 25),
+				}),
+				Bottombar = Roact.createElement(LabelledInput, {
+					Value = InstanceSelector.EscapeFullName(self.state.EditingIn),
+					Size = UDim2.new(1, 0, 0, 25),
+					Position = UDim2.new(0, 0, 1, -25),
+					Label = "Editing In",
+
+					OnValueChanged = function(Text)
+						local Success, Value = pcall(InstanceSelector.Select, game, Text)
+
+						if Success then
+							if Value == workspace or Value == game then
+								return
+							end
+							self:setState({
+								EditingIn = Value,
+							})
+						end
+					end,
+				}),
+			}
+		else
+			Children = {
+				View = Roact.createElement("TextLabel", {
+					Text = "Instance that was targetted to be edited in is no longer valid! Please set a valid location (workspace is not valid either).",
+					Size = UDim2.new(1, 0, 1, -30),
+					Position = UDim2.new(0, 0, 0, 0),
+					TextWrap = true,
+				}),
+				Bottombar = Roact.createElement(LabelledInput, {
+					Value = "",
+					Size = UDim2.new(1, 0, 0, 25),
+					Position = UDim2.new(0, 0, 1, -25),
+					Label = "Editing In",
+
+					OnValueChanged = function(Text)
+						local Success, Value = pcall(InstanceSelector.Select, game, Text)
+
+						if Success then
+							if Value == workspace or Value == game then
+								return
+							end
+
+							self:setState({
+								EditingIn = Value,
+							})
+						end
+					end,
+				}),
+			}
+		end
 	end
 
 	return Roact.createElement(FolderContext, { Value = self.Folder }, {

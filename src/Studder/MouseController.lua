@@ -88,7 +88,7 @@ function StudderMouseControl:init()
 		end
 	end
 
-	self.OnMouseLeftUp = UserInputService.InputBegan:Connect(function(InputObject, Processed)
+	self.OnMouseLeftDown = UserInputService.InputBegan:Connect(function(InputObject, Processed)
 		if Processed then
 			return
 		end
@@ -101,7 +101,7 @@ function StudderMouseControl:init()
 		OnMouseHit(InputObject)
 	end)
 
-	self.OnMouseLeftDown = UserInputService.InputEnded:Connect(function(InputObject, _)
+	self.OnMouseLeftUp = UserInputService.InputEnded:Connect(function(InputObject, _)
 		-- We'll ignore if it was processed or not. We want to immediately
 		-- stop studding if they move the move cursor out of place.
 

@@ -1,6 +1,6 @@
 local UserInputService = game:GetService("UserInputService")
 local ChangeHistoryService = game:GetService("ChangeHistoryService")
-local Roact = require(script.Parent.Parent.Packages.roact)
+local Roact = require(script.Parent.Parent.Packages.roact) :: Roact
 
 -- This is to align the studs correctly.
 local RoundMidway = function(Value, Interval)
@@ -164,7 +164,7 @@ function StudderMouseControl:render()
 				StudsPerTileV = 1,
 				Face = Enum.NormalId.Top,
 				Archivable = false,
-			}),
+			})
 		}),
 		Brush = Roact.createElement("Part", {
 			[Roact.Ref] = self.BrushRef,
@@ -174,6 +174,11 @@ function StudderMouseControl:render()
 			Transparency = 0.5,
 			Size = Vector3.new(self.props.PartSize, self.props.PartHeight, self.props.PartSize),
 			Position = self.TargetPosition,
+		}, {
+			Highlight = Roact.createElement("SelectionBox", {
+				LineThickness = 0.04,
+				Adornee = self.BrushRef
+			})
 		}),
 	})
 end

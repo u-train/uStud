@@ -1,6 +1,7 @@
 local UserInputService = game:GetService("UserInputService")
 local ChangeHistoryService = game:GetService("ChangeHistoryService")
 local Roact = require(script.Parent.Parent.Packages.roact) :: Roact
+local FolderContext = require(script.Parent.Parent.Common.FolderContext)
 
 -- This is to align the studs correctly.
 local RoundMidway = function(Value, Interval)
@@ -135,52 +136,51 @@ end
 function StudderMouseControl:render()
 	local CanvasSize = self.props.PartSize * 10
 
-	return Roact.createElement(Roact.Portal, {
-		target = workspace,
-	}, {
-		BaseCanvas = Roact.createElement("Part", {
-			[Roact.Ref] = self.BaseplateRef,
-			Size = Vector3.new(CanvasSize, 1, CanvasSize),
-			Position = self.TargetPosition:map(function(v)
-				return v * Vector3.new(1, 0, 1)
-					+ Vector3.new(self.props.PartSize / 2, self.props.HeightOffset - 1.5, self.props.PartSize / 2)
-			end),
-			Anchored = true,
-			Archivable = false,
-			CanCollide = false,
-			Transparency = 1,
+	return FolderContext.WithFolder(function(Folder)
+		return Roact.createElement(Roact.Portal, {
+			target = Folder,
 		}, {
-			Grid = Roact.createElement("Texture", {
-				Texture = "http://www.roblox.com/asset/?id=6601217742",
-				StudsPerTileU = self.props.SnappingInterval,
-				StudsPerTileV = self.props.SnappingInterval,
-				Face = Enum.NormalId.Top,
-				Archivable = false,
+			BaseCanvas = Roact.createElement("Part", {
+				[Roact.Ref] = self.BaseplateRef,
+				Size = Vector3.new(CanvasSize, 1, CanvasSize),
+				Position = self.TargetPosition:map(function(v)
+					return v * Vector3.new(1, 0, 1)
+						+ Vector3.new(self.props.PartSize / 2, self.props.HeightOffset - 1.5, self.props.PartSize / 2)
+				end),
+				Anchored = true,
+				CanCollide = false,
+				Transparency = 1,
+			}, {
+				Grid = Roact.createElement("Texture", {
+					Texture = "http://www.roblox.com/asset/?id=6601217742",
+					StudsPerTileU = self.props.SnappingInterval,
+					StudsPerTileV = self.props.SnappingInterval,
+					Face = Enum.NormalId.Top,
+					Archivable = false,
+				}),
+				Background = Roact.createElement("Texture", {
+					Texture = "http://www.roblox.com/asset/?id=241685484",
+					Transparency = 0.8,
+					StudsPerTileU = 1,
+					StudsPerTileV = 1,
+					Face = Enum.NormalId.Top,
+				}),
 			}),
-			Background = Roact.createElement("Texture", {
-				Texture = "http://www.roblox.com/asset/?id=241685484",
-				Transparency = 0.8,
-				StudsPerTileU = 1,
-				StudsPerTileV = 1,
-				Face = Enum.NormalId.Top,
-				Archivable = false,
-			})
-		}),
-		Brush = Roact.createElement("Part", {
-			[Roact.Ref] = self.BrushRef,
-			Anchored = true,
-			Archivable = false,
-			CanCollide = true,
-			Transparency = 0.5,
-			Size = Vector3.new(self.props.PartSize, self.props.PartHeight, self.props.PartSize),
-			Position = self.TargetPosition,
-		}, {
-			Highlight = Roact.createElement("SelectionBox", {
-				LineThickness = 0.04,
-				Adornee = self.BrushRef
-			})
-		}),
-	})
+			Brush = Roact.createElement("Part", {
+				[Roact.Ref] = self.BrushRef,
+				Anchored = true,
+				CanCollide = true,
+				Transparency = 0.5,
+				Size = Vector3.new(self.props.PartSize, self.props.PartHeight, self.props.PartSize),
+				Position = self.TargetPosition,
+			}, {
+				Highlight = Roact.createElement("SelectionBox", {
+					LineThickness = 0.04,
+					Adornee = self.BrushRef,
+				}),
+			}),
+		})
+	end)
 end
 
 return StudderMouseControl

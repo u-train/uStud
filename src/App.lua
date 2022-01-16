@@ -1,10 +1,13 @@
 local Roact = require(script.Parent.Packages.roact)
 local Studder = require(script.Parent.Studder)
 local Painter = require(script.Parent.Painter)
-local LabelledInput = require(script.Parent.Common.LabelledInput)
-local TopBar = require(script.Parent.Common.Topbar)
 local Menu = require(script.Parent.Menu)
-local InstanceSelector = require(script.Parent.Common.InstanceSelector)
+
+local Common = script.Parent.Common
+local InstanceSelector = require(Common.InstanceSelector)
+local LabelledInput = require(Common.LabelledInput)
+local TopBar = require(Common.Topbar)
+local FolderContext = require(Common.FolderContext)
 
 local App = Roact.Component:extend("App")
 local MODES = {
@@ -31,6 +34,11 @@ function App:init()
 			"Malformed default place to edit in. Fix in settings."
 		) or workspace,
 	})
+
+	self.Folder = Instance.new("Folder")
+	self.Folder.Name = "uStudContainer"
+	self.Folder.Archivable = false
+	self.Folder.Parent = workspace
 end
 
 function App:render()
@@ -94,9 +102,11 @@ function App:render()
 		}
 	end
 
-	return Roact.createElement("Frame", {
-		Size = UDim2.fromScale(1, 1),
-	}, Children)
+	return Roact.createElement(FolderContext, { Value = self.Folder }, {
+		Container = Roact.createElement("Frame", {
+			Size = UDim2.fromScale(1, 1),
+		}, Children),
+	})
 end
 
 return App

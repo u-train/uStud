@@ -23,7 +23,7 @@ local MODES = {
 	-- "Merge"
 }
 
-local MODES_TO_ = {
+local MODES_TO_COMPONENTS = {
 	Studder,
 	Painter,
 }
@@ -83,7 +83,7 @@ function App:render()
 						})
 					end,
 				}),
-				View = Roact.createElement(MODES_TO_[self.state.Mode], {
+				View = Roact.createElement(MODES_TO_COMPONENTS[self.state.Mode], {
 					EditingIn = self.state.EditingIn,
 					Size = UDim2.new(1, 0, 1, -55),
 					Position = UDim2.new(0, 0, 0, 25),

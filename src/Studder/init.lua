@@ -3,11 +3,11 @@ local ContextActionService = game:GetService("ContextActionService")
 local Roact = require(script.Parent.Packages.Roact)
 
 local Common = script.Parent.Common
-local ListLayout = require(Common.ListLayout)
 local LabelledInput = require(Common.LabelledInput)
 local ColorInput = require(Common.ColorInput)
-local StudderMouseControl = require(script.MouseController)
+local ToolWrapper = require(Common.ToolWrapper)
 
+local StudderMouseControl = require(script.MouseController)
 local App = Roact.Component:extend("App")
 
 local MaxSize = 200
@@ -45,9 +45,10 @@ function App:willUnmount()
 end
 
 function App:render()
-	return Roact.createElement(ListLayout, {
-		Size = self.props.Size,
-		Position = self.props.Position,
+	return Roact.createElement(ToolWrapper, {
+		Title = "Studder",
+		EditingIn = self.props.EditingIn,
+		EditingInChanged = self.props.EditingInChanged,
 	}, {
 		PartSizeInput = Roact.createElement(LabelledInput, {
 			Value = self.state.PartSize,

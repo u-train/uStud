@@ -1,11 +1,14 @@
 local UserInputService = game:GetService("UserInputService")
 local ContextActionService = game:GetService("ContextActionService")
+
 local Roact = require(script.Parent.Packages.Roact) :: Roact
+
 local Common = script.Parent.Common
-local ListLayout = require(Common.ListLayout)
 local LabelledInput = require(Common.LabelledInput)
 local ColorInput = require(Common.ColorInput)
-local GetRaycastResultFromMouse = require(script.Parent.Common.GetRaycastResultFromMouse)
+local ToolWrapper = require(Common.ToolWrapper)
+
+local GetRaycastResultFromMouse = require(Common.GetRaycastResultFromMouse)
 
 local StudderMouseControl = require(script.MouseController)
 
@@ -37,10 +40,12 @@ function Painter:willUnmount()
 end
 
 function Painter:render()
-	return Roact.createElement(ListLayout, {
-		Size = self.props.Size,
-		Position = self.props.Position,
+	return Roact.createElement(ToolWrapper, {
+		Title = "Painter",
+		EditingIn = self.props.EditingIn,
+		EditingInChanged = self.props.EditingInChanged,
 	}, {
+
 		PrimaryColor = Roact.createElement(ColorInput, {
 			Color = self.state.PrimaryColor,
 			Label = "Primary",

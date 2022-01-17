@@ -1,32 +1,23 @@
 local Roact = require(script.Parent.Packages.Roact) :: Roact
+local RoactRouter = require(script.Parent.Packages.RoactRouter)
+
 local Studder = require(script.Parent.Studder)
 local Painter = require(script.Parent.Painter)
 local Menu = require(script.Parent.Menu)
 
 local Common = script.Parent.Common
-local InstanceSelector = require(Common.InstanceSelector)
 local LabelledInput = require(Common.LabelledInput)
 local TopBar = require(Common.Topbar)
 local FolderContext = require(Common.FolderContext)
 
-local App = Roact.Component:extend("App")
-local MODES = {
-	Studding = 1,
-	"Studding",
-	Painting = 2,
-	"Painting",
-	-- Filling = 2,
-	-- "Filling",
-	-- Splice = 3,
-	-- "Splice",
-	-- Merge = 4,
-	-- "Merge"
+local InstanceSelector = require(Common.InstanceSelector)
+
+local ROUTES = {
+	"Studder",
+	"Painter"
 }
 
-local MODES_TO_COMPONENTS = {
-	Studder,
-	Painter,
-}
+local App = Roact.Component:extend("App")
 
 function App:init()
 	local DefaultEditingIn = InstanceSelector.Select(game, self.props.SettingManager.Get("DefaultEditingIn"))
@@ -44,8 +35,10 @@ function App:willUpdate(_, IncomingState)
 end
 
 function App:willUnmount()
-	self.Event:Disconnect()
-	self.Event = nil
+	if self.Event then
+		self.Event:Disconnect()
+		self.Event = nil
+	end
 end
 
 function App:render()
@@ -53,10 +46,10 @@ function App:render()
 		return
 	end
 
-	local Children
-
 	if self.state.EditingIn == nil then
-		Children = {
+		return Roact.createElement("Frame", {
+			Size = UDim2.fromScale(1, 1)
+		}, {
 			View = Roact.createElement("TextLabel", {
 				Text = "Instance that was targetted to be edited in is no longer valid! This is because it is no longer a descendant of Workspace.",
 				Size = UDim2.new(1, -20, 1, -30),
@@ -84,70 +77,60 @@ function App:render()
 					end
 				end,
 			}),
-		}
-	else
-		if self.state.Mode then
-			Children = {
-				Topbar = Roact.createElement(TopBar, {
-					Title = MODES[self.state.Mode],
-					ShowReturnBack = true,
-					Size = UDim2.new(1, 0, 0, 25),
-					OnReturn = function()
-						self:setState({
-							Mode = Roact.None,
-						})
-					end,
-				}),
-				View = Roact.createElement(MODES_TO_COMPONENTS[self.state.Mode], {
-					EditingIn = self.state.EditingIn,
-					Size = UDim2.new(1, 0, 1, -55),
-					Position = UDim2.new(0, 0, 0, 25),
-				}),
-				Bottombar = Roact.createElement(LabelledInput, {
-					Value = InstanceSelector.EscapeFullName(self.state.EditingIn),
-					Size = UDim2.new(1, 0, 0, 25),
-					Position = UDim2.new(0, 0, 1, -25),
-					Label = "Editing In",
-
-					OnValueChanged = function(Text)
-						local Success, Value = pcall(InstanceSelector.Select, game, Text)
-
-						if Success then
-							if Value == workspace or Value == game then
-								return
-							end
-							self:setState({
-								EditingIn = Value,
-							})
-						end
-					end,
-				}),
-			}
-		else
-			Children = {
-				Topbar = Roact.createElement(TopBar, {
-					Title = "Menu",
-					ShowReturnBack = false,
-					Size = UDim2.new(1, 0, 0, 25),
-				}),
-				Menu = Roact.createElement(Menu, {
-					Size = UDim2.new(1, 0, 1, -30),
-					Position = UDim2.new(0, 0, 0, 30),
-					Selections = MODES,
-					OnSelection = function(Selection)
-						self:setState({
-							Mode = MODES[Selection],
-						})
-					end,
-				}),
-			}
-		end
+		})
 	end
 
 	return Roact.createElement(FolderContext, { Value = self.Folder }, {
 		Container = Roact.createElement("Frame", {
 			Size = UDim2.fromScale(1, 1),
-		}, Children),
+		}, {
+			Router = Roact.createElement(RoactRouter.Router, {}, {
+				Menu = Roact.createElement(RoactRouter.Route, {
+					path = "/",
+					render = function(RouterInfo) -- history, match, location
+						return Roact.createFragment {
+							Topbar = Roact.createElement(TopBar, {
+								Title = "Menu",
+								ShowReturnBack = false,
+								Size = UDim2.new(1, 0, 0, 25),
+							}),
+							Menu = Roact.createElement(Menu, {
+								Size = UDim2.new(1, 0, 1, -30),
+								Position = UDim2.new(0, 0, 0, 30),
+								Selections = ROUTES,
+								History = RouterInfo.history
+							}),
+						}
+					end
+				}),
+				Studder = Roact.createElement(RoactRouter.Route, {
+					path = "Studder",
+					render = function(_)
+						return Roact.createElement(Studder, {
+							EditingIn = self.state.EditingIn,
+							EditingInChanged = function(Value)
+								self:setState({
+									EditingIn = Value
+								})
+							end,
+						})
+					end
+				}),
+				Painter = Roact.createElement(RoactRouter.Route, {
+					path = "Painter",
+					render = function(_)
+						return Roact.createElement(Painter, {
+							EditingIn = self.state.EditingIn,
+							EditingInChanged = function(Value)
+								self:setState({
+									EditingIn = Value,
+								})
+							end,
+						})
+					end
+				})
+			})
+		})
 	})
 end
 
@@ -160,7 +143,6 @@ function App:HookOnTargetEditingInstance(EditingIn: Instance)
 	if EditingIn == nil then
 		return
 	end
-
 
 	self.Event = EditingIn.AncestryChanged:Connect(function(_, Parent)
 

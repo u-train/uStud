@@ -43,26 +43,38 @@ function App:render()
 
 	local Children
 
-	if self.state.Mode == nil then
+	if self.state.EditingIn == nil then
 		Children = {
-			Topbar = Roact.createElement(TopBar, {
-				Title = "Menu",
-				ShowReturnBack = false,
-				Size = UDim2.new(1, 0, 0, 25),
+			View = Roact.createElement("TextLabel", {
+				Text = "Instance that was targetted to be edited in is no longer valid! Please set a valid location (workspace is not valid either).",
+				Size = UDim2.new(1, -20, 1, -30),
+				Position = UDim2.new(0, 10, 0, 0),
+				BorderSizePixel = 0,
+				TextWrap = true,
 			}),
-			Menu = Roact.createElement(Menu, {
-				Size = UDim2.new(1, 0, 1, -30),
-				Position = UDim2.new(0, 0, 0, 30),
-				Selections = MODES,
-				OnSelection = function(Selection)
-					self:setState({
-						Mode = MODES[Selection],
-					})
+			Bottombar = Roact.createElement(LabelledInput, {
+				Value = "",
+				Size = UDim2.new(1, 0, 0, 25),
+				Position = UDim2.new(0, 0, 1, -25),
+				Label = "Editing In",
+
+				OnValueChanged = function(Text)
+					local Success, Value = pcall(InstanceSelector.Select, game, Text)
+
+					if Success then
+						if Value == workspace or Value == game then
+							return
+						end
+
+						self:setState({
+							EditingIn = Value,
+						})
+					end
 				end,
 			}),
 		}
 	else
-		if self.state.EditingIn then
+		if self.state.Mode then
 			Children = {
 				Topbar = Roact.createElement(TopBar, {
 					Title = MODES[self.state.Mode],
@@ -101,31 +113,19 @@ function App:render()
 			}
 		else
 			Children = {
-				View = Roact.createElement("TextLabel", {
-					Text = "Instance that was targetted to be edited in is no longer valid! Please set a valid location (workspace is not valid either).",
-					Size = UDim2.new(1, -20, 1, -30),
-					Position = UDim2.new(0, 10, 0, 0),
-					BorderSizePixel = 0,
-					TextWrap = true,
-				}),
-				Bottombar = Roact.createElement(LabelledInput, {
-					Value = "",
+				Topbar = Roact.createElement(TopBar, {
+					Title = "Menu",
+					ShowReturnBack = false,
 					Size = UDim2.new(1, 0, 0, 25),
-					Position = UDim2.new(0, 0, 1, -25),
-					Label = "Editing In",
-
-					OnValueChanged = function(Text)
-						local Success, Value = pcall(InstanceSelector.Select, game, Text)
-
-						if Success then
-							if Value == workspace or Value == game then
-								return
-							end
-
-							self:setState({
-								EditingIn = Value,
-							})
-						end
+				}),
+				Menu = Roact.createElement(Menu, {
+					Size = UDim2.new(1, 0, 1, -30),
+					Position = UDim2.new(0, 0, 0, 30),
+					Selections = MODES,
+					OnSelection = function(Selection)
+						self:setState({
+							Mode = MODES[Selection],
+						})
 					end,
 				}),
 			}

@@ -29,11 +29,23 @@ local MODES_TO_COMPONENTS = {
 }
 
 function App:init()
+	local DefaultEditingIn = InstanceSelector.Select(game, self.props.SettingManager.Get("DefaultEditingIn"))
+	self:HookOnTargetEditingInstance(DefaultEditingIn)
+
 	self:setState({
-		EditingIn = InstanceSelector.Select(game, self.props.SettingManager.Get("DefaultEditingIn")) or warn(
+		EditingIn = DefaultEditingIn or warn(
 			"Malformed default place to edit in. Fix in settings."
 		),
 	})
+end
+
+function App:willUpdate(_, IncomingState)
+	self:HookOnTargetEditingInstance(IncomingState.EditingIn)
+end
+
+function App:willUnmount()
+	self.Event:Disconnect()
+	self.Event = nil
 end
 
 function App:render()
@@ -46,14 +58,14 @@ function App:render()
 	if self.state.EditingIn == nil then
 		Children = {
 			View = Roact.createElement("TextLabel", {
-				Text = "Instance that was targetted to be edited in is no longer valid! Please set a valid location (workspace is not valid either).",
+				Text = "Instance that was targetted to be edited in is no longer valid! This is because it is no longer a descendant of Workspace.",
 				Size = UDim2.new(1, -20, 1, -30),
 				Position = UDim2.new(0, 10, 0, 0),
 				BorderSizePixel = 0,
 				TextWrap = true,
 			}),
 			Bottombar = Roact.createElement(LabelledInput, {
-				Value = "",
+				Value = "Workspace.",
 				Size = UDim2.new(1, 0, 0, 25),
 				Position = UDim2.new(0, 0, 1, -25),
 				Label = "Editing In",
@@ -137,6 +149,32 @@ function App:render()
 			Size = UDim2.fromScale(1, 1),
 		}, Children),
 	})
+end
+
+function App:HookOnTargetEditingInstance(EditingIn: Instance)
+	if self.Event and self.Event.Connected then
+		self.Event:Disconnect()
+		self.Event = nil
+	end
+
+	if EditingIn == nil then
+		return
+	end
+
+
+	self.Event = EditingIn.AncestryChanged:Connect(function(_, Parent)
+
+		if Parent == nil or (Parent and not Parent:IsDescendantOf(workspace)) then
+			self:setState({
+				EditingIn = Roact.None,
+			})
+
+			if self.Event and self.Event.Connected then
+				self.Event:Disconnect()
+				self.Event = nil
+			end
+		end
+	end)
 end
 
 return App

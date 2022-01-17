@@ -1,6 +1,6 @@
 local UserInputService = game:GetService("UserInputService")
 local ChangeHistoryService = game:GetService("ChangeHistoryService")
-local Roact = require(script.Parent.Parent.Packages.roact) :: Roact
+local Roact = require(script.Parent.Parent.Packages.Roact) :: Roact
 local FolderContext = require(script.Parent.Parent.Common.FolderContext)
 
 -- This is to align the studs correctly.

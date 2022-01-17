@@ -1,4 +1,4 @@
-local Roact = require(script.Parent.Parent.Packages.roact)
+local Roact = require(script.Parent.Parent.Packages.Roact)
 
 local ControlledInput = Roact.Component:extend("ControlledInput")
 

@@ -1,4 +1,4 @@
-local Roact = require(script.Parent.Parent.Packages.roact) :: Roact
+local Roact = require(script.Parent.Parent.Packages.Roact) :: Roact
 local ColorInput = require(script.Parent.ColorInput)
 
 local Helper = Roact.Component:extend("Helper")

@@ -1,4 +1,4 @@
-local Roact = require(script.Parent.Parent.Packages.roact)
+local Roact = require(script.Parent.Parent.Packages.Roact)
 local UserInputService = game:GetService("UserInputService")
 local ChangeHistoryService = game:GetService("ChangeHistoryService")
 

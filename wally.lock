@@ -10,4 +10,4 @@ dependencies = []
 [[package]]
 name = "skass/ustud"
 version = "0.1.0"
-dependencies = [["roact", "roblox/roact@1.4.2"]]
+dependencies = [["Roact", "roblox/roact@1.4.2"]]

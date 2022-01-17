@@ -1,4 +1,4 @@
-local Roact = require(script.Parent.Packages.roact)
+local Roact = require(script.Parent.Packages.Roact)
 local ListLayout = require(script.Parent.Common.ListLayout)
 
 return function(Props)

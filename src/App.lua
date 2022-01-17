@@ -14,7 +14,7 @@ local InstanceSelector = require(Common.InstanceSelector)
 
 local ROUTES = {
 	"Studder",
-	"Painter"
+	"Painter",
 }
 
 local App = Roact.Component:extend("App")
@@ -24,9 +24,8 @@ function App:init()
 	self:HookOnTargetEditingInstance(DefaultEditingIn)
 
 	self:setState({
-		EditingIn = DefaultEditingIn or warn(
-			"Malformed default place to edit in. Fix in settings."
-		),
+		EditingIn = DefaultEditingIn,
+		HeightOffset = self.props.SettingManager.Get("HeightOffset") or 1,
 	})
 end
 
@@ -48,7 +47,7 @@ function App:render()
 
 	if self.state.EditingIn == nil then
 		return Roact.createElement("Frame", {
-			Size = UDim2.fromScale(1, 1)
+			Size = UDim2.fromScale(1, 1),
 		}, {
 			View = Roact.createElement("TextLabel", {
 				Text = "Instance that was targetted to be edited in is no longer valid! This is because it is no longer a descendant of Workspace.",
@@ -88,7 +87,7 @@ function App:render()
 				Menu = Roact.createElement(RoactRouter.Route, {
 					path = "/",
 					render = function(RouterInfo) -- history, match, location
-						return Roact.createFragment {
+						return Roact.createFragment({
 							Topbar = Roact.createElement(TopBar, {
 								Title = "Menu",
 								ShowReturnBack = false,
@@ -98,10 +97,10 @@ function App:render()
 								Size = UDim2.new(1, 0, 1, -30),
 								Position = UDim2.new(0, 0, 0, 30),
 								Selections = ROUTES,
-								History = RouterInfo.history
+								History = RouterInfo.history,
 							}),
-						}
-					end
+						})
+					end,
 				}),
 				Studder = Roact.createElement(RoactRouter.Route, {
 					path = "Studder",
@@ -110,11 +109,17 @@ function App:render()
 							EditingIn = self.state.EditingIn,
 							EditingInChanged = function(Value)
 								self:setState({
-									EditingIn = Value
+									EditingIn = Value,
+								})
+							end,
+							HeightOffset = self.state.HeightOffset,
+							HeightOffsetChanged = function(Value)
+								self:setState({
+									HeightOffset = Value,
 								})
 							end,
 						})
-					end
+					end,
 				}),
 				Painter = Roact.createElement(RoactRouter.Route, {
 					path = "Painter",
@@ -126,11 +131,17 @@ function App:render()
 									EditingIn = Value,
 								})
 							end,
+							HeightOffset = self.state.HeightOffset,
+							HeightOffsetChanged = function(Value)
+								self:setState({
+									HeightOffset = Value,
+								})
+							end,
 						})
-					end
-				})
-			})
-		})
+					end,
+				}),
+			}),
+		}),
 	})
 end
 
@@ -145,7 +156,6 @@ function App:HookOnTargetEditingInstance(EditingIn: Instance)
 	end
 
 	self.Event = EditingIn.AncestryChanged:Connect(function(_, Parent)
-
 		if Parent == nil or (Parent and not Parent:IsDescendantOf(workspace)) then
 			self:setState({
 				EditingIn = Roact.None,

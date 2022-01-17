@@ -31,7 +31,6 @@ function App:init()
 		PartSize = 1,
 		PartColor = Color3.fromRGB(163, 162, 165),
 		PartHeight = 1,
-		HeightOffset = 1,
 		Deleting = false,
 	})
 
@@ -66,7 +65,7 @@ function App:render()
 			end,
 		}),
 		HeightOffsetInput = Roact.createElement(LabelledInput, {
-			Value = self.state.HeightOffset,
+			Value = self.props.HeightOffset,
 			Size = UDim2.new(1, 0, 0, 25),
 			Label = "Height offset",
 
@@ -77,9 +76,7 @@ function App:render()
 					return
 				end
 
-				self:setState({
-					HeightOffset = math.clamp(NewValue, MinHeightOffset, MaxHeightOffset),
-				})
+				self.props.HeightOffsetChanged(math.clamp(NewValue, MinHeightOffset, MaxHeightOffset))
 			end,
 		}),
 		PartHeightInput = Roact.createElement(LabelledInput, {
@@ -143,7 +140,7 @@ function App:render()
 			PartSize = self.state.PartSize,
 			PartColor = self.state.PartColor,
 			PartHeight = self.state.PartHeight,
-			HeightOffset = self.state.HeightOffset,
+			HeightOffset = self.props.HeightOffset,
 			Deleting = self.state.Deleting,
 			EditingIn = self.props.EditingIn,
 		}),

@@ -28,65 +28,9 @@ function StudderMouseControl:init()
 	self.BaseplateRef = Roact.createRef()
 	self.BrushRef = Roact.createRef()
 
-	self.TargetPosition, self.UpdateTargetPosition = Roact.createBinding(Vector3.new(0, 0, 0))
+	self.TargetPosition, self.UpdateTargetPositionBinding = Roact.createBinding(Vector3.new(0, 0, 0))
 
 	self.MousePressed = false
-
-	local OnMouseHit = function(InputObject)
-		if self.BaseplateRef.current == nil then
-			return
-		end
-
-		if self.props.EditingIn.Parent == nil then
-			return
-		end
-
-		local NewUnitRay = workspace.CurrentCamera:ViewportPointToRay(InputObject.Position.X, InputObject.Position.Y, 0)
-
-		local MousePosition = NewUnitRay.Origin
-		local MouseDirection = NewUnitRay.Direction
-
-		-- Offset by down as the grid down by one for the canvas offset.
-		local MultiplyBy = math.abs((MousePosition.Y - (self.props.HeightOffset - 1)) / MouseDirection.Y)
-
-		local Offset = MultiplyBy * MouseDirection
-		local NewPosition = MousePosition + Offset
-
-		self.UpdateTargetPosition(
-			Vector3.new(
-				RoundMidway(NewPosition.X, self.props.SnappingInterval),
-				self.props.HeightOffset - self.props.PartHeight / 2,
-				RoundMidway(NewPosition.Z, self.props.SnappingInterval)
-			)
-		)
-
-		if not self.MousePressed then
-			return
-		end
-
-		local IntersectingParts = self.BrushRef.current:GetTouchingParts()
-		if self.props.Deleting then
-			for _, IntersectingPart: Instance in next, IntersectingParts do
-				if IntersectingPart:IsDescendantOf(self.props.EditingIn) then
-					IntersectingPart:Destroy()
-				end
-			end
-		else
-			for _, IntersectingPart: Instance in next, IntersectingParts do
-				if IntersectingPart:IsDescendantOf(self.props.EditingIn) then
-					return
-				end
-			end
-
-			CreateStud({
-				PartSize = self.props.PartSize,
-				PartHeight = self.props.PartHeight,
-				Color = self.props.PartColor,
-				Parent = self.props.EditingIn,
-				Position = self.TargetPosition:getValue(),
-			})
-		end
-	end
 
 	self.OnMouseLeftDown = UserInputService.InputBegan:Connect(function(InputObject, Processed)
 		if Processed then
@@ -98,7 +42,7 @@ function StudderMouseControl:init()
 		end
 
 		self.MousePressed = true
-		OnMouseHit(InputObject)
+		self:OnHit()
 	end)
 
 	self.OnMouseLeftUp = UserInputService.InputEnded:Connect(function(InputObject, _)
@@ -122,7 +66,7 @@ function StudderMouseControl:init()
 			return
 		end
 
-		OnMouseHit(InputObject)
+		self:OnHit()
 	end)
 end
 
@@ -135,6 +79,9 @@ end
 
 function StudderMouseControl:render()
 	local CanvasSize = self.props.PartSize * 10
+	-- On render, the PartSize, SnappingInterval, or the HeightOffset could've
+	--- of changed. Update to the binding to reflect this.
+	self:UpdateTargetPosition()
 
 	return FolderContext.WithFolder(function(Folder)
 		return Roact.createElement(Roact.Portal, {
@@ -181,6 +128,67 @@ function StudderMouseControl:render()
 			}),
 		})
 	end)
+end
+
+function StudderMouseControl:UpdateTargetPosition()
+	local MousePosition = UserInputService:GetMouseLocation()
+	local NewUnitRay = workspace.CurrentCamera:ViewportPointToRay(MousePosition.X, MousePosition.Y, 0)
+
+	local WorldMousePosition = NewUnitRay.Origin
+	local WorldMouseDirection = NewUnitRay.Direction
+
+	-- Offset by down as the grid down by one for the canvas offset.
+	local MultiplyBy = math.abs((WorldMousePosition.Y - (self.props.HeightOffset - 1)) / WorldMouseDirection.Y)
+
+	local Offset = MultiplyBy * WorldMouseDirection
+	local NewPosition = WorldMousePosition + Offset
+
+	self.UpdateTargetPositionBinding(
+		Vector3.new(
+			RoundMidway(NewPosition.X, self.props.SnappingInterval),
+			self.props.HeightOffset - self.props.PartHeight / 2,
+			RoundMidway(NewPosition.Z, self.props.SnappingInterval)
+		)
+	)
+end
+
+function StudderMouseControl:OnHit()
+	if self.BaseplateRef.current == nil then
+		return
+	end
+
+	if self.props.EditingIn.Parent == nil then
+		return
+	end
+
+	self:UpdateTargetPosition()
+
+	if not self.MousePressed then
+		return
+	end
+
+	local IntersectingParts = self.BrushRef.current:GetTouchingParts()
+	if self.props.Deleting then
+		for _, IntersectingPart: Instance in next, IntersectingParts do
+			if IntersectingPart:IsDescendantOf(self.props.EditingIn) then
+				IntersectingPart:Destroy()
+			end
+		end
+	else
+		for _, IntersectingPart: Instance in next, IntersectingParts do
+			if IntersectingPart:IsDescendantOf(self.props.EditingIn) then
+				return
+			end
+		end
+
+		CreateStud({
+			PartSize = self.props.PartSize,
+			PartHeight = self.props.PartHeight,
+			Color = self.props.PartColor,
+			Parent = self.props.EditingIn,
+			Position = self.TargetPosition:getValue(),
+		})
+	end
 end
 
 return StudderMouseControl

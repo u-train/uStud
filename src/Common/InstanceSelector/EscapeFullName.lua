@@ -5,7 +5,7 @@ local EscapeFullName = function(TargetInstance)
 	repeat
 		table.insert(Tree, TargetInstance)
 		TargetInstance = TargetInstance.Parent
-	until TargetInstance.Parent == nil
+	until TargetInstance == game or TargetInstance == nil
 
 	for i = #Tree, 1, -1 do
 		table.insert(FullName, (Tree[i].Name:gsub("/", "//"):gsub("%.", "/.")))

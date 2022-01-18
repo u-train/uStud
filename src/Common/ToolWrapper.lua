@@ -5,13 +5,13 @@ local InstanceQuerier = require(Packages.InstanceQuerier)
 local StudioComponents = require(Packages.StudioComponents)
 
 local Common = script.Parent
-local TopBar = require(Common.Topbar)
+local Topbar = require(Common.Topbar)
 local LabelledInput = require(Common.LabelledInput)
 
 return function(Props)
 	return RoactRouter.withRouter(function(RouterInfo)
 		return Roact.createFragment({
-			TopBar = Roact.createElement(TopBar, {
+			Topbar = Roact.createElement(Topbar, {
 				Title = Props.Title,
 				ShowReturnBack = true,
 				Size = UDim2.new(1, 0, 0, 25),

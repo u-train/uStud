@@ -10,7 +10,7 @@ local Menu = require(script.Parent.Menu)
 
 local Common = script.Parent.Common
 local LabelledInput = require(Common.LabelledInput)
-local TopBar = require(Common.Topbar)
+local Topbar = require(Common.Topbar)
 local FolderContext = require(Common.FolderContext)
 
 local ROUTES = {
@@ -103,7 +103,7 @@ function App:render()
 					path = "/",
 					render = function(RouterInfo) -- history, match, location
 						return Roact.createFragment({
-							Topbar = Roact.createElement(TopBar, {
+							Topbar = Roact.createElement(Topbar, {
 								Title = "Menu",
 								ShowReturnBack = false,
 								Size = UDim2.new(1, 0, 0, 25),

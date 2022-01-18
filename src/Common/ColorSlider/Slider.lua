@@ -1,3 +1,4 @@
+local ContextActionService = game:GetService("ContextActionService")
 local Roact = require(script.Parent.Parent.Parent.Packages.Roact) :: Roact
 local Round = require(script.Parent.Parent.Parent.Common.Round)
 
@@ -59,7 +60,8 @@ function Slider:render()
 	return Roact.createElement("TextButton", {
 		Text = "",
 		AutoButtonColor = false,
-		BackgroundTransparency = 0,
+		BackgroundTransparency = 1,
+		ZIndex = 100,
 		Size = self.props.Size,
 		Position = self.props.Position,
 
@@ -69,14 +71,24 @@ function Slider:render()
 		[Roact.Event.InputChanged] = self.OnInputChanged,
 		[Roact.Event.InputEnded] = self.OnInputEnded,
 	}, {
-		Background = self.props.Background,
-		Bar = Roact.createElement("Frame", {
-			Size = UDim2.new(0, 2, 1, 0),
-			AnchorPoint = Vector2.new(0.5, 0),
-			Position = UDim2.new(self:ConvertValueToPercentage(self.props.Value), 0, 0, 0),
+		Container = Roact.createElement("Frame", {
+			BackgroundTransparency = 1,
+
+			Size = UDim2.new(1, -4, 1, 0),
+			Position = UDim2.new(0, 2, 0, 0),
 			Active = false,
-			ZIndex = 2,
+		}, {
+			Bar = Roact.createElement("Frame", {
+				Size = UDim2.new(0, 4, 1, -4),
+				AnchorPoint = Vector2.new(0.5, 0),
+				Position = UDim2.new(self:ConvertValueToPercentage(self.props.Value), 0, 0, 2),
+				Active = false,
+				ZIndex = 10,
+				BorderSizePixel = 1,
+				BorderMode = Enum.BorderMode.Inset,
+			}),
 		}),
+		Background = self.props.Background,
 	})
 end
 

@@ -3,6 +3,11 @@
 registry = "test"
 
 [[package]]
+name = "flamenco687/maid"
+version = "3.2.2"
+dependencies = []
+
+[[package]]
 name = "reselim/roact-router"
 version = "1.0.3"
 dependencies = [["Roact", "roblox/roact@1.4.2"]]
@@ -15,7 +20,7 @@ dependencies = []
 [[package]]
 name = "skass/ustud"
 version = "0.1.0"
-dependencies = [["InstanceQuerier", "u-train/instancequerier@0.0.1"], ["Roact", "roblox/roact@1.4.2"], ["RoactRouter", "reselim/roact-router@1.0.3"], ["StudioComponents", "u-train/studiocomponents@0.1.1"]]
+dependencies = [["InstanceQuerier", "u-train/instancequerier@0.0.1"], ["Maid", "flamenco687/maid@3.2.2"], ["Roact", "roblox/roact@1.4.2"], ["RoactRouter", "reselim/roact-router@1.0.3"], ["StudioComponents", "u-train/studiocomponents@0.1.1"]]
 
 [[package]]
 name = "u-train/instancequerier"

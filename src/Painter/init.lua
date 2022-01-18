@@ -1,7 +1,9 @@
 local UserInputService = game:GetService("UserInputService")
 local ContextActionService = game:GetService("ContextActionService")
 
-local Roact = require(script.Parent.Packages.Roact) :: Roact
+local Packages = script.Parent.Packages
+local Roact = require(Packages.Roact) :: Roact
+local StudioComponents = require(Packages.StudioComponents)
 
 local Common = script.Parent.Common
 local LabelledInput = require(Common.LabelledInput)
@@ -66,20 +68,6 @@ function Painter:render()
 				})
 			end,
 		}),
-		ToggleSecondaryOnly = Roact.createElement("TextButton", {
-			Text = "Toggle Secondary",
-			BackgroundColor3 = self.state.SecondaryOnly and Color3.fromRGB(1148, 176, 149) or Color3.fromRGB(
-				163,
-				162,
-				165
-			),
-			Size = UDim2.new(1, 0, 0, 25),
-			[Roact.Event.MouseButton1Click] = function()
-				self:setState({
-					SecondaryOnly = not self.state.SecondaryOnly,
-				})
-			end,
-		}),
 		BrushDiameter = Roact.createElement(LabelledInput, {
 			Value = self.state.BrushDiameter,
 			Size = UDim2.new(1, 0, 0, 25),
@@ -94,6 +82,16 @@ function Painter:render()
 
 				self:setState({
 					BrushDiameter = NewInterval,
+				})
+			end,
+		}),
+		ToggleSecondaryOnly = Roact.createElement(StudioComponents.Button, {
+			Text = self.state.SecondaryOnly and "Painting studs with matching secondary color only"
+				or "Painting any studs",
+			Size = UDim2.new(1, 0, 0, 25),
+			OnActivated = function()
+				self:setState({
+					SecondaryOnly = not self.state.SecondaryOnly,
 				})
 			end,
 		}),

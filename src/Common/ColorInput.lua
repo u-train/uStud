@@ -13,7 +13,12 @@ return function(Props)
 	}, {
 		Label = Roact.createElement(StudioComponents.Label, {
 			Text = Props.Label,
-			Size = UDim2.new(0, 100, 1, 0),
+			Size = UDim2.new(0, 90, 1, 0),
+			Position = UDim2.new(0, 10, 0, 0)
+		}),
+		Swab = Roact.createElement("Frame", {
+			BackgroundColor3 = Props.Color,
+			Size = UDim2.new(0, 10, 1, 0),
 		}),
 		Text = Roact.createElement(TextColorInput, {
 			Color = Props.Color,
@@ -23,7 +28,7 @@ return function(Props)
 			OnColorChanged = Props.OnColorChanged,
 		}),
 		Slider = Roact.createElement(ColorSlider, {
-			Size = UDim2.new(1, 0, 0.5, 0),
+			Size = UDim2.new(1, -100, 0.5, 0),
 			Position = UDim2.new(0, 100, 0.5, 0),
 			Color = Props.Color,
 			OnColorChanged = Props.OnColorChanged,

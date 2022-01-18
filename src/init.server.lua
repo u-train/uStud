@@ -40,11 +40,12 @@ local Button = PluginMaid:GiveTask(
 
 local WidgetArgs = DockWidgetPluginGuiInfo.new(Enum.InitialDockState.Float, false, false, 250, 300, 220, 220)
 
-local Widget = PluginMaid:GiveTask(plugin:CreateDockWidgetPluginGui("uStud Control Panel", WidgetArgs))
+local Widget = PluginMaid:GiveTask(plugin:CreateDockWidgetPluginGui("uStud Control Panel", WidgetArgs)) :: DockWidgetPluginGui
 
 Widget.Enabled = false
-
+Widget.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 Widget.Title = "uStud Panel"
+
 Widget:BindToClose(function()
 	plugin:Deactivate()
 end)

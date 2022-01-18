@@ -1,6 +1,7 @@
 local ContextActionService = game:GetService("ContextActionService")
 
 local Roact = require(script.Parent.Packages.Roact)
+local StudioComponents = require(script.Parent.Packages.StudioComponents)
 
 local Common = script.Parent.Common
 local LabelledInput = require(Common.LabelledInput)
@@ -125,11 +126,10 @@ function App:render()
 				})
 			end,
 		}),
-		ToggleDelete = Roact.createElement("TextButton", {
-			Text = "Toggle Deleting",
-			BackgroundColor3 = self.state.Deleting and Color3.fromRGB(233, 146, 146) or Color3.fromRGB(163, 162, 165),
+		ToggleDelete = Roact.createElement(StudioComponents.Button, {
+			Text = self.state.Deleting and "Currently deleting" or "Currently placing",
 			Size = UDim2.new(1, 0, 0, 25),
-			[Roact.Event.MouseButton1Click] = function()
+			OnActivated = function()
 				self:setState({
 					Deleting = not self.state.Deleting,
 				})

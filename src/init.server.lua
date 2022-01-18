@@ -1,4 +1,4 @@
-local Maid = require(script.Common.Maid)
+local Maid = require(script.Packages.Maid)
 local Interface = require(script.Main)(plugin)
 
 --[[
@@ -53,7 +53,7 @@ end)
 local function Unloading()
 	plugin:Deactivate()
 	Interface.Unloaded()
-	PluginMaid:DoCleaning()
+	PluginMaid:Cleanup()
 end
 
 local function Deactivating()

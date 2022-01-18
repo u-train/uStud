@@ -1,4 +1,7 @@
-local Roact = require(script.Parent.Parent.Packages.Roact) :: Roact
+local Packages = script.Parent.Parent.Packages
+local Roact = require(Packages.Roact) :: Roact
+local StudioComponents = require(Packages.StudioComponents)
+
 local ColorSlider = require(script.Parent.ColorSlider)
 local TextColorInput = require(script.Parent.TextColorInput)
 
@@ -8,15 +11,20 @@ return function(Props)
 		Position = Props.Position,
 		BackgroundTransparency = 1
 	}, {
+		Label = Roact.createElement(StudioComponents.Label, {
+			Text = Props.Label,
+			Size = UDim2.new(0, 100, 1, 0),
+		}),
 		Text = Roact.createElement(TextColorInput, {
 			Color = Props.Color,
 			Label = Props.Label,
-			Size = UDim2.new(1, 0, 0.5, 0),
+			Size = UDim2.new(1, -100, 0.5, 0),
+			Position = UDim2.new(0, 100, 0, 0),
 			OnColorChanged = Props.OnColorChanged,
 		}),
 		Slider = Roact.createElement(ColorSlider, {
 			Size = UDim2.new(1, 0, 0.5, 0),
-			Position = UDim2.new(0, 0, 0.5, 0),
+			Position = UDim2.new(0, 100, 0.5, 0),
 			Color = Props.Color,
 			OnColorChanged = Props.OnColorChanged,
 		}),

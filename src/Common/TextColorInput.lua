@@ -1,6 +1,5 @@
 local Packages = script.Parent.Parent.Packages
 local Roact = require(Packages.Roact)
-local StudioComponents = require(Packages.StudioComponents)
 
 local ControlledInput = require(script.Parent.ControlledInput)
 
@@ -55,20 +54,15 @@ return function(Props)
 		Children[Color] = Roact.createElement(ControlledInput, {
 			Value = FormatColor(Props.Color[Color]),
 			OnValueChanged = GivenColorChannelChanged(Key),
-			Size = UDim2.new(1 / 3, -(Props.TextWidth or 100) / 3, 1, 0),
+			Size = UDim2.new(1 / 3, 0, 1, 0),
 			Position = UDim2.new(
 				1 / 3 * (Key - 1),
-				(Props.TextWidth or 100) - (Props.TextWidth or 100) / 3 * (Key - 1),
+				0,
 				0,
 				0
 			),
 		})
 	end
-
-	Children.Label = Roact.createElement(StudioComponents.Label, {
-		Text = Props.Label,
-		Size = UDim2.new(0, Props.TextWidth or 100, 1, 0),
-	})
 
 	return Roact.createElement("Frame", {
 		Size = Props.Size,

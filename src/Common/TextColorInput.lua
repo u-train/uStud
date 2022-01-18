@@ -3,19 +3,6 @@ local Roact = require(Packages.Roact)
 
 local ControlledInput = require(script.Parent.ControlledInput)
 
-local ColorIsDark = function(Color)
-	-- https://awik.io/determine-color-bright-dark-using-javascript/
-	local R = Color.R * 255
-	local G = Color.G * 255
-	local B = Color.B * 255
-
-	if math.sqrt(0.299 * R * R + 0.587 * G * G + 0.114 * B * B) > 127.5 then
-		return false
-	else
-		return true
-	end
-end
-
 local FormatColor = function(Input)
 	return ("%.1f"):format(Input * 255)
 end

@@ -8,10 +8,10 @@ return function(Props)
 		local RenderedList = {}
 
 		for _, Selection in ipairs(Props.Selections) do
-			RenderedList[Selection] = Roact.createElement("TextButton", {
+			RenderedList[Selection] = Roact.createElement(StudioComponents.Button, {
 				Size = UDim2.new(1, 0, 0, 25),
 				Text = Selection,
-				[Roact.Event.MouseButton1Click] = function()
+				OnActivated = function()
 					RouterInfo.history:push(Selection)
 				end,
 			})

@@ -1,4 +1,3 @@
-local ContextActionService = game:GetService("ContextActionService")
 local Roact = require(script.Parent.Parent.Parent.Packages.Roact) :: Roact
 local Round = require(script.Parent.Parent.Parent.Common.Round)
 

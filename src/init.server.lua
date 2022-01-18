@@ -1,33 +1,16 @@
 local Maid = require(script.Packages.Maid)
 local Interface = require(script.Main)(plugin)
 
---[[
-	What happens when button is pressed
-		-> if plugin is active
-			Close widget
-			Disconnect events
-			Destroy gui
-		-> if plugin inactive
-			activate plugin
-			open widget
-			mount gui
-			connect events
-	What happens studio unloads it
-		-> if plugin is active
-			Do above when button is pressed
-		Delete the toolbar
-		Delete the widget
-		Delete the Button
-]]
+--[=[
+	@class Bootstrapper
+	Essentially bootstraps this plugin with clean-up and loads `Main.lua`.
+	It expects the following interface from `Main.lua`:
 
---[[
-	init.server.lua should be a bootstrapper for uStud
-	It expects the following interface
-		t.loaded()
-		t.activated(mouse)
-		t.deactivated()
-		t.unloaded()
-]]
+	- Interface.Loaded(Widget)
+	- Interface.Activated(Mouse, Widget)
+	- Interface.Deactivated(Mouse)
+	- Interface.Unloaded()
+]=]
 
 local PluginMaid = Maid.new()
 local Active = false
@@ -50,12 +33,24 @@ Widget:BindToClose(function()
 	plugin:Deactivate()
 end)
 
+--[=[
+	@function Unloading
+	@within Bootstrapper
+	Called when the plugin is being unloaded.
+]=]
 local function Unloading()
 	plugin:Deactivate()
 	Interface.Unloaded()
 	PluginMaid:Cleanup()
 end
 
+--[=[
+	@function Deactivating
+	@within Bootstrapper
+	Called when the plugin is being deactivated. If it's already deactivated, it
+	will do nothing. If it's deactivating, it will disable the widget and invoke
+	the handle.
+]=]
 local function Deactivating()
 	if Active == false then
 		return
@@ -66,6 +61,13 @@ local function Deactivating()
 	Interface.Deactivated(plugin:GetMouse())
 end
 
+--[=[
+	@function Activating
+	@within Bootstrapper
+	Called when the plugin is being activated. If it's already active, it will
+	do nothing. If it's activating, it will call the plugin activate method, and
+	pass the mouse and widget to the handle.
+]=]
 local function Activating()
 	if Active == true then
 		return

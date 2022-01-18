@@ -14,6 +14,20 @@ local GetRaycastResultFromMouse = require(Common.GetRaycastResultFromMouse)
 
 local PainterMouseControl = require(script.MouseController)
 
+--[=[
+	@class Painter
+	Paint things, I liked how it came out. Mostly...
+
+	Here's the hotkeys:
+	- `Z` to sample primary color.
+	- `X` to sample secondary color.
+	- `C` to toggle secondary only.
+	- `R` to increase brush diameter by 1.
+	- `F` to decrease brush diameter by 1.
+
+	Here's some facts:
+	- Brush diameter cannot be less than 0.
+]=]
 local Painter = Roact.Component:extend("Painter")
 
 local ActionNames = {
@@ -24,6 +38,14 @@ local ActionNames = {
 	SampleSecondaryColor = "SampleSecondaryColorColor",
 }
 
+--[=[
+	@within Painter
+	@interface Props
+	.EditingIn Instance
+	.EditingInChanged (string) -> nil
+	.HeightOffset number
+	.HeightOffsetChanged (number) -> nil
+]=]
 function Painter:init()
 	self:setState({
 		PrimaryColor = Color3.fromRGB(163, 162, 165),

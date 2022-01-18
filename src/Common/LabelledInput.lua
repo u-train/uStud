@@ -1,3 +1,18 @@
+--[=[
+	@class LabelledInput
+	A component which wraps a ControlledInput and puts a label next to it.
+]=]
+
+--[=[
+	@within LabelledInput
+	@interface Props
+	.Size UDim2
+	.Position UDim2
+	.TextWidth number
+	.OnValueChanged (string) -> nil
+	.Label string
+]=]
+
 local Roact = require(script.Parent.Parent.Packages.Roact)
 local StudioComponents = require(script.Parent.Parent.Packages.StudioComponents)
 local ControlledInput = require(script.Parent.ControlledInput)

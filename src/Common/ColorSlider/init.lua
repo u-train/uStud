@@ -1,3 +1,17 @@
+--[=[
+	@class ColorSlider
+	This component creates a HSV slider.
+]=]
+
+--[=[
+	@within ColorSlider
+	@interface Props
+	.Size UDim2
+	.Position UDim2
+	.Color Color3
+	.OnColorChanged (Color3) -> nil
+]=]
+
 local Roact = require(script.Parent.Parent.Packages.Roact) :: Roact
 local HueSlider = require(script.HueSlider)
 local SaturationSlider = require(script.SaturationSlider)

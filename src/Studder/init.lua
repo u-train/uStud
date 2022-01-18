@@ -9,7 +9,27 @@ local ColorInput = require(Common.ColorInput)
 local ToolWrapper = require(Common.ToolWrapper)
 
 local StudderMouseControl = require(script.MouseController)
-local App = Roact.Component:extend("App")
+
+--[=[
+	@class Studder
+	Tool for studding. It works quite well, to say the least.
+
+	It has the following hotkeys:
+	- `V` to multiply snapping interval by 2
+	- `C` to divide snapping interval by 2
+	- `Z` to multiply part size by 2
+	- `X` to divide part size by 2
+	- `R` to toggle deleting or inserting
+
+	Some facts:
+	- MaxSize = 200
+	- MinSize = 0.05
+	- MaxHeightOffset = 10
+	- MinHeightOffset = -10
+	- MaxHeight = 5
+	- MinHeight = 0.05
+]=]
+local Studder = Roact.Component:extend("Studder")
 
 local MaxSize = 200
 local MinSize = 0.05
@@ -26,7 +46,15 @@ local ActionNames = {
 	ToggleDelete = "ToggleDelete",
 }
 
-function App:init()
+--[=[
+	@within Studder
+	@interface Props
+	.EditingIn Instance
+	.EditingInChanged (string) -> nil
+	.HeightOffset number
+	.HeightOffsetChanged (number) -> nil
+]=]
+function Studder:init()
 	self:setState({
 		SnappingInterval = 1,
 		PartSize = 1,
@@ -38,13 +66,13 @@ function App:init()
 	self:BindHotkeys()
 end
 
-function App:willUnmount()
+function Studder:willUnmount()
 	for _, ActionName in next, ActionNames do
 		ContextActionService:UnbindAction(ActionName)
 	end
 end
 
-function App:render()
+function Studder:render()
 	return Roact.createElement(ToolWrapper, {
 		Title = "Studder",
 		EditingIn = self.props.EditingIn,
@@ -147,7 +175,7 @@ function App:render()
 	})
 end
 
-function App:UpdatePartSize(To)
+function Studder:UpdatePartSize(To)
 	local NewPartSize = math.clamp(To, MinSize, MaxSize)
 
 	self:setState({
@@ -156,13 +184,13 @@ function App:UpdatePartSize(To)
 	})
 end
 
-function App:UpdateSnappingInterval(To)
+function Studder:UpdateSnappingInterval(To)
 	self:setState({
 		SnappingInterval = math.min(math.clamp(To, MinSize, MaxSize), self.state.PartSize),
 	})
 end
 
-function App:BindHotkeys()
+function Studder:BindHotkeys()
 	ContextActionService:BindAction(ActionNames.IncreaseSnappingInterval, function(_, State)
 		if State ~= Enum.UserInputState.Begin then
 			return
@@ -204,4 +232,4 @@ function App:BindHotkeys()
 	end, false, Enum.KeyCode.R)
 end
 
-return App
+return Studder

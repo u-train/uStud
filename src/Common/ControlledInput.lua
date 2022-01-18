@@ -1,3 +1,24 @@
+--[=[
+	@class ControlledInput
+	Input but it's explicitly controlled by a binding. It also only updates
+	properly whenever the user is out of focus. Additionally, the text is reset
+	if the prop value hasn't changed.
+]=]
+
+--[=[
+	@within ControlledInput
+	@interface Props
+	.Size UDim2
+	.Position UDim2
+	.Value string
+	.TextColor3 Color3
+	.LayoutOrder number
+	.BorderSizePixel number
+	.BorderColor3 Color3
+	.OnValueChanged (Text) -> nil
+	.ClearTextOnFocus boolean
+]=]
+
 local Packages = script.Parent.Parent.Packages
 local Roact = require(Packages.Roact)
 local StudioComponents = require(Packages.StudioComponents)

@@ -1,3 +1,15 @@
+--[=[
+	@class GetRaycastResultFromMouse
+	GetRaycastResultFromMouse
+]=]
+
+--[=[
+	@within GetRaycastResultFromMouse
+	@function GetRaycastResultFromMouse
+	@param MousePosition Vector2 | Vector3
+	@param Container Instance
+	@return RaycastResult
+]=]
 local GetRaycastResultFromMouse = function(MousePosition, Container)
 	local Camera = workspace.CurrentCamera
 

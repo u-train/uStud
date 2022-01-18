@@ -1,0 +1,5 @@
+title = "uStud"
+gitRepoUrl = "https://github.com/u-train/uStud"
+gitSourceBranch = "master"
+
+src = ["src", "src/Common"]

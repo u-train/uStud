@@ -1,3 +1,17 @@
+--[=[
+	@class Topbar
+	This component creates a HSV slider.
+]=]
+
+--[=[
+	@within Topbar
+	@interface Props
+	.Size UDim2
+	.Position UDim2
+	.Color Color3
+	.OnColorChanged (Color3) -> nil
+]=]
+
 local Packages = script.Parent.Parent.Packages
 local Roact = require(Packages.Roact)
 local StudioComponents = require(Packages.StudioComponents)

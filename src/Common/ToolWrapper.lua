@@ -1,3 +1,17 @@
+--[=[
+	@class ToolWrapper
+	A helper component which takes a tool and wraps it in a topbar and a input
+	for EditingIn. Additionally, places the tool into a scrollframe.
+]=]
+
+--[=[
+	@within ToolWrapper
+	@interface Props
+	.Title string
+	.EditingIn Instance
+	.EditingInChanged (Instance) -> nil
+]=]
+
 local Packages = script.Parent.Parent.Packages
 local Roact = require(Packages.Roact)
 local RoactRouter = require(Packages.RoactRouter)

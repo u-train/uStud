@@ -1,3 +1,9 @@
+--[=[
+	@class FolderContextComponent
+	Provides a folder which is a container to put brushes for example for the
+	tools.
+]=]
+
 local Roact = require(script.Parent.Parent.Packages.Roact) :: Roact
 local FolderContext = Roact.createContext()
 
@@ -20,6 +26,11 @@ function FolderContextComponent:render()
 	}, self.props[Roact.Children])
 end
 
+--[=[
+	@within FolderContextComponent
+	@function WithFolder
+	@param render (Folder) -> RoactTree
+]=]
 FolderContextComponent.WithFolder = function(render)
 	return Roact.createElement(FolderContext.Consumer, {
 		render = render,

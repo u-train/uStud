@@ -1,3 +1,29 @@
+--[=[
+	@class Settings
+	Interface for settings. Main purpose is to provide default settings and
+	up-to-date settings.
+]=]
+
+--[=[
+	@within Settings
+	@interface PossibleSettings
+	.DefaultEditingIn string
+]=]
+
+--[=[
+	@within Settings
+	@function Set
+	@param SettingName string
+	@param Value any
+]=]
+
+--[=[
+	@within Settings
+	@function Get
+	@param SettingName string
+	@return any
+]=]
+
 local Settings = {
 	DefaultEditingIn = "Workspace.Studs",
 }
@@ -18,9 +44,12 @@ return function(plugin)
 	end
 
 	return {
+
 		Get = function(SettingName)
 			return Settings[SettingName]
 		end,
+
+
 		Set = function(SettingName, Value)
 			Settings[SettingName] = Value
 			plugin:SetSetting(Prefix .. SettingName, Value)

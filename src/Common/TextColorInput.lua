@@ -1,3 +1,18 @@
+--[=[
+	@class TextColorInput
+	A helper component which takes a tool and wraps it in a topbar and a input
+	for EditingIn. Additionally, places the tool into a scrollframe.
+]=]
+
+--[=[
+	@within TextColorInput
+	@interface Props
+	.Size UDim2
+	.Position UDim2
+	.OnColorChanged (Color3) -> nil
+	.Color Color3
+]=]
+
 local Packages = script.Parent.Parent.Packages
 local Roact = require(Packages.Roact)
 

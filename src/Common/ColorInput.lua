@@ -1,3 +1,21 @@
+--[=[
+	@class ColorInput
+	This component creates a labelled color input with the following:
+	* A swab
+	* RGB Text input
+	* HSV Slider input
+]=]
+
+--[=[
+	@within ColorInput
+	@interface Props
+	.Size UDim2
+	.Position UDim2
+	.Color Color3
+	.OnColorChanged (Color3) -> nil
+	.Label string
+]=]
+
 local Packages = script.Parent.Parent.Packages
 local Roact = require(Packages.Roact) :: Roact
 local StudioComponents = require(Packages.StudioComponents)

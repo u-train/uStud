@@ -18,8 +18,17 @@ local ROUTES = {
 	"Painter",
 }
 
+--[=[
+	@class App
+	The root for this plugin.
+]=]
 local App = Roact.Component:extend("App")
 
+--[=[
+	@within App
+	@interface Props
+	.SettingManager Settings
+]=]
 function App:init()
 	local Success, Value = pcall(InstanceQuerier.Select, game, self.props.SettingManager.Get("DefaultEditingIn"))
 

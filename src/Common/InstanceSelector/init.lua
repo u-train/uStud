@@ -11,8 +11,8 @@ local SelectInstance = function(Root, Selection)
 		local Seperator = Tokens[Index + 1]
 
 		assert(Identifier.Type == "Identifier", "Expected Identifier, got " .. Identifier.Type .. " instead.")
-		Child = Child:FindFirstChild(Identifier.Value)
 
+		Child = assert(Child:FindFirstChild(Identifier.Value), ("Could not find child '%s'."):format(Child.Name))
 		if Seperator == nil then
 			return Child
 		end

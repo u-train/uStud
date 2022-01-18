@@ -20,7 +20,10 @@ local ROUTES = {
 local App = Roact.Component:extend("App")
 
 function App:init()
-	local DefaultEditingIn = InstanceSelector.Select(game, self.props.SettingManager.Get("DefaultEditingIn"))
+	local Success, Value = pcall(InstanceSelector.Select, game, self.props.SettingManager.Get("DefaultEditingIn"))
+
+	local DefaultEditingIn = if Success then Value else nil
+
 	self:HookOnTargetEditingInstance(DefaultEditingIn)
 
 	self:setState({
@@ -57,7 +60,7 @@ function App:render()
 				TextWrap = true,
 			}),
 			Bottombar = Roact.createElement(LabelledInput, {
-				Value = "Workspace.",
+				Value = "Workplace.",
 				Size = UDim2.new(1, 0, 0, 25),
 				Position = UDim2.new(0, 0, 1, -25),
 				Label = "Editing In",

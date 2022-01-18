@@ -1,4 +1,7 @@
-local Roact = require(script.Parent.Parent.Packages.Roact)
+local Packages = script.Parent.Parent.Packages
+local Roact = require(Packages.Roact)
+local StudioComponents = require(Packages.StudioComponents)
+
 local ControlledInput = require(script.Parent.ControlledInput)
 
 local ColorIsDark = function(Color)
@@ -62,13 +65,9 @@ return function(Props)
 		})
 	end
 
-	Children.Label = Roact.createElement("TextLabel", {
+	Children.Label = Roact.createElement(StudioComponents.Label, {
 		Text = Props.Label,
 		Size = UDim2.new(0, Props.TextWidth or 100, 1, 0),
-		BackgroundColor3 = Props.Color,
-		TextColor3 = ColorIsDark(Props.Color) and Color3.new(1, 1, 1) or Color3.new(0, 0, 0),
-		BorderSizePixel = 1,
-		ZIndex = 1,
 	})
 
 	return Roact.createElement("Frame", {

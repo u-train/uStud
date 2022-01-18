@@ -10,7 +10,7 @@ local ToolWrapper = require(Common.ToolWrapper)
 
 local GetRaycastResultFromMouse = require(Common.GetRaycastResultFromMouse)
 
-local StudderMouseControl = require(script.MouseController)
+local PainterMouseControl = require(script.MouseController)
 
 local Painter = Roact.Component:extend("Painter")
 
@@ -97,7 +97,7 @@ function Painter:render()
 				})
 			end,
 		}),
-		StudderMouseControl = Roact.createElement(StudderMouseControl, {
+		PainterMouseControl = Roact.createElement(PainterMouseControl, {
 			EditingIn = self.props.EditingIn,
 			PrimaryColor = self.state.PrimaryColor,
 			BrushDiameter = self.state.BrushDiameter,

@@ -2,12 +2,11 @@ local Packages = script.Parent.Parent.Packages
 local Roact = require(Packages.Roact)
 local RoactRouter = require(Packages.RoactRouter)
 local InstanceQuerier = require(Packages.InstanceQuerier)
+local StudioComponents = require(Packages.StudioComponents)
 
 local Common = script.Parent
 local TopBar = require(Common.Topbar)
 local LabelledInput = require(Common.LabelledInput)
-local ListLayout = require(Common.ListLayout)
-
 
 return function(Props)
 	return RoactRouter.withRouter(function(RouterInfo)
@@ -20,7 +19,7 @@ return function(Props)
 					RouterInfo.history:goBack()
 				end,
 			}),
-			View = Roact.createElement(ListLayout, {
+			View = Roact.createElement(StudioComponents.ScrollFrame, {
 				Size = UDim2.new(1, 0, 1, -55),
 				Position = UDim2.new(0, 0, 0, 25),
 			}, Props[Roact.Children]),

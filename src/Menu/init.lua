@@ -1,7 +1,7 @@
-local Roact = require(script.Parent.Packages.Roact)
-local RoactRouter = require(script.Parent.Packages.RoactRouter)
-
-local ListLayout = require(script.Parent.Common.ListLayout)
+local Packages = script.Parent.Packages
+local Roact = require(Packages.Roact)
+local RoactRouter = require(Packages.RoactRouter)
+local StudioComponents = require(Packages.StudioComponents)
 
 return function(Props)
 	return RoactRouter.withRouter(function(RouterInfo)
@@ -16,10 +16,9 @@ return function(Props)
 				end,
 			})
 		end
-		return Roact.createElement(ListLayout, {
+		return Roact.createElement(StudioComponents.ScrollFrame, {
 			Size = Props.Size,
 			Position = Props.Position,
-			Padding = UDim.new(0, 0),
 		}, RenderedList)
 	end)
 end

@@ -12,7 +12,7 @@ end
 function Helper:render()
 	return Roact.createFragment({
 		Slider = Roact.createElement(Slider, {
-			Size = UDim2.new(1, 0, 0, 25),
+			Size = UDim2.new(1, -5, 0, 25),
 			Position = UDim2.new(0, 0, 0.5, -25 / 2),
 			Value = self.state.Value,
 			MinValue = 0,

@@ -1,12 +1,13 @@
-local Roact = require(script.Parent.Parent.Packages.Roact)
-local RoactRouter = require(script.Parent.Parent.Packages.RoactRouter)
+local Packages = script.Parent.Parent.Packages
+local Roact = require(Packages.Roact)
+local RoactRouter = require(Packages.RoactRouter)
+local InstanceQuerier = require(Packages.InstanceQuerier)
 
 local Common = script.Parent
 local TopBar = require(Common.Topbar)
 local LabelledInput = require(Common.LabelledInput)
 local ListLayout = require(Common.ListLayout)
 
-local InstanceSelector = require(Common.InstanceSelector)
 
 return function(Props)
 	return RoactRouter.withRouter(function(RouterInfo)
@@ -24,13 +25,13 @@ return function(Props)
 				Position = UDim2.new(0, 0, 0, 25),
 			}, Props[Roact.Children]),
 			Bottombar = Roact.createElement(LabelledInput, {
-				Value = InstanceSelector.EscapeFullName(Props.EditingIn),
+				Value = InstanceQuerier.EscapeFullName(Props.EditingIn),
 				Size = UDim2.new(1, 0, 0, 25),
 				Position = UDim2.new(0, 0, 1, -25),
 				Label = "Editing In",
 
 				OnValueChanged = function(Text)
-					local Success, Value = pcall(InstanceSelector.Select, game, Text)
+					local Success, Value = InstanceQuerier.Select(game, Text)
 
 					if Success then
 						if Value == workspace or Value == game then

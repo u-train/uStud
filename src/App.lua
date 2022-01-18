@@ -1,5 +1,7 @@
-local Roact = require(script.Parent.Packages.Roact) :: Roact
-local RoactRouter = require(script.Parent.Packages.RoactRouter)
+local Packages = script.Parent.Packages
+local Roact = require(Packages.Roact) :: Roact
+local RoactRouter = require(Packages.RoactRouter)
+local InstanceQuerier = require(Packages.InstanceQuerier)
 
 local Studder = require(script.Parent.Studder)
 local Painter = require(script.Parent.Painter)
@@ -10,7 +12,6 @@ local LabelledInput = require(Common.LabelledInput)
 local TopBar = require(Common.Topbar)
 local FolderContext = require(Common.FolderContext)
 
-local InstanceSelector = require(Common.InstanceSelector)
 
 local ROUTES = {
 	"Studder",
@@ -20,7 +21,7 @@ local ROUTES = {
 local App = Roact.Component:extend("App")
 
 function App:init()
-	local Success, Value = pcall(InstanceSelector.Select, game, self.props.SettingManager.Get("DefaultEditingIn"))
+	local Success, Value = pcall(InstanceQuerier.Select, game, self.props.SettingManager.Get("DefaultEditingIn"))
 
 	local DefaultEditingIn = if Success then Value else nil
 
@@ -66,7 +67,7 @@ function App:render()
 				Label = "Editing In",
 
 				OnValueChanged = function(Text)
-					local Success, Value = pcall(InstanceSelector.Select, game, Text)
+					local Success, Value = pcall(InstanceQuerier.Select, game, Text)
 
 					if Success then
 						if Value == workspace or Value == game then

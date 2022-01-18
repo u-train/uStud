@@ -6,6 +6,7 @@ return function(Props)
 	return Roact.createElement("Frame", {
 		Size = Props.Size,
 		Position = Props.Position,
+		BackgroundTransparency = 1
 	}, {
 		Text = Roact.createElement(TextColorInput, {
 			Color = Props.Color,

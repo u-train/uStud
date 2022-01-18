@@ -9,6 +9,7 @@ return function(Props)
 			return Roact.createElement("Frame", {
 				Position = Props.Position,
 				Size = Props.Size,
+				BackgroundTransparency = 1
 			}, {
 				ReturnBack = Roact.createElement(StudioComponents.Button, {
 					Size = UDim2.new(0, 25, 1, 0),

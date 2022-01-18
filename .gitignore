@@ -7,6 +7,7 @@
 
 # Extras
 /.vscode
+/roblox.toml
 /todo
 
 # Wally

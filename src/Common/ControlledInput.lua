@@ -1,6 +1,6 @@
 local Packages = script.Parent.Parent.Packages
 local Roact = require(Packages.Roact)
-local StudioComponents =require(Packages.StudioComponents)
+local StudioComponents = require(Packages.StudioComponents)
 
 local ControlledInput = Roact.Component:extend("ControlledInput")
 
@@ -9,9 +9,8 @@ function ControlledInput:init()
 end
 
 function ControlledInput:render()
-	self.UpdateInternalValue(self.props.Value)
 	return Roact.createElement(StudioComponents.TextInput, {
-		Text = self.InternalValue:getValue(),
+		Text = self.InternalValue,
 		Size = self.props.Size or UDim2.new(1, 0, 0, 25),
 		Position = self.props.Position,
 		LayoutOrder = self.props.LayoutOrder,
@@ -32,11 +31,15 @@ function ControlledInput:render()
 		end,
 		OnFocusLost = function(_)
 			self.props.OnValueChanged(self.InternalValue:getValue())
-			-- Rbx.Text = self.props.Value
+			self.UpdateInternalValue(self.props.Value)
 		end,
 
 		ClearTextOnFocus = false,
 	})
+end
+
+function ControlledInput:willUpdate(NextProps)
+	self.UpdateInternalValue(NextProps.Value)
 end
 
 return ControlledInput

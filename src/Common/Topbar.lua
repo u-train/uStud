@@ -21,6 +21,8 @@ return function(Props)
 				Title = Roact.createElement(StudioComponents.Label, {
 					Size = UDim2.new(1, -25, 1, 0),
 					Position = UDim2.new(0, 25, 0, 0),
+					TextSize = 16,
+					Font = Enum.Font.SourceSansBold,
 					Text = Props.Title,
 				}),
 			})

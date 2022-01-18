@@ -1,12 +1,13 @@
 local Roact = require(script.Parent.Parent.Packages.Roact)
+local StudioComponents = require(script.Parent.Parent.Packages.StudioComponents)
 local ControlledInput = require(script.Parent.ControlledInput)
 
 return function(Props)
-	return Roact.createElement("Frame", {
+	return Roact.createElement(StudioComponents.Background, {
 		Size = Props.Size,
 		Position = Props.Position,
 	}, {
-		Label = Roact.createElement("TextLabel", {
+		Label = Roact.createElement(StudioComponents.Label, {
 			Size = UDim2.new(0, Props.TextWidth or 100, 1, 0),
 			Text = Props.Label,
 		}),

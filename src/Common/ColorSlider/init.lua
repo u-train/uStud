@@ -1,6 +1,8 @@
 --[=[
 	@class ColorSlider
 	This component creates a HSV slider.
+
+	![Rendered ColorSlidered](rendered/colorSlider.png)
 ]=]
 
 --[=[

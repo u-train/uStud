@@ -44,7 +44,7 @@ return function(Props)
 				Label = "Editing In",
 
 				OnValueChanged = function(Text)
-					local Success, Value = InstanceQuerier.Select(game, Text)
+					local Success, Value = pcall(InstanceQuerier.Select, game, Text)
 
 					if Success then
 						if Value == workspace or Value == game then

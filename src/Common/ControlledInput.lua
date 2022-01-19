@@ -57,8 +57,9 @@ function ControlledInput:render()
 			end
 		end,
 		OnFocusLost = function(_)
-			self.props.OnValueChanged(self.InternalValue:getValue())
+			local NewText = self.InternalValue:getValue()
 			self.UpdateInternalValue(self.props.Value)
+			self.props.OnValueChanged(NewText)
 		end,
 
 		ClearTextOnFocus = false,

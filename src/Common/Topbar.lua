@@ -2,7 +2,7 @@
 	@class Topbar
 	Creates a topbar with a title and optionally a return back button.
 
-	![Image of topbar](rendered/topbar.png)
+	![Image of topbar](/rendered/topbar.png)
 ]=]
 
 --[=[

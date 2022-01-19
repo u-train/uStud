@@ -22,8 +22,15 @@ local function CreateStud(Props)
 	NewPart.Parent = Props.Parent
 end
 
+
+--[=[
+	@class StudderMouseControl
+]=]
 local StudderMouseControl = Roact.Component:extend("StudderMouseControl")
 
+--[=[
+
+]=]
 function StudderMouseControl:init()
 	self.BaseplateRef = Roact.createRef()
 	self.BrushRef = Roact.createRef()
@@ -70,6 +77,9 @@ function StudderMouseControl:init()
 	end)
 end
 
+--[=[
+
+]=]
 function StudderMouseControl:willUnmount()
 	self.MousePressed = false
 	self.OnMouseLeftUp:Disconnect()
@@ -77,6 +87,9 @@ function StudderMouseControl:willUnmount()
 	self.OnMouseMoved:Disconnect()
 end
 
+--[=[
+
+]=]
 function StudderMouseControl:render()
 	local CanvasSize = self.props.PartSize * 10
 	-- On render, the PartSize, SnappingInterval, or the HeightOffset could've
@@ -130,6 +143,9 @@ function StudderMouseControl:render()
 	end)
 end
 
+--[=[
+
+]=]
 function StudderMouseControl:UpdateTargetPosition()
 	local MousePosition = UserInputService:GetMouseLocation()
 	local NewUnitRay = workspace.CurrentCamera:ViewportPointToRay(MousePosition.X, MousePosition.Y, 0)
@@ -152,6 +168,9 @@ function StudderMouseControl:UpdateTargetPosition()
 	)
 end
 
+--[=[
+
+]=]
 function StudderMouseControl:OnHit()
 	if self.BaseplateRef.current == nil then
 		return

@@ -1,6 +1,10 @@
 local Roact = require(script.Parent.Parent.Parent.Packages.Roact) :: Roact
 local Round = require(script.Parent.Parent.Parent.Common.Round)
 
+--[=[
+	@class Slider
+	Makes a basic slider component. TODO: Document
+]=]
 local Slider = Roact.Component:extend("HueSlider")
 Slider.defaultProps = {
 	Background = Roact.createElement("Frame", {
@@ -22,6 +26,9 @@ Slider.defaultProps = {
 	MaxValue = 1,
 }
 
+--[=[
+
+]=]
 function Slider:init()
 	self.MouseDown = false
 	self.InputCaptureRef = Roact.createRef()
@@ -55,6 +62,9 @@ function Slider:init()
 	end
 end
 
+--[=[
+
+]=]
 function Slider:render()
 	return Roact.createElement("TextButton", {
 		Text = "",
@@ -91,6 +101,9 @@ function Slider:render()
 	})
 end
 
+--[=[
+
+]=]
 function Slider:UpdateValueFromMousePosition(MousePosition)
 	local InputCapture = self.InputCaptureRef.current
 	if InputCapture == nil then
@@ -108,6 +121,9 @@ function Slider:UpdateValueFromMousePosition(MousePosition)
 	self.props.OnValueChanged(Round(NewValue, self.props.Interval))
 end
 
+--[=[
+
+]=]
 function Slider:ConvertValueToPercentage(Value)
 	local Diff = math.abs(self.props.MaxValue - self.props.MinValue)
 	return (Value - self.props.MinValue) / Diff

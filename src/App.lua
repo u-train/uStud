@@ -143,6 +143,9 @@ function App:render()
 	})
 end
 
+--[=[
+
+]=]
 function App:HookOnTargetEditingInstance(EditingIn: Instance)
 	if self.Event and self.Event.Connected then
 		self.Event:Disconnect()

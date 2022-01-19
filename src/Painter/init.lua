@@ -46,6 +46,9 @@ local ActionNames = {
 	.HeightOffset number
 	.HeightOffsetChanged (number) -> nil
 ]=]
+--[=[
+
+]=]
 function Painter:init()
 	self:setState({
 		PrimaryColor = Color3.fromRGB(163, 162, 165),
@@ -57,12 +60,18 @@ function Painter:init()
 	self:BindHotkeys()
 end
 
+--[=[
+
+]=]
 function Painter:willUnmount()
 	for _, ActionName in next, ActionNames do
 		ContextActionService:UnbindAction(ActionName)
 	end
 end
 
+--[=[
+
+]=]
 function Painter:render()
 	return Roact.createElement(ToolWrapper, {
 		Title = "Painter",
@@ -127,6 +136,9 @@ function Painter:render()
 	})
 end
 
+--[=[
+
+]=]
 function Painter:BindHotkeys()
 	ContextActionService:BindAction(ActionNames.SamplePrimaryColor, function(_, State)
 		if State ~= Enum.UserInputState.Begin then

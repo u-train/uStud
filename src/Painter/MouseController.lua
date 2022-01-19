@@ -13,9 +13,15 @@ local function CreateAdorn(Parent)
 	return Adorn
 end
 
-local MouseController = Roact.Component:extend("MouseController")
+--[=[
+	@class PainterMouseControl
+]=]
+local PainterMouseControl = Roact.Component:extend("PainterMouseControl")
 
-function MouseController:init()
+--[=[
+
+]=]
+function PainterMouseControl:init()
 	self.BrushRef = Roact.createRef()
 	self.BrushPositionBinding, self.UpdateBrushPosition = Roact.createBinding(Vector3.new())
 	self.Adorns = {}
@@ -64,7 +70,10 @@ function MouseController:init()
 	end)
 end
 
-function MouseController:willUnmount()
+--[=[
+
+]=]
+function PainterMouseControl:willUnmount()
 	self.IsPainting = false
 	self.InputChanged:Disconnect()
 	self.InputBegan:Disconnect()
@@ -74,7 +83,10 @@ function MouseController:willUnmount()
 	self.AdornContainer:Destroy()
 end
 
-function MouseController:render()
+--[=[
+
+]=]
+function PainterMouseControl:render()
 	return FolderContext.WithFolder(function(Folder)
 		return Roact.createElement(Roact.Portal, {
 			target = Folder,
@@ -96,7 +108,10 @@ function MouseController:render()
 	end)
 end
 
-function MouseController:UpdateAndPaintBrush(Input)
+--[=[
+
+]=]
+function PainterMouseControl:UpdateAndPaintBrush(Input)
 	local RaycastResults = GetRaycastResultFromMouse(Input.Position, self.props.EditingIn)
 
 	if RaycastResults == nil then
@@ -115,7 +130,10 @@ function MouseController:UpdateAndPaintBrush(Input)
 	end
 end
 
-function MouseController:UpdateAdorns()
+--[=[
+
+]=]
+function PainterMouseControl:UpdateAdorns()
 	local Parts = self:QueryPaintableParts()
 
 	local Difference = #Parts - #self.Adorns
@@ -136,7 +154,10 @@ function MouseController:UpdateAdorns()
 	end
 end
 
-function MouseController:QueryPaintableParts()
+--[=[
+
+]=]
+function PainterMouseControl:QueryPaintableParts()
 	local Brush = self.BrushRef.current
 	local Parts = {}
 
@@ -157,4 +178,4 @@ function MouseController:QueryPaintableParts()
 	return Parts
 end
 
-return MouseController
+return PainterMouseControl

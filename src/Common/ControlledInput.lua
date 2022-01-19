@@ -25,10 +25,16 @@ local StudioComponents = require(Packages.StudioComponents)
 
 local ControlledInput = Roact.Component:extend("ControlledInput")
 
+--[=[
+
+]=]
 function ControlledInput:init()
 	self.InternalValue, self.UpdateInternalValue = Roact.createBinding(self.props.Value)
 end
 
+--[=[
+
+]=]
 function ControlledInput:render()
 	return Roact.createElement(StudioComponents.TextInput, {
 		Text = self.InternalValue,
@@ -59,6 +65,9 @@ function ControlledInput:render()
 	})
 end
 
+--[=[
+
+]=]
 function ControlledInput:willUpdate(NextProps)
 	self.UpdateInternalValue(NextProps.Value)
 end

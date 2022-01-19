@@ -54,6 +54,9 @@ local ActionNames = {
 	.HeightOffset number
 	.HeightOffsetChanged (number) -> nil
 ]=]
+--[=[
+
+]=]
 function Studder:init()
 	self:setState({
 		SnappingInterval = 1,
@@ -66,12 +69,16 @@ function Studder:init()
 	self:BindHotkeys()
 end
 
+--[=[
 function Studder:willUnmount()
 	for _, ActionName in next, ActionNames do
 		ContextActionService:UnbindAction(ActionName)
 	end
 end
 
+--[=[
+
+]=]
 function Studder:render()
 	return Roact.createElement(ToolWrapper, {
 		Title = "Studder",
@@ -175,6 +182,9 @@ function Studder:render()
 	})
 end
 
+--[=[
+
+]=]
 function Studder:UpdatePartSize(To)
 	local NewPartSize = math.clamp(To, MinSize, MaxSize)
 
@@ -184,12 +194,18 @@ function Studder:UpdatePartSize(To)
 	})
 end
 
+--[=[
+
+]=]
 function Studder:UpdateSnappingInterval(To)
 	self:setState({
 		SnappingInterval = math.min(math.clamp(To, MinSize, MaxSize), self.state.PartSize),
 	})
 end
 
+--[=[
+
+]=]
 function Studder:BindHotkeys()
 	ContextActionService:BindAction(ActionNames.IncreaseSnappingInterval, function(_, State)
 		if State ~= Enum.UserInputState.Begin then

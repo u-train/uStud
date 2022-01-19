@@ -4,6 +4,8 @@
 	* A swab
 	* RGB Text input
 	* HSV Slider input
+
+	![ColorInput rendered](/rendered/colorInput.png)
 ]=]
 
 --[=[

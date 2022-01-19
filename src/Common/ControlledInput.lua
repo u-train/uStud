@@ -28,14 +28,15 @@ local StudioComponents = require(Packages.StudioComponents)
 local ControlledInput = Roact.Component:extend("ControlledInput")
 
 --[=[
-
+	Initalize internal binding.
 ]=]
 function ControlledInput:init()
 	self.InternalValue, self.UpdateInternalValue = Roact.createBinding(self.props.Value)
 end
 
 --[=[
-
+	Renders.
+	@return RoactTree
 ]=]
 function ControlledInput:render()
 	return Roact.createElement(StudioComponents.TextInput, {
@@ -69,7 +70,7 @@ function ControlledInput:render()
 end
 
 --[=[
-
+	Make sure to capture the lastest value.
 ]=]
 function ControlledInput:willUpdate(NextProps)
 	self.UpdateInternalValue(NextProps.Value)

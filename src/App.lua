@@ -13,6 +13,13 @@ local LabelledInput = require(Common.LabelledInput)
 local Topbar = require(Common.Topbar)
 local FolderContext = require(Common.FolderContext)
 
+--[=[
+	@within App
+	@prop ROUTES { string }
+	The list of avaliable routes. Currently, they are:
+	- Studder
+	- Painter
+]=]
 local ROUTES = {
 	"Studder",
 	"Painter",
@@ -21,6 +28,23 @@ local ROUTES = {
 --[=[
 	@class App
 	The root for this plugin.
+
+	The app looks like this when EditingIn is valid.
+
+	![App when EditingIn is valid.](/rendered/app.png)
+
+	If it isn't valid, it will render this menu instead.
+
+	![App when EditingIn isn't valid.](/rendered/appUponInvalidEditingIn.png)
+
+	TODO:
+	1.	The way the component keeps track of "EditingIn" is hacky. Streamline it
+		by extracting the logic to figure out of the "EditingIn is valid into a
+		static function. In render, if it's invaild then set the state
+		accordingly?
+	2.	InstanceQuerier needs to be fixed up as well, not sure why I set it up
+		the way I did. As soon I do, we'll get rid of the pcall.
+	3.	Make it so that the menu upon a invaild EditingIn is its own component.
 ]=]
 local App = Roact.Component:extend("App")
 
@@ -28,6 +52,7 @@ local App = Roact.Component:extend("App")
 	@within App
 	@interface Props
 	.SettingManager Settings
+	.Enabled boolean
 ]=]
 function App:init()
 	local Success, Value = pcall(InstanceQuerier.Select, game, self.props.SettingManager.Get("DefaultEditingIn"))
@@ -42,10 +67,17 @@ function App:init()
 	})
 end
 
+--[=[
+	It's here to make sure that before the component updates, the new location
+	that the tool edits in is binded.
+]=]
 function App:willUpdate(_, IncomingState)
 	self:HookOnTargetEditingInstance(IncomingState.EditingIn)
 end
 
+--[=[
+	To disconnect the event keeping track of changes.
+]=]
 function App:willUnmount()
 	if self.Event then
 		self.Event:Disconnect()
@@ -53,6 +85,10 @@ function App:willUnmount()
 	end
 end
 
+--[=[
+	Render.
+	@return RoactTree
+]=]
 function App:render()
 	if not self.props.Active then
 		return
@@ -144,9 +180,11 @@ function App:render()
 end
 
 --[=[
-
+	Hooks onto target and ensures last target disconnects before doing so. Keeps
+	track of target if it gets deparented.
+	@param EditingIn Instance?
 ]=]
-function App:HookOnTargetEditingInstance(EditingIn: Instance)
+function App:HookOnTargetEditingInstance(EditingIn)
 	if self.Event and self.Event.Connected then
 		self.Event:Disconnect()
 		self.Event = nil

@@ -55,7 +55,7 @@ local ActionNames = {
 	.HeightOffsetChanged (number) -> nil
 ]=]
 --[=[
-
+	init
 ]=]
 function Studder:init()
 	self:setState({

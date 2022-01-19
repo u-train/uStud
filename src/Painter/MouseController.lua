@@ -15,11 +15,15 @@ end
 
 --[=[
 	@class PainterMouseControl
+	Has the brush and is the mouse controller for the painter.
+
+	TODO: Is there a better way of doing things with the adorns? Right now, it's
+	hacky to say the least. Investigate.
 ]=]
 local PainterMouseControl = Roact.Component:extend("PainterMouseControl")
 
 --[=[
-
+	Initalize refs, hook into UserInputService, and initalize adorns.
 ]=]
 function PainterMouseControl:init()
 	self.BrushRef = Roact.createRef()
@@ -71,7 +75,7 @@ function PainterMouseControl:init()
 end
 
 --[=[
-
+	Cleanup connections and adorns. Along with that, set state accordingly.
 ]=]
 function PainterMouseControl:willUnmount()
 	self.IsPainting = false
@@ -84,7 +88,8 @@ function PainterMouseControl:willUnmount()
 end
 
 --[=[
-
+	Render.
+	@return RoactTree
 ]=]
 function PainterMouseControl:render()
 	return FolderContext.WithFolder(function(Folder)
@@ -109,7 +114,9 @@ function PainterMouseControl:render()
 end
 
 --[=[
-
+	Uses the InputObject to update the paint brush's position. Additionally, if
+	the user is holding the mouse down, will paint valid studs.
+	@param Input InputObject
 ]=]
 function PainterMouseControl:UpdateAndPaintBrush(Input)
 	local RaycastResults = GetRaycastResultFromMouse(Input.Position, self.props.EditingIn)
@@ -131,7 +138,7 @@ function PainterMouseControl:UpdateAndPaintBrush(Input)
 end
 
 --[=[
-
+	Update the adorns to what the brush is actually touching.
 ]=]
 function PainterMouseControl:UpdateAdorns()
 	local Parts = self:QueryPaintableParts()
@@ -155,7 +162,8 @@ function PainterMouseControl:UpdateAdorns()
 end
 
 --[=[
-
+	Gets paintable parts from the brush that are valid.
+	@return { Instance }
 ]=]
 function PainterMouseControl:QueryPaintableParts()
 	local Brush = self.BrushRef.current

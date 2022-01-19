@@ -27,6 +27,10 @@ local PainterMouseControl = require(script.MouseController)
 
 	Here's some facts:
 	- Brush diameter cannot be less than 0.
+
+	This is how the menu look like:
+
+	![Painter's menu](/rendered/painter.png)
 ]=]
 local Painter = Roact.Component:extend("Painter")
 
@@ -47,7 +51,7 @@ local ActionNames = {
 	.HeightOffsetChanged (number) -> nil
 ]=]
 --[=[
-
+	Initalize state and bind hotkeys.
 ]=]
 function Painter:init()
 	self:setState({
@@ -61,7 +65,7 @@ function Painter:init()
 end
 
 --[=[
-
+	To unbind hotkeys.
 ]=]
 function Painter:willUnmount()
 	for _, ActionName in next, ActionNames do
@@ -70,7 +74,8 @@ function Painter:willUnmount()
 end
 
 --[=[
-
+	Render.
+	@return RoactTree
 ]=]
 function Painter:render()
 	return Roact.createElement(ToolWrapper, {
@@ -137,7 +142,7 @@ function Painter:render()
 end
 
 --[=[
-
+	Bind hotkeys.
 ]=]
 function Painter:BindHotkeys()
 	ContextActionService:BindAction(ActionNames.SamplePrimaryColor, function(_, State)

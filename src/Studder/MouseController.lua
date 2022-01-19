@@ -25,11 +25,14 @@ end
 
 --[=[
 	@class StudderMouseControl
+	Mouse controller for the studder. It also contains the canvas for the
+	studder.
 ]=]
 local StudderMouseControl = Roact.Component:extend("StudderMouseControl")
 
 --[=[
-
+	Creates the refs, create TargetPosition binding, initalize some state, and
+	also binds callbacks to UserInputService.
 ]=]
 function StudderMouseControl:init()
 	self.BaseplateRef = Roact.createRef()
@@ -78,7 +81,7 @@ function StudderMouseControl:init()
 end
 
 --[=[
-
+	To disconnect event handlers and set state accordingly.
 ]=]
 function StudderMouseControl:willUnmount()
 	self.MousePressed = false
@@ -88,7 +91,8 @@ function StudderMouseControl:willUnmount()
 end
 
 --[=[
-
+	Renders.
+	@return RoactTree
 ]=]
 function StudderMouseControl:render()
 	local CanvasSize = self.props.PartSize * 10
@@ -144,7 +148,8 @@ function StudderMouseControl:render()
 end
 
 --[=[
-
+	Updates TargetPosition binding on invoke using current state and the current
+	mouse position provided by UserInputService.
 ]=]
 function StudderMouseControl:UpdateTargetPosition()
 	local MousePosition = UserInputService:GetMouseLocation()
@@ -169,7 +174,8 @@ function StudderMouseControl:UpdateTargetPosition()
 end
 
 --[=[
-
+	Callback on hit. Verify that the require instances exist, update position,
+	and if needed, place or delete studs.
 ]=]
 function StudderMouseControl:OnHit()
 	if self.BaseplateRef.current == nil then

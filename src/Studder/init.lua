@@ -28,6 +28,10 @@ local StudderMouseControl = require(script.MouseController)
 	- MinHeightOffset = -10
 	- MaxHeight = 5
 	- MinHeight = 0.05
+
+	The menu for it looks like this:
+
+	![Studder's menu](/rendered/studder.png)
 ]=]
 local Studder = Roact.Component:extend("Studder")
 
@@ -55,7 +59,7 @@ local ActionNames = {
 	.HeightOffsetChanged (number) -> nil
 ]=]
 --[=[
-	init
+	Sets state and binds hotkeys.
 ]=]
 function Studder:init()
 	self:setState({
@@ -70,8 +74,8 @@ function Studder:init()
 end
 
 --[=[
-
---]=]
+	Here to unbind all the hotkeys.
+]=]
 function Studder:willUnmount()
 	for _, ActionName in next, ActionNames do
 		ContextActionService:UnbindAction(ActionName)
@@ -79,7 +83,8 @@ function Studder:willUnmount()
 end
 
 --[=[
-
+	Render.
+	@return RoactTree
 ]=]
 function Studder:render()
 	return Roact.createElement(ToolWrapper, {
@@ -185,7 +190,8 @@ function Studder:render()
 end
 
 --[=[
-
+	Updates UpdatePartSize, making sure it's bounded, with the given number.
+	@param To number
 ]=]
 function Studder:UpdatePartSize(To)
 	local NewPartSize = math.clamp(To, MinSize, MaxSize)
@@ -197,7 +203,8 @@ function Studder:UpdatePartSize(To)
 end
 
 --[=[
-
+	Updates SnappingInterval, making sure it's bounded, with the given number.
+	@param To number
 ]=]
 function Studder:UpdateSnappingInterval(To)
 	self:setState({
@@ -206,7 +213,7 @@ function Studder:UpdateSnappingInterval(To)
 end
 
 --[=[
-
+	Binds hotkeys for the tool.
 ]=]
 function Studder:BindHotkeys()
 	ContextActionService:BindAction(ActionNames.IncreaseSnappingInterval, function(_, State)

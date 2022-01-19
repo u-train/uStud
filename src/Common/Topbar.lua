@@ -1,6 +1,8 @@
 --[=[
 	@class Topbar
-	This component creates a HSV slider.
+	Creates a topbar with a title and optionally a return back button.
+
+	![Image of topbar](rendered/topbar.png)
 ]=]
 
 --[=[
@@ -8,8 +10,8 @@
 	@interface Props
 	.Size UDim2
 	.Position UDim2
-	.Color Color3
-	.OnColorChanged (Color3) -> nil
+	.OnReturn () -> ()
+	.Title string
 ]=]
 
 local Packages = script.Parent.Parent.Packages

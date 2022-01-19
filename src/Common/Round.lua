@@ -7,11 +7,12 @@
 	@within Round
 	@function Round
 	@param Value number
-	@param Interval number
+	@param Interval number? -- default 1
 	@return number
 ]=]
 
 return function(Value, Interval)
+	Interval = Interval or 1
 	local AbsoluteValue = math.abs(Value)
 	local Low = AbsoluteValue - math.fmod(AbsoluteValue, Interval)
 	local High = Low + Interval

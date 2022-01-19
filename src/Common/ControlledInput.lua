@@ -3,6 +3,8 @@
 	Input but it's explicitly controlled by a binding. It also only updates
 	properly whenever the user is out of focus. Additionally, the text is reset
 	if the prop value hasn't changed.
+
+	![ControlledInput rendered](/rendered/controlledInput.png)
 ]=]
 
 --[=[

@@ -1,14 +1,14 @@
 --[=[
 	@class ToolWrapper
 	A helper component which takes a tool and wraps it in a topbar and a input
-	for EditingIn. Additionally, places the tool into a scrollframe.
+	for Root. Additionally, places the tool into a scrollframe.
 ]=]
 
 --[=[
 	@within ToolWrapper
 	@interface Props
 	.Title string
-	.EditingIn Instance
+	.Root Instance
 	.EditingInChanged (Instance) -> nil
 ]=]
 
@@ -38,10 +38,10 @@ return function(Props)
 				Position = UDim2.new(0, 0, 0, 25),
 			}, Props[Roact.Children]),
 			Bottombar = Roact.createElement(LabelledInput, {
-				Value = InstanceQuerier.EscapeFullName(Props.EditingIn),
+				Value = InstanceQuerier.EscapeFullName(Props.Root),
 				Size = UDim2.new(1, 0, 0, 25),
 				Position = UDim2.new(0, 0, 1, -25),
-				Label = "Editing In",
+				Label = "Editing under",
 
 				OnValueChanged = function(Text)
 					local Success, Value = pcall(InstanceQuerier.Select, game, Text)

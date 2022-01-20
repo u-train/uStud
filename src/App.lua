@@ -29,22 +29,22 @@ local ROUTES = {
 	@class App
 	The root for this plugin.
 
-	The app looks like this when EditingIn is valid.
+	The app looks like this when Root is valid.
 
-	![App when EditingIn is valid.](/rendered/app.png)
+	![App when Root is valid.](/rendered/app.png)
 
 	If it isn't valid, it will render this menu instead.
 
-	![App when EditingIn isn't valid.](/rendered/appUponInvalidEditingIn.png)
+	![App when Root isn't valid.](/rendered/appUponInvalidEditingIn.png)
 
 	TODO:
-	1.	The way the component keeps track of "EditingIn" is hacky. Streamline it
-		by extracting the logic to figure out of the "EditingIn is valid into a
+	1.	The way the component keeps track of "Root" is hacky. Streamline it
+		by extracting the logic to figure out of the "Root is valid into a
 		static function. In render, if it's invaild then set the state
 		accordingly?
 	2.	InstanceQuerier needs to be fixed up as well, not sure why I set it up
 		the way I did. As soon I do, we'll get rid of the pcall.
-	3.	Make it so that the menu upon a invaild EditingIn is its own component.
+	3.	Make it so that the menu upon a invaild Root is its own component.
 ]=]
 local App = Roact.Component:extend("App")
 
@@ -57,12 +57,12 @@ local App = Roact.Component:extend("App")
 function App:init()
 	local Success, Value = pcall(InstanceQuerier.Select, game, self.props.SettingManager.Get("DefaultEditingIn"))
 
-	local DefaultEditingIn = if Success then Value else nil
+	local DefaultRoot = if Success then Value else nil
 
-	self:HookOnTargetEditingInstance(DefaultEditingIn)
+	self:HookOnTargetRootInstance(DefaultRoot)
 
 	self:setState({
-		EditingIn = DefaultEditingIn,
+		Root = DefaultRoot,
 		HeightOffset = self.props.SettingManager.Get("HeightOffset") or 1,
 	})
 end
@@ -72,7 +72,7 @@ end
 	that the tool edits in is binded.
 ]=]
 function App:willUpdate(_, IncomingState)
-	self:HookOnTargetEditingInstance(IncomingState.EditingIn)
+	self:HookOnTargetRootInstance(IncomingState.Root)
 end
 
 --[=[
@@ -94,7 +94,7 @@ function App:render()
 		return
 	end
 
-	if self.state.EditingIn == nil then
+	if self.state.Root == nil then
 		return Roact.createElement(StudioComponents.Background, {}, {
 			View = Roact.createElement(StudioComponents.Label, {
 				Text = "Instance that was targetted to be edited in is no longer valid! This is because it is no longer a descendant of Workspace.",
@@ -104,10 +104,10 @@ function App:render()
 				TextWrap = true,
 			}),
 			Bottombar = Roact.createElement(LabelledInput, {
-				Value = "Workplace.",
+				Value = "Workspace.",
 				Size = UDim2.new(1, 0, 0, 25),
 				Position = UDim2.new(0, 0, 1, -25),
-				Label = "Editing In",
+				Label = "Editing under",
 
 				OnValueChanged = function(Text)
 					local Success, Value = pcall(InstanceQuerier.Select, game, Text)
@@ -118,7 +118,7 @@ function App:render()
 						end
 
 						self:setState({
-							EditingIn = Value,
+							Root = Value,
 						})
 					end
 				end,
@@ -127,10 +127,10 @@ function App:render()
 	end
 
 	local ToolProps = {
-		EditingIn = self.state.EditingIn,
+		Root = self.state.Root,
 		EditingInChanged = function(Value)
 			self:setState({
-				EditingIn = Value,
+				Root = Value,
 			})
 		end,
 		HeightOffset = self.state.HeightOffset,
@@ -182,22 +182,22 @@ end
 --[=[
 	Hooks onto target and ensures last target disconnects before doing so. Keeps
 	track of target if it gets deparented.
-	@param EditingIn Instance?
+	@param Root Instance?
 ]=]
-function App:HookOnTargetEditingInstance(EditingIn)
+function App:HookOnTargetRootInstance(Root)
 	if self.Event and self.Event.Connected then
 		self.Event:Disconnect()
 		self.Event = nil
 	end
 
-	if EditingIn == nil then
+	if Root == nil then
 		return
 	end
 
-	self.Event = EditingIn.AncestryChanged:Connect(function(_, Parent)
+	self.Event = Root.AncestryChanged:Connect(function(_, Parent)
 		if Parent == nil or (Parent and not Parent:IsDescendantOf(workspace)) then
 			self:setState({
-				EditingIn = Roact.None,
+				Root = Roact.None,
 			})
 
 			if self.Event and self.Event.Connected then

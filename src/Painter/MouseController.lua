@@ -44,7 +44,7 @@ function PainterMouseControl:init()
 			return
 		end
 
-		if self.props.EditingIn.Parent == nil then
+		if self.props.Root.Parent == nil then
 			return
 		end
 
@@ -119,7 +119,7 @@ end
 	@param Input InputObject
 ]=]
 function PainterMouseControl:UpdateAndPaintBrush(Input)
-	local RaycastResults = GetRaycastResultFromMouse(Input.Position, self.props.EditingIn)
+	local RaycastResults = GetRaycastResultFromMouse(Input.Position, self.props.Root)
 
 	if RaycastResults == nil then
 		return
@@ -171,7 +171,7 @@ function PainterMouseControl:QueryPaintableParts()
 
 	if Brush then
 		for _, Part in next, Brush:GetTouchingParts() do
-			if not Part:IsDescendantOf(self.props.EditingIn) then
+			if not Part:IsDescendantOf(self.props.Root) then
 				continue
 			end
 

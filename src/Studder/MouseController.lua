@@ -182,7 +182,7 @@ function StudderMouseControl:OnHit()
 		return
 	end
 
-	if self.props.EditingIn.Parent == nil then
+	if self.props.Root.Parent == nil then
 		return
 	end
 
@@ -195,13 +195,13 @@ function StudderMouseControl:OnHit()
 	local IntersectingParts = self.BrushRef.current:GetTouchingParts()
 	if self.props.Deleting then
 		for _, IntersectingPart: Instance in next, IntersectingParts do
-			if IntersectingPart:IsDescendantOf(self.props.EditingIn) then
+			if IntersectingPart:IsDescendantOf(self.props.Root) then
 				IntersectingPart:Destroy()
 			end
 		end
 	else
 		for _, IntersectingPart: Instance in next, IntersectingParts do
-			if IntersectingPart:IsDescendantOf(self.props.EditingIn) then
+			if IntersectingPart:IsDescendantOf(self.props.Root) then
 				return
 			end
 		end
@@ -210,7 +210,7 @@ function StudderMouseControl:OnHit()
 			PartSize = self.props.PartSize,
 			PartHeight = self.props.PartHeight,
 			Color = self.props.PartColor,
-			Parent = self.props.EditingIn,
+			Parent = self.props.Root,
 			Position = self.TargetPosition:getValue(),
 		})
 	end

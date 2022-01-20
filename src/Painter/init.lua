@@ -45,7 +45,7 @@ local ActionNames = {
 --[=[
 	@within Painter
 	@interface Props
-	.EditingIn Instance
+	.Root Instance
 	.EditingInChanged (string) -> nil
 	.HeightOffset number
 	.HeightOffsetChanged (number) -> nil
@@ -80,7 +80,7 @@ end
 function Painter:render()
 	return Roact.createElement(ToolWrapper, {
 		Title = "Painter",
-		EditingIn = self.props.EditingIn,
+		Root = self.props.Root,
 		EditingInChanged = self.props.EditingInChanged,
 	}, {
 
@@ -132,7 +132,7 @@ function Painter:render()
 			end,
 		}),
 		PainterMouseControl = Roact.createElement(PainterMouseControl, {
-			EditingIn = self.props.EditingIn,
+			Root = self.props.Root,
 			PrimaryColor = self.state.PrimaryColor,
 			BrushDiameter = self.state.BrushDiameter,
 			SecondaryColor = self.state.SecondaryColor,
@@ -150,7 +150,7 @@ function Painter:BindHotkeys()
 			return
 		end
 
-		local Result = GetRaycastResultFromMouse(UserInputService:GetMouseLocation(), self.props.EditingIn)
+		local Result = GetRaycastResultFromMouse(UserInputService:GetMouseLocation(), self.props.Root)
 
 		if Result == nil then
 			return
@@ -170,7 +170,7 @@ function Painter:BindHotkeys()
 			return
 		end
 
-		local Result = GetRaycastResultFromMouse(UserInputService:GetMouseLocation(), self.props.EditingIn)
+		local Result = GetRaycastResultFromMouse(UserInputService:GetMouseLocation(), self.props.Root)
 
 		if Result == nil then
 			return

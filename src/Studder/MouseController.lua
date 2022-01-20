@@ -1,7 +1,7 @@
 local UserInputService = game:GetService("UserInputService")
 local ChangeHistoryService = game:GetService("ChangeHistoryService")
 local Roact = require(script.Parent.Parent.Packages.Roact) :: Roact
-local FolderContext = require(script.Parent.Parent.Common.FolderContext)
+local FolderController = require(script.Parent.Parent.Common.FolderController)
 
 -- This is to align the studs correctly.
 local RoundMidway = function(Value, Interval)
@@ -100,7 +100,7 @@ function StudderMouseControl:render()
 	--- of changed. Update to the binding to reflect this.
 	self:UpdateTargetPosition()
 
-	return FolderContext.WithFolder(function(Folder)
+	return FolderController.WithFolder(function(Folder)
 		return Roact.createElement(Roact.Portal, {
 			target = Folder,
 		}, {

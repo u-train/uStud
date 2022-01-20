@@ -11,7 +11,7 @@ local Menu = require(script.Parent.Menu)
 local Common = script.Parent.Common
 local LabelledInput = require(Common.LabelledInput)
 local Topbar = require(Common.Topbar)
-local FolderContext = require(Common.FolderContext)
+local FolderController = require(Common.FolderController)
 
 --[=[
 	@within App
@@ -141,7 +141,7 @@ function App:render()
 		end,
 	}
 
-	return Roact.createElement(FolderContext, { Value = self.Folder }, {
+	return Roact.createElement(FolderController, { Value = self.Folder }, {
 		Container = Roact.createElement(StudioComponents.Background, {}, {
 			Router = Roact.createElement(RoactRouter.Router, {}, {
 				Menu = Roact.createElement(RoactRouter.Route, {

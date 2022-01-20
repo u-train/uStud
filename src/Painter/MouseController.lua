@@ -4,7 +4,7 @@ local ChangeHistoryService = game:GetService("ChangeHistoryService")
 
 local Common = script.Parent.Parent.Common
 local GetRaycastResultFromMouse = require(Common.GetRaycastResultFromMouse)
-local FolderContext = require(Common.FolderContext)
+local FolderController = require(Common.FolderController)
 
 local function CreateAdorn(Parent)
 	local Adorn = Instance.new("SelectionBox")
@@ -92,7 +92,7 @@ end
 	@return RoactTree
 ]=]
 function PainterMouseControl:render()
-	return FolderContext.WithFolder(function(Folder)
+	return FolderController.WithFolder(function(Folder)
 		return Roact.createElement(Roact.Portal, {
 			target = Folder,
 		}, {

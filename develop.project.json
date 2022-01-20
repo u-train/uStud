@@ -1,0 +1,15 @@
+{
+	"name": "uStud",
+	"tree": {
+		"$className": "DataModel",
+		"ServerStorage": {
+			"$className": "ServerStorage",
+			"uStud": {
+				"$path": "src",
+				"Packages": {
+					"$path": "Packages"
+				}
+			}
+		}
+	}
+}

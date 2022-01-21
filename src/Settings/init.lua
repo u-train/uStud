@@ -32,24 +32,24 @@ local Prefix = "uStud."
 
 return function(plugin)
 	if plugin:GetSetting("uStud") == nil then
-		for SettingName, Value in next, Settings do
-			plugin:SetSetting(Prefix .. SettingName, Value)
+		for settingName, value in next, Settings do
+			plugin:SetSetting(Prefix .. settingName, value)
 		end
 
 		plugin:SetSetting("uStud", true)
 	else
-		for SettingName, _ in next, Settings do
-			Settings[SettingName] = plugin:GetSetting(SettingName) or Settings[SettingName]
+		for settingName, _ in next, Settings do
+			Settings[settingName] = plugin:GetSetting(settingName) or Settings[settingName]
 		end
 	end
 
 	return {
-		Get = function(SettingName)
-			return Settings[SettingName]
+		Get = function(settingName)
+			return Settings[settingName]
 		end,
-		Set = function(SettingName, Value)
-			Settings[SettingName] = Value
-			plugin:SetSetting(Prefix .. SettingName, Value)
+		Set = function(settingName, value)
+			Settings[settingName] = value
+			plugin:SetSetting(Prefix .. settingName, value)
 		end,
 	}
 end

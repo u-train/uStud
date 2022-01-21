@@ -13,26 +13,26 @@ local StudioComponents = require(Packages.StudioComponents)
 --[=[
 	@within Menu
 	@interface
-	.Size UDim2
-	.Position UDim2
-	.Selections { string }
+	.size UDim2
+	.position UDim2
+	.selections { string }
 ]=]
 return function(props)
 	return RoactRouter.withRouter(function(routerInfo)
-		local RenderedList = {}
+		local renderedList = {}
 
-		for _, Selection in ipairs(props.Selections) do
-			RenderedList[Selection] = Roact.createElement(StudioComponents.Button, {
+		for _, selection in ipairs(props.selections) do
+			renderedList[selection] = Roact.createElement(StudioComponents.Button, {
 				Size = UDim2.new(1, 0, 0, 25),
-				Text = Selection,
+				Text = selection,
 				OnActivated = function()
-					routerInfo.history:push(Selection)
+					routerInfo.history:push(selection)
 				end,
 			})
 		end
 		return Roact.createElement(StudioComponents.ScrollFrame, {
-			Size = props.Size,
-			Position = props.Position,
-		}, RenderedList)
+			Size = props.size,
+			Position = props.position,
+		}, renderedList)
 	end)
 end

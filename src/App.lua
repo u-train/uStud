@@ -154,10 +154,10 @@ function App:render()
 								Size = UDim2.new(1, 0, 0, 25),
 							}),
 							Menu = Roact.createElement(Menu, {
-								Size = UDim2.new(1, 0, 1, -30),
-								Position = UDim2.new(0, 0, 0, 30),
-								Selections = ROUTES,
-								History = routerInfo.history,
+								size = UDim2.new(1, 0, 1, -30),
+								position = UDim2.new(0, 0, 0, 30),
+								selections = ROUTES,
+								history = routerInfo.history,
 							}),
 						})
 					end,

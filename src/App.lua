@@ -31,11 +31,11 @@ local ROUTES = {
 
 	The app looks like this when Root is valid.
 
-	![App when Root is valid.](/rendered/app.png)
+	![App when Root is valid.](/uStud/rendered/app.png)
 
 	If it isn't valid, it will render this menu instead.
 
-	![App when Root isn't valid.](/rendered/appUponInvalidEditingIn.png)
+	![App when Root isn't valid.](/uStud/rendered/appUponInvalidEditingIn.png)
 
 	TODO:
 	1.	The way the component keeps track of "Root" is hacky. Streamline it

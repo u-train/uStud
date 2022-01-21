@@ -31,7 +31,7 @@ local StudderMouseControl = require(script.MouseController)
 
 	The menu for it looks like this:
 
-	![Studder's menu](/rendered/studder.png)
+	![Studder's menu](/uStud/rendered/studder.png)
 ]=]
 local Studder = Roact.Component:extend("Studder")
 

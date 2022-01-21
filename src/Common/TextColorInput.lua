@@ -4,7 +4,7 @@
 	boxes for the respective channels. The value for each channel can range from
 	0 to 255, with 0.1 precision. In the future, this component will support
 	putting custom channels and custom types.
-	![Image of component rendered](/rendered/textColorInput.png)
+	![Image of component rendered](/uStud/rendered/textColorInput.png)
 ]=]
 
 --[=[

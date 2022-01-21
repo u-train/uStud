@@ -30,7 +30,7 @@ local PainterMouseControl = require(script.MouseController)
 
 	This is how the menu look like:
 
-	![Painter's menu](/rendered/painter.png)
+	![Painter's menu](/uStud/rendered/painter.png)
 ]=]
 local Painter = Roact.Component:extend("Painter")
 

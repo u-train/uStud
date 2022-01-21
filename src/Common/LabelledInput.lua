@@ -2,7 +2,7 @@
 	@class LabelledInput
 	A component which wraps a ControlledInput and puts a label next to it.
 
-	![LabelledInput rendered](/rendered/labelledInput.png)
+	![LabelledInput rendered](/uStud/rendered/labelledInput.png)
 ]=]
 
 --[=[

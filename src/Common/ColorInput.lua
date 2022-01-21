@@ -5,7 +5,7 @@
 	* RGB Text input
 	* HSV Slider input
 
-	![ColorInput rendered](/rendered/colorInput.png)
+	![ColorInput rendered](/uStud/rendered/colorInput.png)
 ]=]
 
 --[=[

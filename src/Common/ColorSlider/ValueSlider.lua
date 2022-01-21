@@ -10,15 +10,15 @@ local CreateColorSequenceForSaturation = function(Color: Color3)
 	})
 end
 
-return function(Props)
-	local H, S, V = Props.Color:ToHSV()
+return function(props)
+	local H, S, V = props.Color:ToHSV()
 
 	return Roact.createElement(Slider, {
-		Position = Props.Position,
-		Size = Props.Size,
+		Position = props.Position,
+		Size = props.Size,
 		Value = V,
 		OnValueChanged = function(NewValue)
-			Props.OnValueChanged(Color3.fromHSV(H, S, NewValue))
+			props.OnValueChanged(Color3.fromHSV(H, S, NewValue))
 		end,
 		Background = Roact.createElement("Frame", {
 			Size = UDim2.fromScale(1, 1),
@@ -26,7 +26,7 @@ return function(Props)
 			Active = false,
 		}, {
 			UIGradient = Roact.createElement("UIGradient", {
-				Color = CreateColorSequenceForSaturation(Props.Color),
+				Color = CreateColorSequenceForSaturation(props.Color),
 			}),
 		}),
 	})

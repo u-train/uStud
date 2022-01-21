@@ -4,22 +4,22 @@ local Roact = require(script.Parent.Parent.Packages.Roact) :: Roact
 local FolderController = require(script.Parent.Parent.Common.FolderController)
 
 -- This is to align the studs correctly.
-local RoundMidway = function(Value, Interval)
-	Interval = Interval or 1
-	local AbsValue = math.abs(Value)
-	local Low = AbsValue - math.fmod(AbsValue, Interval)
-	return (Low + Interval / 2) * math.sign(Value)
+local roundMidway = function(value, interval)
+	interval = interval or 1
+	local absValue = math.abs(value)
+	local low = absValue - math.fmod(absValue, interval)
+	return (low + interval / 2) * math.sign(value)
 end
 
-local function CreateStud(Props)
-	local NewPart = Instance.new("Part")
-	NewPart.Size = Vector3.new(Props.PartSize, Props.PartHeight, Props.PartSize)
-	NewPart.Position = Props.Position
-	NewPart.Color = Props.Color
-	NewPart.TopSurface = Enum.SurfaceType.Smooth
-	NewPart.BottomSurface = Enum.SurfaceType.Smooth
-	NewPart.Anchored = true
-	NewPart.Parent = Props.Parent
+local function createStud(props)
+	local newPart = Instance.new("Part")
+	newPart.Size = Vector3.new(props.partSize, props.partHeight, props.partSize)
+	newPart.Position = props.position
+	newPart.Color = props.color
+	newPart.TopSurface = Enum.SurfaceType.Smooth
+	newPart.BottomSurface = Enum.SurfaceType.Smooth
+	newPart.Anchored = true
+	newPart.Parent = props.parent
 end
 
 
@@ -31,52 +31,52 @@ end
 local StudderMouseControl = Roact.Component:extend("StudderMouseControl")
 
 --[=[
-	Creates the refs, create TargetPosition binding, initalize some state, and
+	Creates the refs, create targetPosition binding, initalize some state, and
 	also binds callbacks to UserInputService.
 ]=]
 function StudderMouseControl:init()
-	self.BaseplateRef = Roact.createRef()
-	self.BrushRef = Roact.createRef()
+	self.baseplateRef = Roact.createRef()
+	self.brushRef = Roact.createRef()
 
-	self.TargetPosition, self.UpdateTargetPositionBinding = Roact.createBinding(Vector3.new(0, 0, 0))
+	self.targetPosition, self.updateTargetPositionBinding = Roact.createBinding(Vector3.new(0, 0, 0))
 
-	self.MousePressed = false
+	self.mousePressed = false
 
-	self.OnMouseLeftDown = UserInputService.InputBegan:Connect(function(InputObject, Processed)
-		if Processed then
+	self.onMouseLeftDown = UserInputService.InputBegan:Connect(function(inputObject, processed)
+		if processed then
 			return
 		end
 
-		if Enum.UserInputType.MouseButton1 ~= InputObject.UserInputType then
+		if Enum.UserInputType.MouseButton1 ~= inputObject.UserInputType then
 			return
 		end
 
-		self.MousePressed = true
-		self:OnHit()
+		self.mousePressed = true
+		self:onHit()
 	end)
 
-	self.OnMouseLeftUp = UserInputService.InputEnded:Connect(function(InputObject, _)
+	self.onMouseLeftUp = UserInputService.InputEnded:Connect(function(inputObject, _)
 		-- We'll ignore if it was processed or not. We want to immediately
 		-- stop studding if they move the move cursor out of place.
 
-		if Enum.UserInputType.MouseButton1 ~= InputObject.UserInputType then
+		if Enum.UserInputType.MouseButton1 ~= inputObject.UserInputType then
 			return
 		end
 
 		ChangeHistoryService:SetWaypoint("uStud.StudsPlaced")
-		self.MousePressed = false
+		self.mousePressed = false
 	end)
 
-	self.OnMouseMoved = UserInputService.InputChanged:Connect(function(InputObject, Processed)
-		if Processed then
+	self.onMouseMoved = UserInputService.InputChanged:Connect(function(inputObject, processed)
+		if processed then
 			return
 		end
 
-		if Enum.UserInputType.MouseMovement ~= InputObject.UserInputType then
+		if Enum.UserInputType.MouseMovement ~= inputObject.UserInputType then
 			return
 		end
 
-		self:OnHit()
+		self:onHit()
 	end)
 end
 
@@ -84,10 +84,10 @@ end
 	To disconnect event handlers and set state accordingly.
 ]=]
 function StudderMouseControl:willUnmount()
-	self.MousePressed = false
-	self.OnMouseLeftUp:Disconnect()
-	self.OnMouseLeftDown:Disconnect()
-	self.OnMouseMoved:Disconnect()
+	self.mousePressed = false
+	self.onMouseLeftUp:Disconnect()
+	self.onMouseLeftDown:Disconnect()
+	self.onMouseMoved:Disconnect()
 end
 
 --[=[
@@ -95,21 +95,21 @@ end
 	@return RoactTree
 ]=]
 function StudderMouseControl:render()
-	local CanvasSize = self.props.PartSize * 10
-	-- On render, the PartSize, SnappingInterval, or the HeightOffset could've
-	--- of changed. Update to the binding to reflect this.
-	self:UpdateTargetPosition()
+	local canvasSize = self.props.partSize * 10
+	-- On render, the partSize, SnappingInterval, or the HeightOffset could've
+	-- of changed. Update to the binding to reflect this.
+	self:updateTargetPosition()
 
-	return FolderController.WithFolder(function(Folder)
+	return FolderController.WithFolder(function(folder)
 		return Roact.createElement(Roact.Portal, {
-			target = Folder,
+			target = folder,
 		}, {
 			BaseCanvas = Roact.createElement("Part", {
-				[Roact.Ref] = self.BaseplateRef,
-				Size = Vector3.new(CanvasSize, 1, CanvasSize),
-				Position = self.TargetPosition:map(function(v)
+				[Roact.Ref] = self.baseplateRef,
+				Size = Vector3.new(canvasSize, 1, canvasSize),
+				Position = self.targetPosition:map(function(v)
 					return v * Vector3.new(1, 0, 1)
-						+ Vector3.new(self.props.PartSize / 2, self.props.HeightOffset - 1.5, self.props.PartSize / 2)
+						+ Vector3.new(self.props.partSize / 2, self.props.heightOffset - 1.5, self.props.partSize / 2)
 				end),
 				Anchored = true,
 				CanCollide = false,
@@ -117,8 +117,8 @@ function StudderMouseControl:render()
 			}, {
 				Grid = Roact.createElement("Texture", {
 					Texture = "http://www.roblox.com/asset/?id=6601217742",
-					StudsPerTileU = self.props.SnappingInterval,
-					StudsPerTileV = self.props.SnappingInterval,
+					StudsPerTileU = self.props.snappingInterval,
+					StudsPerTileV = self.props.snappingInterval,
 					Face = Enum.NormalId.Top,
 					Archivable = false,
 				}),
@@ -131,16 +131,16 @@ function StudderMouseControl:render()
 				}),
 			}),
 			Brush = Roact.createElement("Part", {
-				[Roact.Ref] = self.BrushRef,
+				[Roact.Ref] = self.brushRef,
 				Anchored = true,
 				CanCollide = true,
 				Transparency = 0.5,
-				Size = Vector3.new(self.props.PartSize, self.props.PartHeight, self.props.PartSize),
-				Position = self.TargetPosition,
+				Size = Vector3.new(self.props.partSize, self.props.partHeight, self.props.partSize),
+				Position = self.targetPosition,
 			}, {
 				Highlight = Roact.createElement("SelectionBox", {
 					LineThickness = 0.04,
-					Adornee = self.BrushRef,
+					Adornee = self.brushRef,
 				}),
 			}),
 		})
@@ -148,27 +148,27 @@ function StudderMouseControl:render()
 end
 
 --[=[
-	Updates TargetPosition binding on invoke using current state and the current
+	Updates targetPosition binding on invoke using current state and the current
 	mouse position provided by UserInputService.
 ]=]
-function StudderMouseControl:UpdateTargetPosition()
-	local MousePosition = UserInputService:GetMouseLocation()
-	local NewUnitRay = workspace.CurrentCamera:ViewportPointToRay(MousePosition.X, MousePosition.Y, 0)
+function StudderMouseControl:updateTargetPosition()
+	local mousePosition = UserInputService:GetMouseLocation()
+	local newUnitRay = workspace.CurrentCamera:ViewportPointToRay(mousePosition.X, mousePosition.Y, 0)
 
-	local WorldMousePosition = NewUnitRay.Origin
-	local WorldMouseDirection = NewUnitRay.Direction
+	local worldMousePosition = newUnitRay.Origin
+	local worldMouseDirection = newUnitRay.Direction
 
 	-- Offset by down as the grid down by one for the canvas offset.
-	local MultiplyBy = math.abs((WorldMousePosition.Y - (self.props.HeightOffset - 1)) / WorldMouseDirection.Y)
+	local multiplyBy = math.abs((worldMousePosition.Y - (self.props.heightOffset - 1)) / worldMouseDirection.Y)
 
-	local Offset = MultiplyBy * WorldMouseDirection
-	local NewPosition = WorldMousePosition + Offset
+	local offset = multiplyBy * worldMouseDirection
+	local newPosition = worldMousePosition + offset
 
-	self.UpdateTargetPositionBinding(
+	self.updateTargetPositionBinding(
 		Vector3.new(
-			RoundMidway(NewPosition.X, self.props.SnappingInterval),
-			self.props.HeightOffset - self.props.PartHeight / 2,
-			RoundMidway(NewPosition.Z, self.props.SnappingInterval)
+			roundMidway(newPosition.X, self.props.snappingInterval),
+			self.props.heightOffset - self.props.partHeight / 2,
+			roundMidway(newPosition.Z, self.props.snappingInterval)
 		)
 	)
 end
@@ -177,41 +177,41 @@ end
 	Callback on hit. Verify that the require instances exist, update position,
 	and if needed, place or delete studs.
 ]=]
-function StudderMouseControl:OnHit()
-	if self.BaseplateRef.current == nil then
+function StudderMouseControl:onHit()
+	if self.baseplateRef.current == nil then
 		return
 	end
 
-	if self.props.Root.Parent == nil then
+	if self.props.root.Parent == nil then
 		return
 	end
 
-	self:UpdateTargetPosition()
+	self:updateTargetPosition()
 
-	if not self.MousePressed then
+	if not self.mousePressed then
 		return
 	end
 
-	local IntersectingParts = self.BrushRef.current:GetTouchingParts()
-	if self.props.Deleting then
-		for _, IntersectingPart: Instance in next, IntersectingParts do
-			if IntersectingPart:IsDescendantOf(self.props.Root) then
-				IntersectingPart:Destroy()
+	local intersectingParts = self.brushRef.current:GetTouchingParts()
+	if self.props.deleting then
+		for _, intersectingPart: Instance in next, intersectingParts do
+			if intersectingPart:IsDescendantOf(self.props.root) then
+				intersectingPart:Destroy()
 			end
 		end
 	else
-		for _, IntersectingPart: Instance in next, IntersectingParts do
-			if IntersectingPart:IsDescendantOf(self.props.Root) then
+		for _, intersectingPart: Instance in next, intersectingParts do
+			if intersectingPart:IsDescendantOf(self.props.root) then
 				return
 			end
 		end
 
-		CreateStud({
-			PartSize = self.props.PartSize,
-			PartHeight = self.props.PartHeight,
-			Color = self.props.PartColor,
-			Parent = self.props.Root,
-			Position = self.TargetPosition:getValue(),
+		createStud({
+			partSize = self.props.partSize,
+			partHeight = self.props.partHeight,
+			color = self.props.partColor,
+			parent = self.props.root,
+			position = self.targetPosition:getValue(),
 		})
 	end
 end

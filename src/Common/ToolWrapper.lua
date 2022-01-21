@@ -22,23 +22,23 @@ local Common = script.Parent
 local Topbar = require(Common.Topbar)
 local LabelledInput = require(Common.LabelledInput)
 
-return function(Props)
-	return RoactRouter.withRouter(function(RouterInfo)
+return function(props)
+	return RoactRouter.withRouter(function(routerInfo)
 		return Roact.createFragment({
 			Topbar = Roact.createElement(Topbar, {
-				Title = Props.Title,
+				Title = props.Title,
 				ShowReturnBack = true,
 				Size = UDim2.new(1, 0, 0, 25),
 				OnReturn = function()
-					RouterInfo.history:goBack()
+					routerInfo.history:goBack()
 				end,
 			}),
 			View = Roact.createElement(StudioComponents.ScrollFrame, {
 				Size = UDim2.new(1, 0, 1, -55),
 				Position = UDim2.new(0, 0, 0, 25),
-			}, Props[Roact.Children]),
+			}, props[Roact.Children]),
 			Bottombar = Roact.createElement(LabelledInput, {
-				Value = InstanceQuerier.EscapeFullName(Props.Root),
+				Value = InstanceQuerier.EscapeFullName(props.Root),
 				Size = UDim2.new(1, 0, 0, 25),
 				Position = UDim2.new(0, 0, 1, -25),
 				Label = "Editing under",
@@ -50,7 +50,7 @@ return function(Props)
 						if Value == workspace or Value == game then
 							return
 						end
-						Props.EditingInChanged(Value)
+						props.EditingInChanged(Value)
 					end
 				end,
 			}),

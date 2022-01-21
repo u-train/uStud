@@ -18,18 +18,18 @@ local Packages = script.Parent.Parent.Packages
 local Roact = require(Packages.Roact)
 local StudioComponents = require(Packages.StudioComponents)
 
-return function(Props)
-	if Props.ShowReturnBack then
+return function(props)
+	if props.ShowReturnBack then
 		return Roact.createElement("Frame", {
-			Position = Props.Position,
-			Size = Props.Size,
+			Position = props.Position,
+			Size = props.Size,
 			BackgroundTransparency = 1,
 		}, {
 			ReturnBack = Roact.createElement(StudioComponents.Button, {
 				Size = UDim2.new(0, 25, 1, 0),
 				Text = "<",
 				OnActivated = function()
-					Props.OnReturn()
+					props.OnReturn()
 				end,
 			}),
 			Title = Roact.createElement(StudioComponents.Label, {
@@ -37,14 +37,14 @@ return function(Props)
 				Position = UDim2.new(0, 25, 0, 0),
 				TextSize = 16,
 				Font = Enum.Font.SourceSansBold,
-				Text = Props.Title,
+				Text = props.Title,
 			}),
 		})
 	else
 		return Roact.createElement(StudioComponents.Label, {
-			Position = Props.Position,
-			Size = Props.Size,
-			Text = Props.Title,
+			Position = props.Position,
+			Size = props.Size,
+			Text = props.Title,
 			TextSize = 16,
 			Font = Enum.Font.SourceSansBold,
 		})

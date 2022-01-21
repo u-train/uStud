@@ -53,7 +53,7 @@ local Colors = {
 	@param Props Props
 	@return (Channel: string) -> (Text: string) -> nil
 ]=]
-local CreateColorChannelChangedFactory = function(Props)
+local CreateColorChannelChangedFactory = function(props)
 	return function(Channel)
 		return function(Text)
 			local NewNumber = tonumber(Text)
@@ -62,24 +62,24 @@ local CreateColorChannelChangedFactory = function(Props)
 			end
 
 			local NewColor = {
-				Props.Color.R,
-				Props.Color.G,
-				Props.Color.B,
+				props.Color.R,
+				props.Color.G,
+				props.Color.B,
 			}
 
 			NewColor[Channel] = NewNumber / 255
-			Props.OnColorChanged(Color3.new(unpack(NewColor)))
+			props.OnColorChanged(Color3.new(unpack(NewColor)))
 		end
 	end
 end
 
-return function(Props)
+return function(props)
 	local Children = {}
-	local GivenColorChannelChanged = CreateColorChannelChangedFactory(Props)
+	local GivenColorChannelChanged = CreateColorChannelChangedFactory(props)
 
 	for Key, Color in next, Colors do
 		Children[Color] = Roact.createElement(ControlledInput, {
-			Value = FormatColor(Props.Color[Color]),
+			Value = FormatColor(props.Color[Color]),
 			OnValueChanged = GivenColorChannelChanged(Key),
 			Size = UDim2.new(1 / 3, 0, 1, 0),
 			Position = UDim2.new(
@@ -92,8 +92,8 @@ return function(Props)
 	end
 
 	return Roact.createElement("Frame", {
-		Size = Props.Size,
-		Position = Props.Position,
+		Size = props.Size,
+		Position = props.Position,
 		BackgroundTransparency = 1
 	}, Children)
 end

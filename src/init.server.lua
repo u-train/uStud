@@ -6,89 +6,84 @@ local Interface = require(script.Main)(plugin)
 	Essentially bootstraps this plugin with clean-up and loads `Main.lua`.
 	It expects the following interface from `Main.lua`:
 
-	- Interface.Loaded(Widget)
-	- Interface.Activated(Mouse, Widget)
-	- Interface.Deactivated(Mouse)
-	- Interface.Unloaded()
+	- Interface.loaded(Widget)
+	- Interface.activated(Mouse, Widget)
+	- Interface.deactivated(Mouse)
+	- Interface.unloaded()
 ]=]
+local Bootstrapper = {}
+Bootstrapper.active = false
 
-local PluginMaid = Maid.new()
-local Active = false
+local pluginMaid = Maid.new()
 
-local Toolbar = PluginMaid:GiveTask(plugin:CreateToolbar("uStud"))
+local Toolbar = pluginMaid:GiveTask(plugin:CreateToolbar("uStud"))
 
-local Button = PluginMaid:GiveTask(
+local Button = pluginMaid:GiveTask(
 	Toolbar:CreateButton("ActivatePlugin", "Start uStud", "http://www.roblox.com/asset/?id=118532704")
 )
 
-local WidgetArgs = DockWidgetPluginGuiInfo.new(Enum.InitialDockState.Float, false, false, 250, 300, 220, 220)
+local widgetArgs = DockWidgetPluginGuiInfo.new(Enum.InitialDockState.Float, false, false, 250, 300, 220, 220)
 
-local Widget = PluginMaid:GiveTask(plugin:CreateDockWidgetPluginGui("uStud Control Panel", WidgetArgs)) :: DockWidgetPluginGui
+local widget = pluginMaid:GiveTask(plugin:CreateDockWidgetPluginGui("uStud Control Panel", widgetArgs)) :: DockWidgetPluginGui
 
-Widget.Enabled = false
-Widget.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
-Widget.Title = "uStud Panel"
+widget.Enabled = false
+widget.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+widget.Title = "uStud Panel"
 
-Widget:BindToClose(function()
+widget:BindToClose(function()
 	plugin:Deactivate()
 end)
 
 --[=[
-	@function Unloading
-	@within Bootstrapper
 	Called when the plugin is being unloaded.
 ]=]
-local function Unloading()
+function Bootstrapper.unloading()
 	plugin:Deactivate()
-	Interface.Unloaded()
-	PluginMaid:Cleanup()
+	Interface.unloaded()
+	pluginMaid:Cleanup()
 end
 
 --[=[
-	@function Deactivating
-	@within Bootstrapper
 	Called when the plugin is being deactivated. If it's already deactivated, it
 	will do nothing. If it's deactivating, it will disable the widget and invoke
 	the handle.
 ]=]
-local function Deactivating()
-	if Active == false then
+function Bootstrapper.deactivating()
+	if Bootstrapper.active == false then
 		return
 	end
 
-	Active = false
-	Widget.Enabled = false
-	Interface.Deactivated(plugin:GetMouse())
+	Bootstrapper.active = false
+	widget.Enabled = false
+	Interface.deactivated(plugin:GetMouse())
 end
 
 --[=[
-	@function Activating
-	@within Bootstrapper
 	Called when the plugin is being activated. If it's already active, it will
 	do nothing. If it's activating, it will call the plugin activate method, and
 	pass the mouse and widget to the handle.
 ]=]
-local function Activating()
-	if Active == true then
+function Bootstrapper.activating()
+	if Bootstrapper.active == true then
 		return
 	end
 
-	Active = true
+	Bootstrapper.active = true
 	plugin:Activate(true)
-	Interface.Activated(plugin:GetMouse(), Widget)
-	Widget.Enabled = true
+	Interface.activated(plugin:GetMouse(), widget)
+	widget.Enabled = true
 end
 
-PluginMaid:GiveTask(Button.Click:Connect(function()
-	if Active then
+pluginMaid:GiveTask(Button.Click:Connect(function()
+	if Bootstrapper.active then
 		plugin:Deactivate()
 	else
-		Activating()
+		Bootstrapper.activating()
 	end
 end))
 
-PluginMaid:GiveTask(plugin.Deactivation:Connect(Deactivating))
+pluginMaid:GiveTask(plugin.Deactivation:Connect(Bootstrapper.deactivating))
 
-PluginMaid:GiveTask(plugin.Unloading:Connect(Unloading))
+pluginMaid:GiveTask(plugin.Unloading:Connect(Bootstrapper.unloading))
 
-Interface.Loaded(Widget)
+Interface.loaded(widget)

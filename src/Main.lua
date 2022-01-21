@@ -5,38 +5,38 @@ return function(plugin)
 
 	local Module = {}
 
-	Module.Loaded = function(Widget)
-		Module.RoactHandle = Roact.mount(
+	Module.loaded = function(widget)
+		Module.roactHandle = Roact.mount(
 			Roact.createElement(App, {
-				Active = false,
-				SettingManager = Settings,
+				active = false,
+				settingManager = Settings,
 			}),
-			Widget
+			widget
 		)
 	end
 
-	Module.Activated = function()
+	Module.activated = function()
 		Roact.update(
-			Module.RoactHandle,
+			Module.roactHandle,
 			Roact.createElement(App, {
-				Active = true,
-				SettingManager = Settings,
+				active = true,
+				settingManager = Settings,
 			})
 		)
 	end
 
-	Module.Deactivated = function()
+	Module.deactivated = function()
 		Roact.update(
-			Module.RoactHandle,
+			Module.roactHandle,
 			Roact.createElement(App, {
-				Active = false,
-				SettingManager = Settings,
+				active = false,
+				settingManager = Settings,
 			})
 		)
 	end
 
-	Module.Unloaded = function()
-		Roact.unmount(Module.RoactHandle)
+	Module.unloaded = function()
+		Roact.unmount(Module.roactHandle)
 	end
 
 	return Module

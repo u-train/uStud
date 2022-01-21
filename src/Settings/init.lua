@@ -44,12 +44,9 @@ return function(plugin)
 	end
 
 	return {
-
 		Get = function(SettingName)
 			return Settings[SettingName]
 		end,
-
-
 		Set = function(SettingName, Value)
 			Settings[SettingName] = Value
 			plugin:SetSetting(Prefix .. SettingName, Value)

@@ -23,11 +23,11 @@ local StudderMouseControl = require(script.MouseController)
 
 	Some facts:
 	- MaxSize = 200
-	- MinSize = 0.05
-	- MaxHeightOffset = 10
-	- MinHeightOffset = -10
-	- MaxHeight = 5
-	- MinHeight = 0.05
+	- minSize = 0.05
+	- maxHeightOffset = 10
+	- minHeightOffset = -10
+	- maxHeight = 5
+	- minHeight = 0.05
 
 	The menu for it looks like this:
 
@@ -35,50 +35,50 @@ local StudderMouseControl = require(script.MouseController)
 ]=]
 local Studder = Roact.Component:extend("Studder")
 
-local MaxSize = 200
-local MinSize = 0.05
-local MaxHeightOffset = 10
-local MinHeightOffset = -10
-local MaxHeight = 5
-local MinHeight = 0.05
+local maxSize = 200
+local minSize = 0.05
+local maxHeightOffset = 10
+local minHeightOffset = -10
+local maxHeight = 5
+local minHeight = 0.05
 
-local ActionNames = {
-	IncreasePartSize = "IncreasePartSize",
-	DecreasePartSize = "DecreasePartSize",
-	IncreaseSnappingInterval = "IncreaseSnappingInterval",
-	DecreaseSnappingInterval = "DecreaseSnappingInterval",
-	ToggleDelete = "ToggleDelete",
+local actionNames = {
+	increasePartSize = "increasePartSize",
+	decreasePartSize = "decreasePartSize",
+	increaseSnappingInterval = "increaseSnappingInterval",
+	decreaseSnappingInterval = "decreaseSnappingInterval",
+	toggleDelete = "toggleDelete",
 }
 
 --[=[
 	@within Studder
 	@interface Props
-	.Root Instance
-	.EditingInChanged (string) -> nil
-	.HeightOffset number
-	.HeightOffsetChanged (number) -> nil
+	.root Instance
+	.editingInChanged (string) -> nil
+	.heightOffset number
+	.heightOffsetChanged (number) -> nil
 ]=]
 --[=[
 	Sets state and binds hotkeys.
 ]=]
 function Studder:init()
 	self:setState({
-		SnappingInterval = 1,
-		PartSize = 1,
-		PartColor = Color3.fromRGB(163, 162, 165),
-		PartHeight = 1,
-		Deleting = false,
+		snappingInterval = 1,
+		partSize = 1,
+		partColor = Color3.fromRGB(163, 162, 165),
+		partHeight = 1,
+		deleting = false,
 	})
 
-	self:BindHotkeys()
+	self:bindHotkeys()
 end
 
 --[=[
 	Here to unbind all the hotkeys.
 ]=]
 function Studder:willUnmount()
-	for _, ActionName in next, ActionNames do
-		ContextActionService:UnbindAction(ActionName)
+	for _, actionName in next, actionNames do
+		ContextActionService:UnbindAction(actionName)
 	end
 end
 
@@ -89,171 +89,171 @@ end
 function Studder:render()
 	return Roact.createElement(ToolWrapper, {
 		Title = "Studder",
-		Root = self.props.Root,
-		EditingInChanged = self.props.EditingInChanged,
+		Root = self.props.root,
+		EditingInChanged = self.props.editingInChanged,
 	}, {
-		PartSizeInput = Roact.createElement(LabelledInput, {
-			Value = self.state.PartSize,
+		partSizeInput = Roact.createElement(LabelledInput, {
+			Value = self.state.partSize,
 			Size = UDim2.new(1, 0, 0, 25),
 			Label = "Part Size",
 
-			OnValueChanged = function(Text)
-				local NewSize = tonumber(Text)
+			OnValueChanged = function(text)
+				local newSize = tonumber(text)
 
-				if NewSize == nil then
+				if newSize == nil then
 					return
 				end
 
-				self:UpdatePartSize(NewSize)
+				self:updatePartSize(newSize)
 			end,
 		}),
-		HeightOffsetInput = Roact.createElement(LabelledInput, {
-			Value = self.props.HeightOffset,
+		heightOffsetInput = Roact.createElement(LabelledInput, {
+			Value = self.props.heightOffset,
 			Size = UDim2.new(1, 0, 0, 25),
 			Label = "Height offset",
 
-			OnValueChanged = function(Text)
-				local NewValue = tonumber(Text)
+			OnValueChanged = function(text)
+				local newValue = tonumber(text)
 
-				if NewValue == nil then
+				if newValue == nil then
 					return
 				end
 
-				self.props.HeightOffsetChanged(math.clamp(NewValue, MinHeightOffset, MaxHeightOffset))
+				self.props.heightOffsetChanged(math.clamp(newValue, minHeightOffset, maxHeightOffset))
 			end,
 		}),
-		PartHeightInput = Roact.createElement(LabelledInput, {
-			Value = self.state.PartHeight,
+		partHeightInput = Roact.createElement(LabelledInput, {
+			Value = self.state.partHeight,
 			Size = UDim2.new(1, 0, 0, 25),
 			Label = "Part Height",
 
-			OnValueChanged = function(Text)
-				local NewValue = tonumber(Text)
+			OnValueChanged = function(text)
+				local newValue = tonumber(text)
 
-				if NewValue == nil then
+				if newValue == nil then
 					return
 				end
 
-				NewValue = math.clamp(NewValue, MinHeight, MaxHeight)
+				newValue = math.clamp(newValue, minHeight, maxHeight)
 
 				self:setState({
-					PartHeight = NewValue,
+					partHeight = newValue,
 				})
 			end,
 		}),
 		SnappingInput = Roact.createElement(LabelledInput, {
-			Value = self.state.SnappingInterval,
+			Value = self.state.snappingInterval,
 			Size = UDim2.new(1, 0, 0, 25),
 			Label = "Snapping Interval",
 
-			OnValueChanged = function(Text)
-				local NewInterval = tonumber(Text)
+			OnValueChanged = function(text)
+				local newInterval = tonumber(text)
 
-				if NewInterval == nil then
+				if newInterval == nil then
 					return
 				end
 
 				self:setState({
-					SnappingInterval = math.min(NewInterval, self.state.PartSize),
+					snappingInterval = math.min(newInterval, self.state.partSize),
 				})
 			end,
 		}),
 		ColorInput = Roact.createElement(ColorInput, {
-			Color = self.state.PartColor,
+			Color = self.state.partColor,
 			Label = "Part Color",
 			Size = UDim2.new(1, 0, 0, 30),
-			OnColorChanged = function(NewColor)
+			OnColorChanged = function(newColor)
 				self:setState({
-					PartColor = NewColor,
+					partColor = newColor,
 				})
 			end,
 		}),
-		ToggleDelete = Roact.createElement(StudioComponents.Button, {
-			Text = self.state.Deleting and "Currently deleting" or "Currently placing",
+		toggleDelete = Roact.createElement(StudioComponents.Button, {
+			Text = self.state.deleting and "Currently deleting" or "Currently placing",
 			Size = UDim2.new(1, 0, 0, 25),
 			OnActivated = function()
 				self:setState({
-					Deleting = not self.state.Deleting,
+					deleting = not self.state.deleting,
 				})
 			end,
 		}),
 		Roact.createElement(StudderMouseControl, {
-			SnappingInterval = self.state.SnappingInterval,
-			PartSize = self.state.PartSize,
-			PartColor = self.state.PartColor,
-			PartHeight = self.state.PartHeight,
-			HeightOffset = self.props.HeightOffset,
-			Deleting = self.state.Deleting,
-			Root = self.props.Root,
+			snappingInterval = self.state.snappingInterval,
+			partSize = self.state.partSize,
+			partColor = self.state.partColor,
+			partHeight = self.state.partHeight,
+			heightOffset = self.props.heightOffset,
+			deleting = self.state.deleting,
+			root = self.props.root,
 		}),
 	})
 end
 
 --[=[
-	Updates UpdatePartSize, making sure it's bounded, with the given number.
+	Updates partSize, making sure it's bounded, with the given number.
 	@param To number
 ]=]
-function Studder:UpdatePartSize(To)
-	local NewPartSize = math.clamp(To, MinSize, MaxSize)
+function Studder:updatePartSize(to)
+	local newPartSize = math.clamp(to, minSize, maxSize)
 
 	self:setState({
-		PartSize = NewPartSize,
-		SnappingInterval = NewPartSize,
+		partSize = newPartSize,
+		snappingInterval = newPartSize,
 	})
 end
 
 --[=[
-	Updates SnappingInterval, making sure it's bounded, with the given number.
+	Updates snappingInterval, making sure it's bounded, with the given number.
 	@param To number
 ]=]
-function Studder:UpdateSnappingInterval(To)
+function Studder:updateSnappingInterval(to)
 	self:setState({
-		SnappingInterval = math.min(math.clamp(To, MinSize, MaxSize), self.state.PartSize),
+		snappingInterval = math.min(math.clamp(to, minSize, maxSize), self.state.partSize),
 	})
 end
 
 --[=[
 	Binds hotkeys for the tool.
 ]=]
-function Studder:BindHotkeys()
-	ContextActionService:BindAction(ActionNames.IncreaseSnappingInterval, function(_, State)
-		if State ~= Enum.UserInputState.Begin then
+function Studder:bindHotkeys()
+	ContextActionService:BindAction(actionNames.increaseSnappingInterval, function(_, state)
+		if state ~= Enum.UserInputState.Begin then
 			return
 		end
 
-		self:UpdateSnappingInterval(self.state.SnappingInterval * 2)
+		self:updateSnappingInterval(self.state.snappingInterval * 2)
 	end, false, Enum.KeyCode.V)
 
-	ContextActionService:BindAction(ActionNames.DecreaseSnappingInterval, function(_, State)
-		if State ~= Enum.UserInputState.Begin then
+	ContextActionService:BindAction(actionNames.decreaseSnappingInterval, function(_, state)
+		if state ~= Enum.UserInputState.Begin then
 			return
 		end
 
-		self:UpdateSnappingInterval(self.state.SnappingInterval / 2)
+		self:updateSnappingInterval(self.state.snappingInterval / 2)
 	end, false, Enum.KeyCode.C)
 
-	ContextActionService:BindAction(ActionNames.IncreasePartSize, function(_, State)
-		if State ~= Enum.UserInputState.Begin then
+	ContextActionService:BindAction(actionNames.increasePartSize, function(_, state)
+		if state ~= Enum.UserInputState.Begin then
 			return
 		end
 
-		self:UpdatePartSize(self.state.PartSize * 2)
+		self:updatePartSize(self.state.partSize * 2)
 	end, false, Enum.KeyCode.Z)
 
-	ContextActionService:BindAction(ActionNames.DecreasePartSize, function(_, State)
-		if State ~= Enum.UserInputState.Begin then
+	ContextActionService:BindAction(actionNames.decreasePartSize, function(_, state)
+		if state ~= Enum.UserInputState.Begin then
 			return
 		end
 
-		self:UpdatePartSize(self.state.PartSize / 2)
+		self:updatePartSize(self.state.partSize / 2)
 	end, false, Enum.KeyCode.X)
 
-	ContextActionService:BindAction(ActionNames.ToggleDelete, function(_, State)
-		if State ~= Enum.UserInputState.Begin then
+	ContextActionService:BindAction(actionNames.toggleDelete, function(_, state)
+		if state ~= Enum.UserInputState.Begin then
 			return
 		end
 
-		self:setState({ Deleting = not self.state.Deleting })
+		self:setState({ deleting = not self.state.deleting })
 	end, false, Enum.KeyCode.R)
 end
 

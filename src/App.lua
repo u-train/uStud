@@ -51,19 +51,19 @@ local App = Roact.Component:extend("App")
 --[=[
 	@within App
 	@interface Props
-	.SettingManager Settings
-	.Enabled boolean
+	.settingManager Settings
+	.enabled boolean
 ]=]
 function App:init()
-	local Success, Value = pcall(InstanceQuerier.Select, game, self.props.SettingManager.Get("DefaultEditingIn"))
+	local success, value = pcall(InstanceQuerier.Select, game, self.props.settingManager.Get("DefaultEditingIn"))
 
-	local DefaultRoot = if Success then Value else nil
+	local defaultRoot = if success then value else nil
 
-	self:HookOnTargetRootInstance(DefaultRoot)
+	self:hookOnTargetRootInstance(defaultRoot)
 
 	self:setState({
-		Root = DefaultRoot,
-		HeightOffset = self.props.SettingManager.Get("HeightOffset") or 1,
+		root = defaultRoot,
+		heightOffset = self.props.settingManager.Get("HeightOffset") or 1,
 	})
 end
 
@@ -71,17 +71,17 @@ end
 	It's here to make sure that before the component updates, the new location
 	that the tool edits in is binded.
 ]=]
-function App:willUpdate(_, IncomingState)
-	self:HookOnTargetRootInstance(IncomingState.Root)
+function App:willUpdate(_, incomingState)
+	self:hookOnTargetRootInstance(incomingState.Root)
 end
 
 --[=[
 	To disconnect the event keeping track of changes.
 ]=]
 function App:willUnmount()
-	if self.Event then
-		self.Event:Disconnect()
-		self.Event = nil
+	if self.event then
+		self.event:Disconnect()
+		self.event = nil
 	end
 end
 
@@ -90,11 +90,11 @@ end
 	@return RoactTree
 ]=]
 function App:render()
-	if not self.props.Active then
+	if not self.props.active then
 		return
 	end
 
-	if self.state.Root == nil then
+	if self.state.root == nil then
 		return Roact.createElement(StudioComponents.Background, {}, {
 			View = Roact.createElement(StudioComponents.Label, {
 				Text = "Instance that was targetted to be edited in is no longer valid! This is because it is no longer a descendant of Workspace.",
@@ -109,16 +109,16 @@ function App:render()
 				Position = UDim2.new(0, 0, 1, -25),
 				Label = "Editing under",
 
-				OnValueChanged = function(Text)
-					local Success, Value = pcall(InstanceQuerier.Select, game, Text)
+				OnValueChanged = function(text)
+					local success, value = pcall(InstanceQuerier.Select, game, text)
 
-					if Success then
-						if Value == workspace or Value == game then
+					if success then
+						if value == workspace or value == game then
 							return
 						end
 
 						self:setState({
-							Root = Value,
+							root = value,
 						})
 					end
 				end,
@@ -126,27 +126,27 @@ function App:render()
 		})
 	end
 
-	local ToolProps = {
-		Root = self.state.Root,
-		EditingInChanged = function(Value)
+	local toolProps = {
+		root = self.state.root,
+		editingInChanged = function(value)
 			self:setState({
-				Root = Value,
+				root = value,
 			})
 		end,
-		HeightOffset = self.state.HeightOffset,
-		HeightOffsetChanged = function(Value)
+		heightOffset = self.state.heightOffset,
+		heightOffsetChanged = function(value)
 			self:setState({
-				HeightOffset = Value,
+				heightOffset = value,
 			})
 		end,
 	}
 
-	return Roact.createElement(FolderController, { Value = self.Folder }, {
+	return Roact.createElement(FolderController, {}, {
 		Container = Roact.createElement(StudioComponents.Background, {}, {
 			Router = Roact.createElement(RoactRouter.Router, {}, {
 				Menu = Roact.createElement(RoactRouter.Route, {
 					path = "/",
-					render = function(RouterInfo) -- history, match, location
+					render = function(routerInfo)
 						return Roact.createFragment({
 							Topbar = Roact.createElement(Topbar, {
 								Title = "Menu",
@@ -157,7 +157,7 @@ function App:render()
 								Size = UDim2.new(1, 0, 1, -30),
 								Position = UDim2.new(0, 0, 0, 30),
 								Selections = ROUTES,
-								History = RouterInfo.history,
+								History = routerInfo.history,
 							}),
 						})
 					end,
@@ -165,15 +165,15 @@ function App:render()
 				Studder = Roact.createElement(RoactRouter.Route, {
 					path = "Studder",
 					render = function(_)
-						return Roact.createElement(Studder, ToolProps)
+						return Roact.createElement(Studder, toolProps)
 					end,
 				}),
-				Painter = Roact.createElement(RoactRouter.Route, {
-					path = "Painter",
-					render = function(_)
-						return Roact.createElement(Painter, ToolProps)
-					end,
-				}),
+				-- Painter = Roact.createElement(RoactRouter.Route, {
+				-- 	path = "Painter",
+				-- 	render = function(_)
+				-- 		return Roact.createElement(Painter, toolProps)
+				-- 	end,
+				-- }),
 			}),
 		}),
 	})
@@ -182,27 +182,27 @@ end
 --[=[
 	Hooks onto target and ensures last target disconnects before doing so. Keeps
 	track of target if it gets deparented.
-	@param Root Instance?
+	@param root Instance?
 ]=]
-function App:HookOnTargetRootInstance(Root)
-	if self.Event and self.Event.Connected then
-		self.Event:Disconnect()
-		self.Event = nil
+function App:hookOnTargetRootInstance(root)
+	if self.event and self.event.Connected then
+		self.event:Disconnect()
+		self.event = nil
 	end
 
-	if Root == nil then
+	if root == nil then
 		return
 	end
 
-	self.Event = Root.AncestryChanged:Connect(function(_, Parent)
-		if Parent == nil or (Parent and not Parent:IsDescendantOf(workspace)) then
+	self.event = root.AncestryChanged:Connect(function(_, parent)
+		if parent == nil or (parent and not parent:IsDescendantOf(workspace)) then
 			self:setState({
-				Root = Roact.None,
+				root = Roact.None,
 			})
 
-			if self.Event and self.Event.Connected then
-				self.Event:Disconnect()
-				self.Event = nil
+			if self.event and self.event.Connected then
+				self.event:Disconnect()
+				self.event = nil
 			end
 		end
 	end)

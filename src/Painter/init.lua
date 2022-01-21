@@ -34,19 +34,19 @@ local PainterMouseControl = require(script.MouseController)
 ]=]
 local Painter = Roact.Component:extend("Painter")
 
-local ActionNames = {
-	IncreaseBrushDiameter = "IncreaseBrushDiameter",
-	DecreaseBrushDiameter = "DecreaseBrushDiameter",
-	ToggleSecondaryOnly = "ToggleSecondaryOnly",
-	SamplePrimaryColor = "SamplePrimaryColor",
-	SampleSecondaryColor = "SampleSecondaryColorColor",
+local actionNames = {
+	increaseBrushDiameter = "increaseBrushDiameter",
+	decreaseBrushDiameter = "decreaseBrushDiameter",
+	toggleSecondaryOnly = "toggleSecondaryOnly",
+	samplePrimaryColor = "samplePrimaryColor",
+	sampleSecondaryColor = "SampleSecondaryColorColor",
 }
 
 --[=[
 	@within Painter
 	@interface Props
-	.Root Instance
-	.EditingInChanged (string) -> nil
+	.root Instance
+	.editingInChanged (string) -> nil
 	.HeightOffset number
 	.HeightOffsetChanged (number) -> nil
 ]=]
@@ -55,21 +55,21 @@ local ActionNames = {
 ]=]
 function Painter:init()
 	self:setState({
-		PrimaryColor = Color3.fromRGB(163, 162, 165),
-		SecondaryColor = Color3.fromRGB(163, 162, 165),
-		BrushDiameter = 2,
-		SecondaryOnly = false,
+		primaryColor = Color3.fromRGB(163, 162, 165),
+		secondaryColor = Color3.fromRGB(163, 162, 165),
+		brushDiameter = 2,
+		secondaryOnly = false,
 	})
 
-	self:BindHotkeys()
+	self:bindHotkeys()
 end
 
 --[=[
 	To unbind hotkeys.
 ]=]
 function Painter:willUnmount()
-	for _, ActionName in next, ActionNames do
-		ContextActionService:UnbindAction(ActionName)
+	for _, actionName in next, actionNames do
+		ContextActionService:UnbindAction(actionName)
 	end
 end
 
@@ -80,63 +80,63 @@ end
 function Painter:render()
 	return Roact.createElement(ToolWrapper, {
 		Title = "Painter",
-		Root = self.props.Root,
-		EditingInChanged = self.props.EditingInChanged,
+		Root = self.props.root,
+		EditingInChanged = self.props.editingInChanged,
 	}, {
 
 		PrimaryColor = Roact.createElement(ColorInput, {
-			Color = self.state.PrimaryColor,
+			Color = self.state.primaryColor,
 			Label = "Primary",
 			Size = UDim2.new(1, 0, 0, 30),
-			OnColorChanged = function(NewColor)
+			OnColorChanged = function(newColor)
 				self:setState({
-					PrimaryColor = NewColor,
+					primaryColor = newColor,
 				})
 			end,
 		}),
 		SecondaryColor = Roact.createElement(ColorInput, {
-			Color = self.state.SecondaryColor,
+			Color = self.state.secondaryColor,
 			Label = "Secondary",
 			Size = UDim2.new(1, 0, 0, 30),
-			OnColorChanged = function(NewColor)
+			OnColorChanged = function(newColor)
 				self:setState({
-					SecondaryColor = NewColor,
+					secondaryColor = newColor,
 				})
 			end,
 		}),
 		BrushDiameter = Roact.createElement(LabelledInput, {
-			Value = self.state.BrushDiameter,
+			Value = self.state.brushDiameter,
 			Size = UDim2.new(1, 0, 0, 25),
 			Label = "Brush Radius",
 
-			OnValueChanged = function(Text)
-				local NewInterval = tonumber(Text)
+			OnValueChanged = function(text)
+				local newInterval = tonumber(text)
 
-				if NewInterval == nil then
+				if newInterval == nil then
 					return
 				end
 
 				self:setState({
-					BrushDiameter = NewInterval,
+					brushDiameter = newInterval,
 				})
 			end,
 		}),
-		ToggleSecondaryOnly = Roact.createElement(StudioComponents.Button, {
-			Text = self.state.SecondaryOnly and "Painting studs with matching secondary color only"
+		toggleSecondaryOnly = Roact.createElement(StudioComponents.Button, {
+			Text = self.state.secondaryOnly and "Painting studs with matching secondary color only"
 				or "Painting any studs",
 			Size = UDim2.new(1, 0, 0, 25),
 			OnActivated = function()
 				self:setState({
-					SecondaryOnly = not self.state.SecondaryOnly,
+					secondaryOnly = not self.state.secondaryOnly,
 				})
 			end,
 		}),
 		PainterMouseControl = Roact.createElement(PainterMouseControl, {
-			Root = self.props.Root,
-			PrimaryColor = self.state.PrimaryColor,
-			BrushDiameter = self.state.BrushDiameter,
-			SecondaryColor = self.state.SecondaryColor,
-			SecondaryOnly = self.state.SecondaryOnly,
+			root = self.props.root,
+			primaryColor = self.state.primaryColor,
+			brushDiameter = self.state.brushDiameter,
+			secondaryColor = self.state.secondaryColor,
+			secondaryOnly = self.state.secondaryOnly,
 		}),
 	})
 end
@@ -144,69 +144,69 @@ end
 --[=[
 	Bind hotkeys.
 ]=]
-function Painter:BindHotkeys()
-	ContextActionService:BindAction(ActionNames.SamplePrimaryColor, function(_, State)
-		if State ~= Enum.UserInputState.Begin then
+function Painter:bindHotkeys()
+	ContextActionService:BindAction(actionNames.samplePrimaryColor, function(_, state)
+		if state ~= Enum.UserInputState.Begin then
 			return
 		end
 
-		local Result = GetRaycastResultFromMouse(UserInputService:GetMouseLocation(), self.props.Root)
+		local result = GetRaycastResultFromMouse(UserInputService:GetMouseLocation(), self.props.root)
 
-		if Result == nil then
+		if result == nil then
 			return
 		end
 
-		local HitInstance = Result.Instance
+		local HitInstance = result.Instance
 
 		if HitInstance:IsA("BasePart") then
 			self:setState({
-				PrimaryColor = (HitInstance :: BasePart).Color,
+				primaryColor = (HitInstance :: BasePart).Color,
 			})
 		end
 	end, false, Enum.KeyCode.Z)
 
-	ContextActionService:BindAction(ActionNames.SampleSecondaryColor, function(_, State)
-		if State ~= Enum.UserInputState.Begin then
+	ContextActionService:BindAction(actionNames.sampleSecondaryColor, function(_, state)
+		if state ~= Enum.UserInputState.Begin then
 			return
 		end
 
-		local Result = GetRaycastResultFromMouse(UserInputService:GetMouseLocation(), self.props.Root)
+		local result = GetRaycastResultFromMouse(UserInputService:GetMouseLocation(), self.props.root)
 
-		if Result == nil then
+		if result == nil then
 			return
 		end
 
-		local HitInstance = Result.Instance
+		local HitInstance = result.Instance
 
 		if HitInstance:IsA("BasePart") then
 			self:setState({
-				SecondaryColor = (HitInstance :: BasePart).Color,
+				secondaryColor = (HitInstance :: BasePart).Color,
 			})
 		end
 	end, false, Enum.KeyCode.X)
 
-	ContextActionService:BindAction(ActionNames.ToggleSecondaryOnly, function(_, State)
-		if State ~= Enum.UserInputState.Begin then
+	ContextActionService:BindAction(actionNames.toggleSecondaryOnly, function(_, state)
+		if state ~= Enum.UserInputState.Begin then
 			return
 		end
 
-		self:setState({ SecondaryOnly = not self.state.SecondaryOnly })
+		self:setState({ secondaryOnly = not self.state.secondaryOnly })
 	end, false, Enum.KeyCode.C)
 
-	ContextActionService:BindAction(ActionNames.IncreaseBrushDiameter, function(_, State)
-		if State ~= Enum.UserInputState.Begin then
+	ContextActionService:BindAction(actionNames.increaseBrushDiameter, function(_, state)
+		if state ~= Enum.UserInputState.Begin then
 			return
 		end
 
-		self:setState({ BrushDiameter = math.max(self.state.BrushDiameter + 1, 0) })
+		self:setState({ brushDiameter = math.max(self.state.brushDiameter + 1, 0) })
 	end, false, Enum.KeyCode.R)
 
-	ContextActionService:BindAction(ActionNames.DecreaseBrushDiameter, function(_, State)
-		if State ~= Enum.UserInputState.Begin then
+	ContextActionService:BindAction(actionNames.decreaseBrushDiameter, function(_, state)
+		if state ~= Enum.UserInputState.Begin then
 			return
 		end
 
-		self:setState({ BrushDiameter = math.max(self.state.BrushDiameter - 1, 0) })
+		self:setState({ brushDiameter = math.max(self.state.brushDiameter - 1, 0) })
 	end, false, Enum.KeyCode.F)
 end
 

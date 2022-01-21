@@ -6,11 +6,11 @@ local Common = script.Parent.Parent.Common
 local GetRaycastResultFromMouse = require(Common.GetRaycastResultFromMouse)
 local FolderController = require(Common.FolderController)
 
-local function CreateAdorn(Parent)
-	local Adorn = Instance.new("SelectionBox")
-	Adorn.Parent = Parent
-	Adorn.LineThickness = 0.05
-	return Adorn
+local function createAdorn(Parent)
+	local adorn = Instance.new("SelectionBox")
+	adorn.Parent = Parent
+	adorn.LineThickness = 0.05
+	return adorn
 end
 
 --[=[
@@ -26,50 +26,50 @@ local PainterMouseControl = Roact.Component:extend("PainterMouseControl")
 	Initalize refs, hook into UserInputService, and initalize adorns.
 ]=]
 function PainterMouseControl:init()
-	self.BrushRef = Roact.createRef()
-	self.BrushPositionBinding, self.UpdateBrushPosition = Roact.createBinding(Vector3.new())
-	self.Adorns = {}
-	self.AdornContainer = Instance.new("Folder")
-	self.AdornContainer.Name = "AdornContainer"
-	self.AdornContainer.Parent = workspace
+	self.brushRef = Roact.createRef()
+	self.brushPositionBinding, self.updateBrushPosition = Roact.createBinding(Vector3.new())
+	self.adorns = {}
+	self.adornContainer = Instance.new("Folder")
+	self.adornContainer.Name = "AdornContainer"
+	self.adornContainer.Parent = workspace
 
-	self.IsPainting = false
+	self.isPainting = false
 
-	self.InputBegan = UserInputService.InputBegan:Connect(function(Input, Processed)
-		if Enum.UserInputType.MouseButton1 ~= Input.UserInputType then
+	self.inputBegan = UserInputService.InputBegan:Connect(function(input, processed)
+		if Enum.UserInputType.MouseButton1 ~= input.UserInputType then
 			return
 		end
 
-		if Processed then
+		if processed then
 			return
 		end
 
-		if self.props.Root.Parent == nil then
+		if self.props.root.Parent == nil then
 			return
 		end
 
-		self.IsPainting = true
-		self:UpdateAndPaintBrush(Input)
+		self.isPainting = true
+		self:updateAndPaintBrush(input)
 	end)
 
-	self.InputChanged = UserInputService.InputChanged:Connect(function(Input, Processed)
-		if Input.UserInputType ~= Enum.UserInputType.MouseMovement then
+	self.inputChanged = UserInputService.InputChanged:Connect(function(input, processed)
+		if input.UserInputType ~= Enum.UserInputType.MouseMovement then
 			return
 		end
 
-		if Processed then
+		if processed then
 			return
 		end
 
-		self:UpdateAndPaintBrush(Input)
+		self:updateAndPaintBrush(input)
 	end)
 
-	self.InputEnded = UserInputService.InputEnded:Connect(function(Input, _)
-		if Enum.UserInputType.MouseButton1 ~= Input.UserInputType then
+	self.inputEnded = UserInputService.InputEnded:Connect(function(input, _)
+		if Enum.UserInputType.MouseButton1 ~= input.UserInputType then
 			return
 		end
 
-		self.IsPainting = false
+		self.isPainting = false
 		ChangeHistoryService:SetWaypoint("uStud.Paint")
 	end)
 end
@@ -78,13 +78,13 @@ end
 	Cleanup connections and adorns. Along with that, set state accordingly.
 ]=]
 function PainterMouseControl:willUnmount()
-	self.IsPainting = false
-	self.InputChanged:Disconnect()
-	self.InputBegan:Disconnect()
-	self.InputEnded:Disconnect()
+	self.isPainting = false
+	self.inputChanged:Disconnect()
+	self.inputBegan:Disconnect()
+	self.inputEnded:Disconnect()
 
-	self.Adorns = nil
-	self.AdornContainer:Destroy()
+	self.adorns = nil
+	self.adornContainer:Destroy()
 end
 
 --[=[
@@ -92,12 +92,12 @@ end
 	@return RoactTree
 ]=]
 function PainterMouseControl:render()
-	return FolderController.WithFolder(function(Folder)
+	return FolderController.WithFolder(function(folder)
 		return Roact.createElement(Roact.Portal, {
-			target = Folder,
+			target = folder,
 		}, {
 			Brush = Roact.createElement("Part", {
-				[Roact.Ref] = self.BrushRef,
+				[Roact.Ref] = self.brushRef,
 				Anchored = true,
 				CanCollide = true,
 				Transparency = 0.8,
@@ -105,9 +105,9 @@ function PainterMouseControl:render()
 
 				Shape = Enum.PartType.Cylinder,
 				Rotation = Vector3.new(0, 0, 90),
-				Position = self.BrushPositionBinding,
-				Size = Vector3.new(0.4, self.props.BrushDiameter, self.props.BrushDiameter),
-				Color = self.props.PrimaryColor,
+				Position = self.brushPositionBinding,
+				Size = Vector3.new(0.4, self.props.brushDiameter, self.props.brushDiameter),
+				Color = self.props.primaryColor,
 			}),
 		})
 	end)
@@ -116,23 +116,23 @@ end
 --[=[
 	Uses the InputObject to update the paint brush's position. Additionally, if
 	the user is holding the mouse down, will paint valid studs.
-	@param Input InputObject
+	@param input InputObject
 ]=]
-function PainterMouseControl:UpdateAndPaintBrush(Input)
-	local RaycastResults = GetRaycastResultFromMouse(Input.Position, self.props.Root)
+function PainterMouseControl:updateAndPaintBrush(input)
+	local raycastResults = GetRaycastResultFromMouse(input.Position, self.props.root)
 
-	if RaycastResults == nil then
+	if raycastResults == nil then
 		return
 	end
 
-	if RaycastResults.Instance ~= self.BrushRef.current then
-		self.UpdateBrushPosition(RaycastResults.Position)
+	if raycastResults.Instance ~= self.brushRef.current then
+		self.updateBrushPosition(raycastResults.Position)
 	end
 
-	self:UpdateAdorns()
-	if self.IsPainting then
-		for _, Part in next, self:QueryPaintableParts() do
-			Part.Color = self.props.PrimaryColor
+	self:updateAdorns()
+	if self.isPainting then
+		for _, Part in next, self:queryPaintableParts() do
+			Part.Color = self.props.primaryColor
 		end
 	end
 end
@@ -140,24 +140,24 @@ end
 --[=[
 	Update the adorns to what the brush is actually touching.
 ]=]
-function PainterMouseControl:UpdateAdorns()
-	local Parts = self:QueryPaintableParts()
+function PainterMouseControl:updateAdorns()
+	local parts = self:queryPaintableParts()
 
-	local Difference = #Parts - #self.Adorns
+	local difference = #parts - #self.adorns
 
-	if Difference < 0 then
-		for i = 1, Difference do
-			table.remove(self.Adorns, i):Destroy()
+	if difference < 0 then
+		for i = 1, difference do
+			table.remove(self.adorns, i):Destroy()
 		end
-	elseif Difference > 0 then
-		for _ = 1, math.abs(Difference) do
-			table.insert(self.Adorns, CreateAdorn(self.AdornContainer))
+	elseif difference > 0 then
+		for _ = 1, math.abs(difference) do
+			table.insert(self.adorns, createAdorn(self.adornContainer))
 		end
 	end
 
-	for Key, Adorn in next, self.Adorns :: { [number]: PartAdornment } do
-		Adorn.Adornee = Parts[Key]
-		Adorn.Color3 = self.props.PrimaryColor
+	for key, adorn in next, self.adorns :: { [number]: PartAdornment } do
+		adorn.Adornee = parts[key]
+		adorn.Color3 = self.props.primaryColor
 	end
 end
 
@@ -165,25 +165,25 @@ end
 	Gets paintable parts from the brush that are valid.
 	@return { Instance }
 ]=]
-function PainterMouseControl:QueryPaintableParts()
-	local Brush = self.BrushRef.current
-	local Parts = {}
+function PainterMouseControl:queryPaintableParts()
+	local brush = self.brushRef.current
+	local parts = {}
 
-	if Brush then
-		for _, Part in next, Brush:GetTouchingParts() do
-			if not Part:IsDescendantOf(self.props.Root) then
+	if brush then
+		for _, part in next, brush:GetTouchingParts() do
+			if not part:IsDescendantOf(self.props.root) then
 				continue
 			end
 
-			if self.props.SecondaryOnly and self.props.SecondaryColor ~= Part.Color then
+			if self.props.secondaryOnly and self.props.secondaryColor ~= part.Color then
 				continue
 			end
 
-			Parts[#Parts + 1] = Part
+			parts[#parts + 1] = part
 		end
 	end
 
-	return Parts
+	return parts
 end
 
 return PainterMouseControl

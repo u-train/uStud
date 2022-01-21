@@ -168,12 +168,12 @@ function App:render()
 						return Roact.createElement(Studder, toolProps)
 					end,
 				}),
-				-- Painter = Roact.createElement(RoactRouter.Route, {
-				-- 	path = "Painter",
-				-- 	render = function(_)
-				-- 		return Roact.createElement(Painter, toolProps)
-				-- 	end,
-				-- }),
+				Painter = Roact.createElement(RoactRouter.Route, {
+					path = "Painter",
+					render = function(_)
+						return Roact.createElement(Painter, toolProps)
+					end,
+				}),
 			}),
 		}),
 	})

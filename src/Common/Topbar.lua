@@ -8,10 +8,10 @@
 --[=[
 	@within Topbar
 	@interface Props
-	.Size UDim2
+	.size UDim2
 	.Position UDim2
 	.OnReturn () -> ()
-	.Title string
+	.title string
 ]=]
 
 local Packages = script.Parent.Parent.Packages
@@ -21,15 +21,15 @@ local StudioComponents = require(Packages.StudioComponents)
 return function(props)
 	if props.ShowReturnBack then
 		return Roact.createElement("Frame", {
-			Position = props.Position,
-			Size = props.Size,
+			Position = props.position,
+			Size = props.size,
 			BackgroundTransparency = 1,
 		}, {
 			ReturnBack = Roact.createElement(StudioComponents.Button, {
 				Size = UDim2.new(0, 25, 1, 0),
 				Text = "<",
 				OnActivated = function()
-					props.OnReturn()
+					props.onReturn()
 				end,
 			}),
 			Title = Roact.createElement(StudioComponents.Label, {
@@ -37,14 +37,14 @@ return function(props)
 				Position = UDim2.new(0, 25, 0, 0),
 				TextSize = 16,
 				Font = Enum.Font.SourceSansBold,
-				Text = props.Title,
+				Text = props.title,
 			}),
 		})
 	else
 		return Roact.createElement(StudioComponents.Label, {
-			Position = props.Position,
-			Size = props.Size,
-			Text = props.Title,
+			Position = props.position,
+			Size = props.size,
+			Text = props.title,
 			TextSize = 16,
 			Font = Enum.Font.SourceSansBold,
 		})

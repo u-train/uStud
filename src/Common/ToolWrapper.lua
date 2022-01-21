@@ -26,10 +26,10 @@ return function(props)
 	return RoactRouter.withRouter(function(routerInfo)
 		return Roact.createFragment({
 			Topbar = Roact.createElement(Topbar, {
-				Title = props.title,
-				ShowReturnBack = true,
-				Size = UDim2.new(1, 0, 0, 25),
-				OnReturn = function()
+				title = props.title,
+				showReturnBack = true,
+				size = UDim2.new(1, 0, 0, 25),
+				onReturn = function()
 					routerInfo.history:goBack()
 				end,
 			}),

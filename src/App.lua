@@ -149,9 +149,9 @@ function App:render()
 					render = function(routerInfo)
 						return Roact.createFragment({
 							Topbar = Roact.createElement(Topbar, {
-								Title = "Menu",
-								ShowReturnBack = false,
-								Size = UDim2.new(1, 0, 0, 25),
+								title = "Menu",
+								showReturnBack = false,
+								size = UDim2.new(1, 0, 0, 25),
 							}),
 							Menu = Roact.createElement(Menu, {
 								size = UDim2.new(1, 0, 1, -30),

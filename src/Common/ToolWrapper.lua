@@ -9,7 +9,7 @@
 	@interface Props
 	.Title string
 	.Root Instance
-	.EditingInChanged (Instance) -> nil
+	.rootChanged (Instance) -> nil
 ]=]
 
 local Packages = script.Parent.Parent.Packages
@@ -26,7 +26,7 @@ return function(props)
 	return RoactRouter.withRouter(function(routerInfo)
 		return Roact.createFragment({
 			Topbar = Roact.createElement(Topbar, {
-				Title = props.Title,
+				Title = props.title,
 				ShowReturnBack = true,
 				Size = UDim2.new(1, 0, 0, 25),
 				OnReturn = function()
@@ -38,19 +38,19 @@ return function(props)
 				Position = UDim2.new(0, 0, 0, 25),
 			}, props[Roact.Children]),
 			Bottombar = Roact.createElement(LabelledInput, {
-				Value = InstanceQuerier.EscapeFullName(props.Root),
+				Value = InstanceQuerier.EscapeFullName(props.root),
 				Size = UDim2.new(1, 0, 0, 25),
 				Position = UDim2.new(0, 0, 1, -25),
 				Label = "Editing under",
 
-				OnValueChanged = function(Text)
-					local Success, Value = pcall(InstanceQuerier.Select, game, Text)
+				OnValueChanged = function(text)
+					local success, value = pcall(InstanceQuerier.Select, game, text)
 
-					if Success then
-						if Value == workspace or Value == game then
+					if success then
+						if value == workspace or value == game then
 							return
 						end
-						props.EditingInChanged(Value)
+						props.rootChanged(value)
 					end
 				end,
 			}),

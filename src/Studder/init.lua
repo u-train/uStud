@@ -54,7 +54,7 @@ local actionNames = {
 	@within Studder
 	@interface Props
 	.root Instance
-	.editingInChanged (string) -> nil
+	.rootChanged (string) -> nil
 	.heightOffset number
 	.heightOffsetChanged (number) -> nil
 ]=]
@@ -88,9 +88,9 @@ end
 ]=]
 function Studder:render()
 	return Roact.createElement(ToolWrapper, {
-		Title = "Studder",
-		Root = self.props.root,
-		EditingInChanged = self.props.editingInChanged,
+		title = "Studder",
+		root = self.props.root,
+		rootChanged = self.props.rootChanged,
 	}, {
 		partSizeInput = Roact.createElement(LabelledInput, {
 			Value = self.state.partSize,

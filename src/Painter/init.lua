@@ -46,7 +46,7 @@ local actionNames = {
 	@within Painter
 	@interface Props
 	.root Instance
-	.editingInChanged (string) -> nil
+	.rootChanged (string) -> nil
 	.HeightOffset number
 	.HeightOffsetChanged (number) -> nil
 ]=]
@@ -79,9 +79,9 @@ end
 ]=]
 function Painter:render()
 	return Roact.createElement(ToolWrapper, {
-		Title = "Painter",
-		Root = self.props.root,
-		EditingInChanged = self.props.editingInChanged,
+		title = "Painter",
+		root = self.props.root,
+		rootChanged = self.props.rootChanged,
 	}, {
 		PrimaryColor = Roact.createElement(ColorInput, {
 			Color = self.state.primaryColor,

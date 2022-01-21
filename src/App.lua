@@ -128,7 +128,7 @@ function App:render()
 
 	local toolProps = {
 		root = self.state.root,
-		editingInChanged = function(value)
+		rootChanged = function(value)
 			self:setState({
 				root = value,
 			})

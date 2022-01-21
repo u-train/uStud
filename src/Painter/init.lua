@@ -83,7 +83,6 @@ function Painter:render()
 		Root = self.props.root,
 		EditingInChanged = self.props.editingInChanged,
 	}, {
-
 		PrimaryColor = Roact.createElement(ColorInput, {
 			Color = self.state.primaryColor,
 			Label = "Primary",
@@ -121,7 +120,7 @@ function Painter:render()
 				})
 			end,
 		}),
-		toggleSecondaryOnly = Roact.createElement(StudioComponents.Button, {
+		ToggleSecondaryOnly = Roact.createElement(StudioComponents.Button, {
 			Text = self.state.secondaryOnly and "Painting studs with matching secondary color only"
 				or "Painting any studs",
 			Size = UDim2.new(1, 0, 0, 25),

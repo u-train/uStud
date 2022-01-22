@@ -104,11 +104,11 @@ function Painter:render()
 			end,
 		}),
 		BrushDiameter = Roact.createElement(LabelledInput, {
-			Value = self.state.brushDiameter,
-			Size = UDim2.new(1, 0, 0, 25),
-			Label = "Brush Radius",
+			value = self.state.brushDiameter,
+			size = UDim2.new(1, 0, 0, 25),
+			label = "Brush Radius",
 
-			OnValueChanged = function(text)
+			onValueChanged = function(text)
 				local newInterval = tonumber(text)
 
 				if newInterval == nil then

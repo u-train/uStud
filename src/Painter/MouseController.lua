@@ -92,7 +92,7 @@ end
 	@return RoactTree
 ]=]
 function PainterMouseControl:render()
-	return FolderController.WithFolder(function(folder)
+	return FolderController.withFolder(function(folder)
 		return Roact.createElement(Roact.Portal, {
 			target = folder,
 		}, {

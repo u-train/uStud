@@ -37,10 +37,10 @@ end
 
 --[=[
 	@within FolderController
-	@function WithFolder
+	@function withFolder
 	@param render (Folder) -> RoactTree
 ]=]
-FolderController.WithFolder = function(render)
+FolderController.withFolder = function(render)
 	return Roact.createElement(FolderContext.Consumer, {
 		render = render,
 	})

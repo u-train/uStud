@@ -100,7 +100,7 @@ function StudderMouseControl:render()
 	-- of changed. Update to the binding to reflect this.
 	self:updateTargetPosition()
 
-	return FolderController.WithFolder(function(folder)
+	return FolderController.withFolder(function(folder)
 		return Roact.createElement(Roact.Portal, {
 			target = folder,
 		}, {

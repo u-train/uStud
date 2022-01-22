@@ -41,11 +41,11 @@ return function(props)
 			Size = UDim2.new(0, 10, 1, 0),
 		}),
 		Text = Roact.createElement(TextColorInput, {
-			Color = props.Color,
-			Label = props.Label,
-			Size = UDim2.new(1, -100, 0.5, 0),
-			Position = UDim2.new(0, 100, 0, 0),
-			OnColorChanged = props.OnColorChanged,
+			position = UDim2.new(0, 100, 0, 0),
+			size = UDim2.new(1, -100, 0.5, 0),
+			color = props.Color,
+			label = props.Label,
+			onColorChanged = props.OnColorChanged,
 		}),
 		Slider = Roact.createElement(ColorSlider, {
 			Size = UDim2.new(1, -100, 0.5, 0),

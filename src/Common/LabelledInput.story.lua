@@ -5,24 +5,24 @@ local Helper = Roact.Component:extend("Helper")
 
 function Helper:init()
 	self:setState({
-		Value = "",
+		value = "",
 	})
 end
 
 function Helper:render()
 	return Roact.createFragment({
 		Input = Roact.createElement(LabelledInput, {
-			Label = "Label",
-			Value = self.state.Value,
-			Size = UDim2.new(1, 0, 0, 25),
-			OnValueChanged = function(Value)
+			label = "Label",
+			value = self.state.value,
+			size = UDim2.new(1, 0, 0, 25),
+			onValueChanged = function(value)
 				self:setState({
-					Value = Value
+					value = value
 				})
 			end,
 		}),
 		Text = Roact.createElement("TextLabel", {
-			Text = self.state.Value,
+			Text = self.state.value,
 			Position = UDim2.new(0, 0, 0, 25),
 			Size = UDim2.new(1, 0, 0, 25),
 		})

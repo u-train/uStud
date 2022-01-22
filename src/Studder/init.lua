@@ -93,11 +93,11 @@ function Studder:render()
 		rootChanged = self.props.rootChanged,
 	}, {
 		partSizeInput = Roact.createElement(LabelledInput, {
-			Value = self.state.partSize,
-			Size = UDim2.new(1, 0, 0, 25),
-			Label = "Part Size",
+			value = self.state.partSize,
+			size = UDim2.new(1, 0, 0, 25),
+			label = "Part Size",
 
-			OnValueChanged = function(text)
+			onValueChanged = function(text)
 				local newSize = tonumber(text)
 
 				if newSize == nil then
@@ -108,11 +108,11 @@ function Studder:render()
 			end,
 		}),
 		heightOffsetInput = Roact.createElement(LabelledInput, {
-			Value = self.props.heightOffset,
-			Size = UDim2.new(1, 0, 0, 25),
-			Label = "Height offset",
+			value = self.props.heightOffset,
+			size = UDim2.new(1, 0, 0, 25),
+			label = "Height offset",
 
-			OnValueChanged = function(text)
+			onValueChanged = function(text)
 				local newValue = tonumber(text)
 
 				if newValue == nil then
@@ -123,11 +123,11 @@ function Studder:render()
 			end,
 		}),
 		partHeightInput = Roact.createElement(LabelledInput, {
-			Value = self.state.partHeight,
-			Size = UDim2.new(1, 0, 0, 25),
-			Label = "Part Height",
+			value = self.state.partHeight,
+			size = UDim2.new(1, 0, 0, 25),
+			label = "Part Height",
 
-			OnValueChanged = function(text)
+			onValueChanged = function(text)
 				local newValue = tonumber(text)
 
 				if newValue == nil then
@@ -142,11 +142,11 @@ function Studder:render()
 			end,
 		}),
 		SnappingInput = Roact.createElement(LabelledInput, {
-			Value = self.state.snappingInterval,
-			Size = UDim2.new(1, 0, 0, 25),
-			Label = "Snapping Interval",
+			value = self.state.snappingInterval,
+			size = UDim2.new(1, 0, 0, 25),
+			label = "Snapping Interval",
 
-			OnValueChanged = function(text)
+			onValueChanged = function(text)
 				local newInterval = tonumber(text)
 
 				if newInterval == nil then
@@ -168,7 +168,7 @@ function Studder:render()
 				})
 			end,
 		}),
-		toggleDelete = Roact.createElement(StudioComponents.Button, {
+		ToggleDelete = Roact.createElement(StudioComponents.Button, {
 			Text = self.state.deleting and "Currently deleting" or "Currently placing",
 			Size = UDim2.new(1, 0, 0, 25),
 			OnActivated = function()

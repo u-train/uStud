@@ -31,7 +31,7 @@ local ControlledInput = Roact.Component:extend("ControlledInput")
 	Initalize internal binding.
 ]=]
 function ControlledInput:init()
-	self.InternalValue, self.UpdateInternalValue = Roact.createBinding(self.props.Value)
+	self.internalValue, self.updateInternalValue = Roact.createBinding(self.props.value)
 end
 
 --[=[
@@ -40,29 +40,29 @@ end
 ]=]
 function ControlledInput:render()
 	return Roact.createElement(StudioComponents.TextInput, {
-		Text = self.InternalValue,
-		Size = self.props.Size or UDim2.new(1, 0, 0, 25),
-		Position = self.props.Position,
-		LayoutOrder = self.props.LayoutOrder,
-		BorderSizePixel = self.props.BorderSizePixel or 0,
+		Text = self.internalValue,
+		Size = self.props.size or UDim2.new(1, 0, 0, 25),
+		Position = self.props.position,
+		LayoutOrder = self.props.layoutOrder,
+		BorderSizePixel = self.props.borderSizePixel or 0,
 
-		TextColor3 = self.props.TextColor3,
-		BackgroundColor3 = self.props.BackgroundColor3,
-		BorderColor3 = self.props.BorderColor3,
+		TextColor3 = self.props.textColor3,
+		BackgroundColor3 = self.props.backgroundColor3,
+		BorderColor3 = self.props.borderColor3,
 		BorderMode = Enum.BorderMode.Inset,
 
-		OnChanged = function(Text)
-			self.UpdateInternalValue(Text)
+		OnChanged = function(text)
+			self.updateInternalValue(text)
 		end,
 		OnFocus = function()
-			if self.props.ClearTextOnFocus then
-				self.UpdateInternalValue("")
+			if self.props.clearTextOnFocus then
+				self.updateInternalValue("")
 			end
 		end,
 		OnFocusLost = function(_)
-			local NewText = self.InternalValue:getValue()
-			self.UpdateInternalValue(self.props.Value)
-			self.props.OnValueChanged(NewText)
+			local newText = self.internalValue:getValue()
+			self.updateInternalValue(self.props.value)
+			self.props.onValueChanged(newText)
 		end,
 
 		ClearTextOnFocus = false,
@@ -72,8 +72,8 @@ end
 --[=[
 	Make sure to capture the lastest value.
 ]=]
-function ControlledInput:willUpdate(NextProps)
-	self.UpdateInternalValue(NextProps.Value)
+function ControlledInput:willUpdate(nextProps)
+	self.updateInternalValue(nextProps.value)
 end
 
 return ControlledInput

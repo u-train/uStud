@@ -33,7 +33,7 @@ local Roact = require(Packages.Roact)
 
 local ControlledInput = require(script.Parent.ControlledInput)
 
-local FormatColor = function(Input)
+local formatColor = function(Input)
 	return ("%.1f"):format(Input * 255)
 end
 
@@ -53,37 +53,37 @@ local Colors = {
 	@param Props Props
 	@return (Channel: string) -> (Text: string) -> nil
 ]=]
-local CreateColorChannelChangedFactory = function(props)
-	return function(Channel)
-		return function(Text)
-			local NewNumber = tonumber(Text)
-			if NewNumber == nil then
+local createColorChannelChangedFactory = function(props)
+	return function(channel)
+		return function(text)
+			local newNumber = tonumber(text)
+			if newNumber == nil then
 				return
 			end
 
-			local NewColor = {
-				props.Color.R,
-				props.Color.G,
-				props.Color.B,
+			local newColor = {
+				props.color.R,
+				props.color.G,
+				props.color.B,
 			}
 
-			NewColor[Channel] = NewNumber / 255
-			props.OnColorChanged(Color3.new(unpack(NewColor)))
+			newColor[channel] = newNumber / 255
+			props.onColorChanged(Color3.new(unpack(newColor)))
 		end
 	end
 end
 
 return function(props)
-	local Children = {}
-	local GivenColorChannelChanged = CreateColorChannelChangedFactory(props)
+	local children = {}
+	local givenColorChannelChanged = createColorChannelChangedFactory(props)
 
-	for Key, Color in next, Colors do
-		Children[Color] = Roact.createElement(ControlledInput, {
-			Value = FormatColor(props.Color[Color]),
-			OnValueChanged = GivenColorChannelChanged(Key),
-			Size = UDim2.new(1 / 3, 0, 1, 0),
-			Position = UDim2.new(
-				1 / 3 * (Key - 1),
+	for key, color in next, Colors do
+		children[color] = Roact.createElement(ControlledInput, {
+			value = formatColor(props.color[color]),
+			onValueChanged = givenColorChannelChanged(key),
+			size = UDim2.new(1 / 3, 0, 1, 0),
+			position = UDim2.new(
+				1 / 3 * (key - 1),
 				0,
 				0,
 				0
@@ -92,8 +92,8 @@ return function(props)
 	end
 
 	return Roact.createElement("Frame", {
-		Size = props.Size,
-		Position = props.Position,
+		Size = props.size,
+		Position = props.position,
 		BackgroundTransparency = 1
-	}, Children)
+	}, children)
 end

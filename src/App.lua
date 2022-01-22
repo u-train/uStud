@@ -104,12 +104,12 @@ function App:render()
 				TextWrap = true,
 			}),
 			Bottombar = Roact.createElement(LabelledInput, {
-				Value = "Workspace.",
-				Size = UDim2.new(1, 0, 0, 25),
-				Position = UDim2.new(0, 0, 1, -25),
-				Label = "Editing under",
+				value = "Workspace.",
+				size = UDim2.new(1, 0, 0, 25),
+				position = UDim2.new(0, 0, 1, -25),
+				label = "Editing under",
 
-				OnValueChanged = function(text)
+				onValueChanged = function(text)
 					local success, value = pcall(InstanceQuerier.Select, game, text)
 
 					if success then

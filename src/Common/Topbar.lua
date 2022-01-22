@@ -19,7 +19,7 @@ local Roact = require(Packages.Roact)
 local StudioComponents = require(Packages.StudioComponents)
 
 return function(props)
-	if props.ShowReturnBack then
+	if props.showReturnBack then
 		return Roact.createElement("Frame", {
 			Position = props.position,
 			Size = props.size,

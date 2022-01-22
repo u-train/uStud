@@ -84,20 +84,20 @@ function Painter:render()
 		rootChanged = self.props.rootChanged,
 	}, {
 		PrimaryColor = Roact.createElement(ColorInput, {
-			Color = self.state.primaryColor,
-			Label = "Primary",
-			Size = UDim2.new(1, 0, 0, 30),
-			OnColorChanged = function(newColor)
+			color = self.state.primaryColor,
+			label = "Primary",
+			size = UDim2.new(1, 0, 0, 30),
+			onColorChanged = function(newColor)
 				self:setState({
 					primaryColor = newColor,
 				})
 			end,
 		}),
 		SecondaryColor = Roact.createElement(ColorInput, {
-			Color = self.state.secondaryColor,
-			Label = "Secondary",
-			Size = UDim2.new(1, 0, 0, 30),
-			OnColorChanged = function(newColor)
+			color = self.state.secondaryColor,
+			label = "Secondary",
+			size = UDim2.new(1, 0, 0, 30),
+			onColorChanged = function(newColor)
 				self:setState({
 					secondaryColor = newColor,
 				})

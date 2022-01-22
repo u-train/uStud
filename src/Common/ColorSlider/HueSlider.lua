@@ -1,34 +1,34 @@
 local Roact = require(script.Parent.Parent.Parent.Packages.Roact) :: Roact
 local Slider = require(script.Parent.Slider)
 
-local CreateColorSequenceForHue = function(Color: Color3)
-	local Sequence = {}
-	local _, Saturation, Value = Color:ToHSV()
+local createColorSequenceForHue = function(color: Color3)
+	local sequence = {}
+	local _, saturation, value = color:ToHSV()
 
 	for i = 0, 6 do
-		table.insert(Sequence, ColorSequenceKeypoint.new(i / 6, Color3.fromHSV(i / 6, Saturation, Value)))
+		table.insert(sequence, ColorSequenceKeypoint.new(i / 6, Color3.fromHSV(i / 6, saturation, value)))
 	end
 
-	return ColorSequence.new(Sequence)
+	return ColorSequence.new(sequence)
 end
 
 return function(props)
-	local H, S, V = props.Color:ToHSV()
+	local hue, saturation, value = props.color:ToHSV()
 
 	return Roact.createElement(Slider, {
-		Position = props.Position,
-		Size = props.Size,
-		Value = H,
-		OnValueChanged = function(NewValue)
-			props.OnHueChanged(Color3.fromHSV(NewValue, S, V))
+		position = props.position,
+		size = props.size,
+		value = hue,
+		onValueChanged = function(NewValue)
+			props.onHueChanged(Color3.fromHSV(NewValue, saturation, value))
 		end,
-		Background = Roact.createElement("Frame", {
+		background = Roact.createElement("Frame", {
 			Size = UDim2.fromScale(1, 1),
 			ZIndex = 1,
 			Active = false,
 		}, {
 			UIGradient = Roact.createElement("UIGradient", {
-				Color = CreateColorSequenceForHue(props.Color),
+				Color = createColorSequenceForHue(props.color),
 			}),
 		}),
 	})

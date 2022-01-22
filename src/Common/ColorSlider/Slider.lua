@@ -7,7 +7,7 @@ local Round = require(script.Parent.Parent.Parent.Common.Round)
 ]=]
 local Slider = Roact.Component:extend("HueSlider")
 Slider.defaultProps = {
-	Background = Roact.createElement("Frame", {
+	background = Roact.createElement("Frame", {
 		Size = UDim2.fromScale(1, 1),
 		ZIndex = 1,
 		Active = false,
@@ -21,49 +21,50 @@ Slider.defaultProps = {
 			Active = false,
 		}),
 	}),
-	MinValue = 0,
-	Interval = 0.001,
-	MaxValue = 1,
+	minValue = 0,
+	interval = 0.001,
+	maxValue = 1,
 }
 
 --[=[
-
+	Initalized state along with the input handlers.
 ]=]
 function Slider:init()
-	self.MouseDown = false
-	self.InputCaptureRef = Roact.createRef()
+	self.mouseDown = false
+	self.inputCaptureRef = Roact.createRef()
 
-	self.OnInputBegan = function(_, Input)
-		if Input.UserInputType ~= Enum.UserInputType.MouseButton1 then
+	self.onInputBegan = function(_, input)
+		if input.UserInputType ~= Enum.UserInputType.MouseButton1 then
 			return
 		end
 
-		self.MouseDown = true
-		self:UpdateValueFromMousePosition(Input.Position)
+		self.mouseDown = true
+		self:updateValueFromMousePosition(input.Position)
 	end
 
-	self.OnInputEnded = function(_, Input)
-		if Input.UserInputType ~= Enum.UserInputType.MouseButton1 then
+	self.onInputEnded = function(_, input)
+		if input.UserInputType ~= Enum.UserInputType.MouseButton1 then
 			return
 		end
 
-		self.MouseDown = false
+		self.mouseDown = false
 	end
 
-	self.OnInputChanged = function(_, Input)
-		if not self.MouseDown then
+	self.onInputChanged = function(_, input)
+		if not self.mouseDown then
 			return
 		end
-		if Input.UserInputType ~= Enum.UserInputType.MouseMovement then
+		if input.UserInputType ~= Enum.UserInputType.MouseMovement then
 			return
 		end
 
-		self:UpdateValueFromMousePosition(Input.Position)
+		self:updateValueFromMousePosition(input.Position)
 	end
 end
 
 --[=[
-
+	Renders component.
+	@return RoactTree
 ]=]
 function Slider:render()
 	return Roact.createElement("TextButton", {
@@ -71,14 +72,14 @@ function Slider:render()
 		AutoButtonColor = false,
 		BackgroundTransparency = 1,
 		ZIndex = 100,
-		Size = self.props.Size,
-		Position = self.props.Position,
+		Size = self.props.size,
+		Position = self.props.position,
 
-		[Roact.Ref] = self.InputCaptureRef,
+		[Roact.Ref] = self.inputCaptureRef,
 
-		[Roact.Event.InputBegan] = self.OnInputBegan,
-		[Roact.Event.InputChanged] = self.OnInputChanged,
-		[Roact.Event.InputEnded] = self.OnInputEnded,
+		[Roact.Event.InputBegan] = self.onInputBegan,
+		[Roact.Event.InputChanged] = self.onInputChanged,
+		[Roact.Event.InputEnded] = self.onInputEnded,
 	}, {
 		Container = Roact.createElement("Frame", {
 			BackgroundTransparency = 1,
@@ -90,43 +91,43 @@ function Slider:render()
 			Bar = Roact.createElement("Frame", {
 				Size = UDim2.new(0, 4, 1, -4),
 				AnchorPoint = Vector2.new(0.5, 0),
-				Position = UDim2.new(self:ConvertValueToPercentage(self.props.Value), 0, 0, 2),
+				Position = UDim2.new(self:convertValueToPercentage(self.props.value), 0, 0, 2),
 				Active = false,
 				ZIndex = 10,
 				BorderSizePixel = 1,
 				BorderMode = Enum.BorderMode.Inset,
 			}),
 		}),
-		Background = self.props.Background,
+		Background = self.props.background,
 	})
 end
 
 --[=[
-
+	Called whenever the mouse position changes.
 ]=]
-function Slider:UpdateValueFromMousePosition(MousePosition)
-	local InputCapture = self.InputCaptureRef.current
-	if InputCapture == nil then
+function Slider:updateValueFromMousePosition(mousePosition)
+	local inputCapture = self.inputCaptureRef.current
+	if inputCapture == nil then
 		return
 	end
 
-	local RelativeMousePos = Vector2.new(MousePosition.X, MousePosition.Y) - InputCapture.AbsolutePosition
-	local SliderLength = InputCapture.AbsoluteSize.X
+	local relativeMousePos = Vector2.new(mousePosition.X, mousePosition.Y) - inputCapture.AbsolutePosition
+	local sliderLength = inputCapture.AbsoluteSize.X
 
 	--Ensure it is within bounds and find it as percentage of axis
-	local NewPercentage = math.clamp(RelativeMousePos.X, 0, SliderLength) / SliderLength
-	local Diff = math.abs(self.props.MaxValue - self.props.MinValue)
-	local NewValue = NewPercentage * Diff + self.props.MinValue
+	local newPercentage = math.clamp(relativeMousePos.X, 0, sliderLength) / sliderLength
+	local diff = math.abs(self.props.maxValue - self.props.minValue)
+	local newValue = newPercentage * diff + self.props.minValue
 
-	self.props.OnValueChanged(Round(NewValue, self.props.Interval))
+	self.props.onValueChanged(Round(newValue, self.props.interval))
 end
 
 --[=[
-
+	Takes a value and converst it to a normalized percentage.
 ]=]
-function Slider:ConvertValueToPercentage(Value)
-	local Diff = math.abs(self.props.MaxValue - self.props.MinValue)
-	return (Value - self.props.MinValue) / Diff
+function Slider:convertValueToPercentage(Value)
+	local Diff = math.abs(self.props.maxValue - self.props.minValue)
+	return (Value - self.props.minValue) / Diff
 end
 
 return Slider

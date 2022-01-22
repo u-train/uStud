@@ -1,32 +1,32 @@
 local Roact = require(script.Parent.Parent.Parent.Packages.Roact) :: Roact
 local Slider = require(script.Parent.Slider)
 
-local CreateColorSequenceForSaturation = function(Color: Color3)
-	local Hue, Saturation, _ = Color:ToHSV()
+local createColorSequenceForSaturation = function(color)
+	local hue, saturation, _ = color:ToHSV()
 
 	return ColorSequence.new({
-		ColorSequenceKeypoint.new(0, Color3.fromHSV(Hue, Saturation, 0)),
-		ColorSequenceKeypoint.new(1, Color3.fromHSV(Hue, Saturation, 1)),
+		ColorSequenceKeypoint.new(0, Color3.fromHSV(hue, saturation, 0)),
+		ColorSequenceKeypoint.new(1, Color3.fromHSV(hue, saturation, 1)),
 	})
 end
 
 return function(props)
-	local H, S, V = props.Color:ToHSV()
+	local hue, saturation, value = props.color:ToHSV()
 
 	return Roact.createElement(Slider, {
-		Position = props.Position,
-		Size = props.Size,
-		Value = V,
-		OnValueChanged = function(NewValue)
-			props.OnValueChanged(Color3.fromHSV(H, S, NewValue))
+		position = props.position,
+		size = props.size,
+		value = value,
+		onValueChanged = function(newValue)
+			props.onValueChanged(Color3.fromHSV(hue, saturation, newValue))
 		end,
-		Background = Roact.createElement("Frame", {
+		background = Roact.createElement("Frame", {
 			Size = UDim2.fromScale(1, 1),
 			ZIndex = 1,
 			Active = false,
 		}, {
 			UIGradient = Roact.createElement("UIGradient", {
-				Color = CreateColorSequenceForSaturation(props.Color),
+				Color = createColorSequenceForSaturation(props.color),
 			}),
 		}),
 	})

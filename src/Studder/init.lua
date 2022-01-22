@@ -159,10 +159,10 @@ function Studder:render()
 			end,
 		}),
 		ColorInput = Roact.createElement(ColorInput, {
-			Color = self.state.partColor,
-			Label = "Part Color",
-			Size = UDim2.new(1, 0, 0, 30),
-			OnColorChanged = function(newColor)
+			color = self.state.partColor,
+			label = "Part Color",
+			size = UDim2.new(1, 0, 0, 30),
+			onColorChanged = function(newColor)
 				self:setState({
 					partColor = newColor,
 				})

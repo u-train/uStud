@@ -11,11 +11,11 @@
 --[=[
 	@within ColorInput
 	@interface Props
-	.Size UDim2
-	.Position UDim2
-	.Color Color3
-	.OnColorChanged (Color3) -> nil
-	.Label string
+	.size UDim2
+	.position UDim2
+	.color Color3
+	.onColorChanged (Color3) -> nil
+	.label string
 ]=]
 
 local Packages = script.Parent.Parent.Packages
@@ -27,31 +27,31 @@ local TextColorInput = require(script.Parent.TextColorInput)
 
 return function(props)
 	return Roact.createElement("Frame", {
-		Size = props.Size,
-		Position = props.Position,
+		Size = props.size,
+		Position = props.position,
 		BackgroundTransparency = 1
 	}, {
+		Swab = Roact.createElement("Frame", {
+			BackgroundColor3 = props.color,
+			Size = UDim2.new(0, 10, 1, 0),
+		}),
 		Label = Roact.createElement(StudioComponents.Label, {
-			Text = props.Label,
+			Text = props.label,
 			Size = UDim2.new(0, 90, 1, 0),
 			Position = UDim2.new(0, 10, 0, 0)
-		}),
-		Swab = Roact.createElement("Frame", {
-			BackgroundColor3 = props.Color,
-			Size = UDim2.new(0, 10, 1, 0),
 		}),
 		Text = Roact.createElement(TextColorInput, {
 			position = UDim2.new(0, 100, 0, 0),
 			size = UDim2.new(1, -100, 0.5, 0),
-			color = props.Color,
-			label = props.Label,
-			onColorChanged = props.OnColorChanged,
+			color = props.color,
+			label = props.label,
+			onColorChanged = props.onColorChanged,
 		}),
 		Slider = Roact.createElement(ColorSlider, {
-			Size = UDim2.new(1, -100, 0.5, 0),
-			Position = UDim2.new(0, 100, 0.5, 0),
-			Color = props.Color,
-			OnColorChanged = props.OnColorChanged,
+			size = UDim2.new(1, -100, 0.5, 0),
+			position = UDim2.new(0, 100, 0.5, 0),
+			color = props.color,
+			onColorChanged = props.onColorChanged,
 		}),
 	})
 end

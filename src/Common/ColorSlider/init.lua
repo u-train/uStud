@@ -8,10 +8,10 @@
 --[=[
 	@within ColorSlider
 	@interface Props
-	.Size UDim2
-	.Position UDim2
-	.Color Color3
-	.OnColorChanged (Color3) -> nil
+	.size UDim2
+	.position UDim2
+	.color Color3
+	.onColorChanged (Color3) -> nil
 ]=]
 
 local Roact = require(script.Parent.Parent.Packages.Roact) :: Roact
@@ -21,26 +21,26 @@ local ValueSlider = require(script.ValueSlider)
 
 return function(props)
 	return Roact.createElement("Frame", {
-		Size = props.Size,
-		Position = props.Position,
+		Size = props.size,
+		Position = props.position,
 	}, {
 		Hue = Roact.createElement(HueSlider, {
-			Size = UDim2.fromScale(1 / 3, 1),
-			Position = UDim2.fromScale(0, 0),
-			Color = props.Color,
-			OnHueChanged = props.OnColorChanged,
+			size = UDim2.fromScale(1 / 3, 1),
+			position = UDim2.fromScale(0, 0),
+			color = props.color,
+			onHueChanged = props.onColorChanged,
 		}),
 		Saturation = Roact.createElement(SaturationSlider, {
-			Size = UDim2.fromScale(1 / 3, 1),
-			Position = UDim2.fromScale(1 / 3, 0),
-			OnSaturationChanged = props.OnColorChanged,
-			Color = props.Color,
+			size = UDim2.fromScale(1 / 3, 1),
+			position = UDim2.fromScale(1 / 3, 0),
+			color = props.color,
+			onSaturationChanged = props.onColorChanged,
 		}),
 		Value = Roact.createElement(ValueSlider, {
-			Size = UDim2.fromScale(1 / 3, 1),
-			Position = UDim2.fromScale(2 / 3, 0),
-			OnValueChanged = props.OnColorChanged,
-			Color = props.Color,
+			size = UDim2.fromScale(1 / 3, 1),
+			position = UDim2.fromScale(2 / 3, 0),
+			color = props.color,
+			onValueChanged = props.onColorChanged,
 		}),
 	})
 end

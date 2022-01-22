@@ -87,6 +87,7 @@ function Painter:render()
 			color = self.state.primaryColor,
 			label = "Primary",
 			size = UDim2.new(1, 0, 0, 30),
+			layoutOrder = 1,
 			onColorChanged = function(newColor)
 				self:setState({
 					primaryColor = newColor,
@@ -97,6 +98,7 @@ function Painter:render()
 			color = self.state.secondaryColor,
 			label = "Secondary",
 			size = UDim2.new(1, 0, 0, 30),
+			layoutOrder = 2,
 			onColorChanged = function(newColor)
 				self:setState({
 					secondaryColor = newColor,
@@ -107,7 +109,7 @@ function Painter:render()
 			value = self.state.brushDiameter,
 			size = UDim2.new(1, 0, 0, 25),
 			label = "Brush Radius",
-
+			layoutOrder = 3,
 			onValueChanged = function(text)
 				local newInterval = tonumber(text)
 
@@ -129,6 +131,7 @@ function Painter:render()
 					secondaryOnly = not self.state.secondaryOnly,
 				})
 			end,
+			LayoutOrder = 4,
 		}),
 		PainterMouseControl = Roact.createElement(PainterMouseControl, {
 			root = self.props.root,

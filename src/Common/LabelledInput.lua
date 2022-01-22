@@ -13,6 +13,7 @@
 	.textWidth number
 	.onValueChanged (string) -> nil
 	.label string
+	.layoutOrder number
 ]=]
 
 local Roact = require(script.Parent.Parent.Packages.Roact)
@@ -23,6 +24,7 @@ return function(props)
 	return Roact.createElement(StudioComponents.Background, {
 		Size = props.size,
 		Position = props.position,
+		LayoutOrder = props.layoutOrder
 	}, {
 		Label = Roact.createElement(StudioComponents.Label, {
 			Size = UDim2.new(0, props.textWidth or 100, 1, 0),

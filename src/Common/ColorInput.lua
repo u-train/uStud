@@ -16,6 +16,7 @@
 	.color Color3
 	.onColorChanged (Color3) -> nil
 	.label string
+	.layoutOrder number
 ]=]
 
 local Packages = script.Parent.Parent.Packages
@@ -29,7 +30,8 @@ return function(props)
 	return Roact.createElement("Frame", {
 		Size = props.size,
 		Position = props.position,
-		BackgroundTransparency = 1
+		LayoutOrder = props.layoutOrder,
+		BackgroundTransparency = 1,
 	}, {
 		Swab = Roact.createElement("Frame", {
 			BackgroundColor3 = props.color,

@@ -21,12 +21,13 @@ return function(props)
 	return RoactRouter.withRouter(function(routerInfo)
 		local renderedList = {}
 
-		for _, selection in ipairs(props.selections) do
-			renderedList[selection] = Roact.createElement(StudioComponents.Button, {
+		for index, selection in ipairs(props.selections) do
+			renderedList[selection.name] = Roact.createElement(StudioComponents.Button, {
 				Size = UDim2.new(1, 0, 0, 25),
-				Text = selection,
+				Text = selection.name,
+				LayoutOrder = index,
 				OnActivated = function()
-					routerInfo.history:push(selection)
+					routerInfo.history:push(selection.path)
 				end,
 			})
 		end

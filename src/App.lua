@@ -7,6 +7,7 @@ local StudioComponents = require(Packages.StudioComponents)
 local Studder = require(script.Parent.Studder)
 local Painter = require(script.Parent.Painter)
 local Menu = require(script.Parent.Menu)
+local About = require(script.Parent.About)
 
 local Common = script.Parent.Common
 local LabelledInput = require(Common.LabelledInput)
@@ -19,10 +20,12 @@ local FolderController = require(Common.FolderController)
 	The list of avaliable routes. Currently, they are:
 	- Studder
 	- Painter
+	- About
 ]=]
 local ROUTES = {
-	"Studder",
-	"Painter",
+	{name = "Studder", path = "/Studder"},
+	{name = "Painter", path = "/Painter"},
+	{name = "About", path = "/About"},
 }
 
 --[=[
@@ -163,19 +166,26 @@ function App:render()
 							}),
 						})
 					end,
+					exact = true,
 				}),
 				Studder = Roact.createElement(RoactRouter.Route, {
-					path = "Studder",
+					path = "/Studder",
 					render = function(_)
 						return Roact.createElement(Studder, toolProps)
 					end,
 				}),
 				Painter = Roact.createElement(RoactRouter.Route, {
-					path = "Painter",
+					path = "/Painter",
 					render = function(_)
 						return Roact.createElement(Painter, toolProps)
 					end,
 				}),
+				About = Roact.createElement(RoactRouter.Route, {
+					path = "/About",
+					render = function(_)
+						return Roact.createElement(About, {})
+					end
+				})
 			}),
 		}),
 	})

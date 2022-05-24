@@ -72,7 +72,7 @@ end
 	that the tool edits in is binded.
 ]=]
 function App:willUpdate(_, incomingState)
-	self:hookOnTargetRootInstance(incomingState.Root)
+	self:hookOnTargetRootInstance(incomingState.root)
 end
 
 --[=[
@@ -114,12 +114,14 @@ function App:render()
 
 					if success then
 						if value == workspace or value == game then
-							return
+							self:setState({
+								root = Roact.None
+							})
+						else
+							self:setState({
+								root = value,
+							})
 						end
-
-						self:setState({
-							root = value,
-						})
 					end
 				end,
 			}),

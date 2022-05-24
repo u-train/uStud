@@ -38,13 +38,13 @@ return function(props)
 				Position = UDim2.new(0, 0, 0, 25),
 			}, props[Roact.Children]),
 			Bottombar = Roact.createElement(LabelledInput, {
-				value = InstanceQuerier.EscapeFullName(props.root),
+				value = InstanceQuerier.escapeFullName(props.root),
 				size = UDim2.new(1, 0, 0, 25),
 				position = UDim2.new(0, 0, 1, -25),
 				label = "Editing under",
 
 				onValueChanged = function(text)
-					local success, value = pcall(InstanceQuerier.Select, game, text)
+					local success, value = InstanceQuerier.select(game, text)
 
 					if success then
 						if value == workspace or value == game then

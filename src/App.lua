@@ -55,7 +55,7 @@ local App = Roact.Component:extend("App")
 	.enabled boolean
 ]=]
 function App:init()
-	local success, value = pcall(InstanceQuerier.Select, game, self.props.settingManager.Get("DefaultEditingIn"))
+	local success, value = InstanceQuerier.select(game, self.props.settingManager.Get("DefaultEditingIn"))
 
 	local defaultRoot = if success then value else nil
 
@@ -110,8 +110,8 @@ function App:render()
 				label = "Editing under",
 
 				onValueChanged = function(text)
-					local success, value = pcall(InstanceQuerier.Select, game, text)
-
+					local success, value = InstanceQuerier.select(game, text)
+					print(success, value)
 					if success then
 						if value == workspace or value == game then
 							return

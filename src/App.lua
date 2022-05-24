@@ -111,7 +111,7 @@ function App:render()
 
 				onValueChanged = function(text)
 					local success, value = InstanceQuerier.select(game, text)
-					print(success, value)
+
 					if success then
 						if value == workspace or value == game then
 							return

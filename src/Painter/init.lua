@@ -9,6 +9,7 @@ local Common = script.Parent.Common
 local LabelledInput = require(Common.LabelledInput)
 local ColorInput = require(Common.ColorInput)
 local ToolWrapper = require(Common.ToolWrapper)
+local wrapWithSettings = require(Common.wrapWithSettings)
 
 local GetRaycastResultFromMouse = require(Common.GetRaycastResultFromMouse)
 
@@ -55,10 +56,10 @@ local actionNames = {
 ]=]
 function Painter:init()
 	self:setState({
-		primaryColor = Color3.fromRGB(163, 162, 165),
-		secondaryColor = Color3.fromRGB(163, 162, 165),
-		brushDiameter = 2,
-		secondaryOnly = false,
+		primaryColor = self.props.settingsManager.get("PainterDefaultPrimaryColor"),
+		secondaryColor = self.props.settingsManager.get("PainterDefaultSecondaryColor"),
+		brushDiameter = self.props.settingsManager.get("PainterDefaultBrushDiameter"),
+		secondaryOnly = self.props.settingsManager.get("PainterDefaultSecondaryOnly"),
 	})
 
 	self:bindHotkeys()
@@ -212,4 +213,4 @@ function Painter:bindHotkeys()
 	end, false, Enum.KeyCode.F)
 end
 
-return Painter
+return wrapWithSettings(Painter)

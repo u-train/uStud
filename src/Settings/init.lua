@@ -30,6 +30,33 @@ local prefix = "uStud.%s"
 
 Settings.DefaultSettings = {
 	DefaultEditingIn = "Workspace.Studs",
+	StudderGridTransparency = 0.8,
+	StudderGridSize = 10,
+	StudderGridColor = Color3.new(1, 1, 1),
+	StudderPartTransparency = 0.5,
+	StudderPartColor = Color3.fromRGB(0, 0, 0),
+	StudderHighlightColor = Color3.fromRGB(0, 0, 0),
+	StudderHighlightThickness = 0.02,
+	StudderHighlightSurfaceTransparency = 1,
+
+	StudderMaxSize = 200,
+	StudderMinSize = 0.05,
+	StudderMaxHeightOffset = 10,
+	StudderMinHeightOffset = -10,
+	StudderMaxHeight = 5,
+	StudderMinHeight = 0.05,
+
+	StudderDefaultPartSize = 1,
+	StudderDefaultPartColor = Color3.fromRGB(163, 162, 165),
+	StudderDefaultPartHeight = 1,
+
+	PainterBrushTransparency = 0.8,
+	PainterBrushThickness = 0.4,
+	PainterDefaultPrimaryColor = Color3.fromRGB(163, 162, 165),
+	PainterDefaultSecondaryColor = Color3.fromRGB(163, 162, 165),
+	PainterDefaultBrushDiameter = 2,
+	PainterDefaultSecondaryOnly = false,
+
 }
 
 Settings.SessionSettings = {}
@@ -47,13 +74,16 @@ for settingName, _ in next, Settings.DefaultSettings do
 	Settings.SessionSettings[settingName] = plugin:GetSetting(settingName) or Settings.DefaultSettings[settingName]
 end
 
-Settings.Get = function(settingName)
+Settings.get = function(settingName)
 	return Settings.SessionSettings[settingName]
 end
 
-Settings.Set = function(settingName, value)
+Settings.set = function(settingName, value)
 	Settings.SessionSettings[settingName] = value
 	plugin:SetSetting(prefix:format(settingName), value)
 end
+
+Settings.Get = Settings.get
+Settings.Set = Settings.set
 
 return Settings

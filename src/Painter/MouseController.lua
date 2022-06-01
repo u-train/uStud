@@ -5,6 +5,7 @@ local ChangeHistoryService = game:GetService("ChangeHistoryService")
 local Common = script.Parent.Parent.Common
 local GetRaycastResultFromMouse = require(Common.GetRaycastResultFromMouse)
 local FolderController = require(Common.FolderController)
+local withSettings = require(Common.withSettings)
 
 local function createAdorn(Parent)
 	local adorn = Instance.new("SelectionBox")
@@ -92,24 +93,30 @@ end
 	@return RoactTree
 ]=]
 function PainterMouseControl:render()
-	return FolderController.withFolder(function(folder)
-		return Roact.createElement(Roact.Portal, {
-			target = folder,
-		}, {
-			Brush = Roact.createElement("Part", {
-				[Roact.Ref] = self.brushRef,
-				Anchored = true,
-				CanCollide = true,
-				Transparency = 0.8,
-				Material = Enum.Material.Neon,
+	return withSettings(function(settingsManager)
+		return FolderController.withFolder(function(folder)
+			return Roact.createElement(Roact.Portal, {
+				target = folder,
+			}, {
+				Brush = Roact.createElement("Part", {
+					[Roact.Ref] = self.brushRef,
+					Anchored = true,
+					CanCollide = true,
+					Transparency = settingsManager.get("PainterBrushTransparency"),
+					Material = Enum.Material.Neon,
 
-				Shape = Enum.PartType.Cylinder,
-				Rotation = Vector3.new(0, 0, 90),
-				Position = self.brushPositionBinding,
-				Size = Vector3.new(0.4, self.props.brushDiameter, self.props.brushDiameter),
-				Color = self.props.primaryColor,
-			}),
-		})
+					Shape = Enum.PartType.Cylinder,
+					Rotation = Vector3.new(0, 0, 90),
+					Position = self.brushPositionBinding,
+					Size = Vector3.new(
+						settingsManager.get("PainterBrushThickness"),
+						self.props.brushDiameter,
+						self.props.brushDiameter
+					),
+					Color = self.props.primaryColor,
+				}),
+			})
+		end)
 	end)
 end
 

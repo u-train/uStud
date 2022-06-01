@@ -23,9 +23,9 @@ local FolderController = require(Common.FolderController)
 	- About
 ]=]
 local ROUTES = {
-	{name = "Studder", path = "/Studder"},
-	{name = "Painter", path = "/Painter"},
-	{name = "About", path = "/About"},
+	{ name = "Studder", path = "/Studder" },
+	{ name = "Painter", path = "/Painter" },
+	{ name = "About", path = "/About" },
 }
 
 --[=[
@@ -56,7 +56,7 @@ local App = Roact.Component:extend("App")
 	.enabled boolean
 ]=]
 function App:init()
-	local success, value = InstanceQuerier.select(game, self.props.settingManager.Get("DefaultEditingIn"))
+	local success, value = InstanceQuerier.select(game, self.props.defaultRootPath)
 
 	local defaultRoot = if success then value else nil
 
@@ -64,7 +64,7 @@ function App:init()
 
 	self:setState({
 		root = defaultRoot,
-		heightOffset = self.props.settingManager.Get("HeightOffset") or 1,
+		heightOffset = self.props.heightOffset or 1,
 	})
 end
 
@@ -116,7 +116,7 @@ function App:render()
 					if success then
 						if value == workspace or value == game then
 							self:setState({
-								root = Roact.None
+								root = Roact.None,
 							})
 						else
 							self:setState({
@@ -182,8 +182,8 @@ function App:render()
 					path = "/About",
 					render = function(_)
 						return Roact.createElement(About, {})
-					end
-				})
+					end,
+				}),
 			}),
 		}),
 	})

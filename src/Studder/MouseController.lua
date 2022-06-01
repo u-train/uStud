@@ -1,7 +1,8 @@
 local UserInputService = game:GetService("UserInputService")
 local ChangeHistoryService = game:GetService("ChangeHistoryService")
-local Roact = require(script.Parent.Parent.Packages.Roact) 
+local Roact = require(script.Parent.Parent.Packages.Roact)
 local FolderController = require(script.Parent.Parent.Common.FolderController)
+local withSettings = require(script.Parent.Parent.Common.withSettings)
 
 -- This is to align the studs correctly.
 local roundMidway = function(value, interval)
@@ -21,7 +22,6 @@ local function createStud(props)
 	newPart.Anchored = true
 	newPart.Parent = props.parent
 end
-
 
 --[=[
 	@class StudderMouseControl
@@ -95,55 +95,69 @@ end
 	@return RoactTree
 ]=]
 function StudderMouseControl:render()
-	local canvasSize = self.props.partSize * 10
 	-- On render, the partSize, SnappingInterval, or the HeightOffset could've
 	-- of changed. Update to the binding to reflect this.
 	self:updateTargetPosition()
 
 	return FolderController.withFolder(function(folder)
-		return Roact.createElement(Roact.Portal, {
-			target = folder,
-		}, {
-			BaseCanvas = Roact.createElement("Part", {
-				[Roact.Ref] = self.baseplateRef,
-				Size = Vector3.new(canvasSize, 1, canvasSize),
-				Position = self.targetPosition:map(function(v)
-					return v * Vector3.new(1, 0, 1)
-						+ Vector3.new(self.props.partSize / 2, self.props.heightOffset - 1.5, self.props.partSize / 2)
-				end),
-				Anchored = true,
-				CanCollide = false,
-				Transparency = 1,
+		return withSettings(function(settingsManager)
+			local canvasSize = self.props.partSize * settingsManager.get("StudderGridSize")
+
+			return Roact.createElement(Roact.Portal, {
+				target = folder,
 			}, {
-				Grid = Roact.createElement("Texture", {
-					Texture = "http://www.roblox.com/asset/?id=6601217742",
-					StudsPerTileU = self.props.snappingInterval,
-					StudsPerTileV = self.props.snappingInterval,
-					Face = Enum.NormalId.Top,
-					Archivable = false,
+				BaseCanvas = Roact.createElement("Part", {
+					[Roact.Ref] = self.baseplateRef,
+					Size = Vector3.new(canvasSize, 1, canvasSize),
+					Position = self.targetPosition:map(function(v)
+						return v * Vector3.new(1, 0, 1)
+							+ Vector3.new(
+								self.props.partSize / 2,
+								self.props.heightOffset - 1.5,
+								self.props.partSize / 2
+							)
+					end),
+					Anchored = true,
+					CanCollide = false,
+					Transparency = 1,
+				}, {
+					Grid = Roact.createElement("Texture", {
+						Texture = "http://www.roblox.com/asset/?id=6601217742",
+						StudsPerTileU = self.props.snappingInterval,
+						StudsPerTileV = self.props.snappingInterval,
+						Face = Enum.NormalId.Top,
+						Archivable = false,
+
+					}),
+					Background = Roact.createElement("Texture", {
+						Texture = "http://www.roblox.com/asset/?id=241685484",
+						Transparency = settingsManager.get("StudderGridTransparency"),
+						Color3 = settingsManager.get("StudderGridColor"),
+						StudsPerTileU = 1,
+						StudsPerTileV = 1,
+						Face = Enum.NormalId.Top,
+					}),
 				}),
-				Background = Roact.createElement("Texture", {
-					Texture = "http://www.roblox.com/asset/?id=241685484",
-					Transparency = 0.8,
-					StudsPerTileU = 1,
-					StudsPerTileV = 1,
-					Face = Enum.NormalId.Top,
+				Brush = Roact.createElement("Part", {
+					[Roact.Ref] = self.brushRef,
+					Anchored = true,
+					CanCollide = true,
+					Material = Enum.Material.SmoothPlastic,
+					Transparency = settingsManager.get("StudderPartTransparency"),
+					Color = settingsManager.get("StudderPartcolor"),
+					Size = Vector3.new(self.props.partSize, self.props.partHeight, self.props.partSize),
+					Position = self.targetPosition,
+				}, {
+					Highlight = Roact.createElement("SelectionBox", {
+						LineThickness = settingsManager.get("StudderHighlightThickness"),
+						SurfaceColor3 = settingsManager.get("StudderHighlightColor"),
+						Color3 = settingsManager.get("StudderHighlightColor"),
+						SurfaceTransparency = settingsManager.get("StudderHighlightSurfaceTransparency"),
+						Adornee = self.brushRef,
+					}),
 				}),
-			}),
-			Brush = Roact.createElement("Part", {
-				[Roact.Ref] = self.brushRef,
-				Anchored = true,
-				CanCollide = true,
-				Transparency = 0.5,
-				Size = Vector3.new(self.props.partSize, self.props.partHeight, self.props.partSize),
-				Position = self.targetPosition,
-			}, {
-				Highlight = Roact.createElement("SelectionBox", {
-					LineThickness = 0.04,
-					Adornee = self.brushRef,
-				}),
-			}),
-		})
+			})
+		end)
 	end)
 end
 

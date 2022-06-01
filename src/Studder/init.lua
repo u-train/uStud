@@ -7,6 +7,7 @@ local Common = script.Parent.Common
 local LabelledInput = require(Common.LabelledInput)
 local ColorInput = require(Common.ColorInput)
 local ToolWrapper = require(Common.ToolWrapper)
+local wrapWithSettings = require(Common.wrapWithSettings)
 
 local StudderMouseControl = require(script.MouseController)
 
@@ -35,13 +36,6 @@ local StudderMouseControl = require(script.MouseController)
 ]=]
 local Studder = Roact.Component:extend("Studder")
 
-local maxSize = 200
-local minSize = 0.05
-local maxHeightOffset = 10
-local minHeightOffset = -10
-local maxHeight = 5
-local minHeight = 0.05
-
 local actionNames = {
 	increasePartSize = "increasePartSize",
 	decreasePartSize = "decreasePartSize",
@@ -63,10 +57,10 @@ local actionNames = {
 ]=]
 function Studder:init()
 	self:setState({
-		snappingInterval = 1,
-		partSize = 1,
-		partColor = Color3.fromRGB(163, 162, 165),
-		partHeight = 1,
+		snappingInterval = self.props.settingsManager.get("StudderDefaultPartSize"),
+		partSize = self.props.settingsManager.get("StudderDefaultPartSize"),
+		partColor = self.props.settingsManager.get("StudderDefaultPartColor"),
+		partHeight = self.props.settingsManager.get("StudderDefaultPartHeight"),
 		deleting = false,
 	})
 
@@ -119,7 +113,13 @@ function Studder:render()
 					return
 				end
 
-				self.props.heightOffsetChanged(math.clamp(newValue, minHeightOffset, maxHeightOffset))
+				self.props.heightOffsetChanged(
+					math.clamp(
+						newValue,
+						self.props.settingsManager.get("StudderMinHeightOffset"),
+						self.props.settingsManager.get("StudderMaxHeightOffset")
+					)
+				)
 			end,
 		}),
 		partHeightInput = Roact.createElement(LabelledInput, {
@@ -134,7 +134,11 @@ function Studder:render()
 					return
 				end
 
-				newValue = math.clamp(newValue, minHeight, maxHeight)
+				newValue = math.clamp(
+					newValue,
+					self.props.settingsManager.get("StudderMinHeight"),
+					self.props.settingsManager.get("StudderMaxHeight")
+				)
 
 				self:setState({
 					partHeight = newValue,
@@ -194,7 +198,11 @@ end
 	@param To number
 ]=]
 function Studder:updatePartSize(to)
-	local newPartSize = math.clamp(to, minSize, maxSize)
+	local newPartSize = math.clamp(
+		to,
+		self.props.settingsManager.get("StudderMinSize"),
+		self.props.settingsManager.get("StudderMaxSize")
+	)
 
 	self:setState({
 		partSize = newPartSize,
@@ -208,7 +216,10 @@ end
 ]=]
 function Studder:updateSnappingInterval(to)
 	self:setState({
-		snappingInterval = math.min(math.clamp(to, minSize, maxSize), self.state.partSize),
+		snappingInterval = math.min(
+			math.clamp(to, self.props.settingsManager.get("StudderMinSize"), self.props.settingsManager.get("StudderMaxSize")),
+			self.state.partSize
+		),
 	})
 end
 
@@ -257,4 +268,4 @@ function Studder:bindHotkeys()
 	end, false, Enum.KeyCode.R)
 end
 
-return Studder
+return wrapWithSettings(Studder)

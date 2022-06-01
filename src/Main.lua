@@ -1,7 +1,7 @@
-return function(plugin)
+return function(_)
 	local Roact = require(script.Parent.Packages.Roact)
 	local App = require(script.Parent.App)
-	local Settings = require(script.Parent.Settings)(plugin)
+	local Settings = require(script.Parent.Settings)
 
 	local Module = {}
 

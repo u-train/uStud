@@ -2,7 +2,7 @@ local UserInputService = game:GetService("UserInputService")
 local ContextActionService = game:GetService("ContextActionService")
 
 local Packages = script.Parent.Packages
-local Roact = require(Packages.Roact) :: Roact
+local Roact = require(Packages.Roact)
 local StudioComponents = require(Packages.StudioComponents)
 
 local Common = script.Parent.Common

@@ -14,7 +14,7 @@
 	.onColorChanged (Color3) -> nil
 ]=]
 
-local Roact = require(script.Parent.Parent.Packages.Roact) :: Roact
+local Roact = require(script.Parent.Parent.Packages.Roact)
 local HueSlider = require(script.HueSlider)
 local SaturationSlider = require(script.SaturationSlider)
 local ValueSlider = require(script.ValueSlider)

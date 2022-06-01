@@ -147,7 +147,10 @@ function PainterMouseControl:updateAdorns()
 
 	if difference < 0 then
 		for i = 1, math.abs(difference) do
-			table.remove(self.adorns, i):Destroy()
+			local adorn = table.remove(self.adorns, i)
+			if adorn then
+				adorn:Destroy()
+			end
 		end
 	elseif difference > 0 then
 		for _ = 1, math.abs(difference) do

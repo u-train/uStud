@@ -20,7 +20,7 @@
 ]=]
 
 local Packages = script.Parent.Parent.Packages
-local Roact = require(Packages.Roact) :: Roact
+local Roact = require(Packages.Roact)
 local StudioComponents = require(Packages.StudioComponents)
 
 local ColorSlider = require(script.Parent.ColorSlider)

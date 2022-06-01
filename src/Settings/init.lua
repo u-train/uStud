@@ -24,32 +24,36 @@
 	@return any
 ]=]
 
-local Settings = {
+local Settings = {}
+local plugin: Plugin = require(script.Parent.Plugin) :: Plugin
+local prefix = "uStud.%s"
+
+Settings.DefaultSettings = {
 	DefaultEditingIn = "Workspace.Studs",
 }
 
-local Prefix = "uStud."
+Settings.SessionSettings = {}
 
-return function(plugin)
-	if plugin:GetSetting("uStud") == nil then
-		for settingName, value in next, Settings do
-			plugin:SetSetting(Prefix .. settingName, value)
-		end
-
-		plugin:SetSetting("uStud", true)
-	else
-		for settingName, _ in next, Settings do
-			Settings[settingName] = plugin:GetSetting(settingName) or Settings[settingName]
-		end
+-- First time if not marked.
+if plugin:GetSetting("uStud") == nil then
+	for settingName, value in next, Settings.DefaultSettings do
+		plugin:SetSetting(prefix:format(settingName), value)
 	end
 
-	return {
-		Get = function(settingName)
-			return Settings[settingName]
-		end,
-		Set = function(settingName, value)
-			Settings[settingName] = value
-			plugin:SetSetting(Prefix .. settingName, value)
-		end,
-	}
+	plugin:SetSetting("uStud", true)
 end
+
+for settingName, _ in next, Settings.DefaultSettings do
+	Settings.SessionSettings[settingName] = plugin:GetSetting(settingName) or Settings.DefaultSettings[settingName]
+end
+
+Settings.Get = function(settingName)
+	return Settings.SessionSettings[settingName]
+end
+
+Settings.Set = function(settingName, value)
+	Settings.SessionSettings[settingName] = value
+	plugin:SetSetting(prefix:format(settingName), value)
+end
+
+return Settings

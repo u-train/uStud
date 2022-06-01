@@ -4,7 +4,7 @@
 	tools.
 ]=]
 
-local Roact = require(script.Parent.Parent.Packages.Roact) :: Roact
+local Roact = require(script.Parent.Parent.Packages.Roact)
 local FolderContext = require(script.Parent.FolderContext)
 
 local FolderController = Roact.Component:extend("FolderController")

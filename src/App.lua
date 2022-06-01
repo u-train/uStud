@@ -1,5 +1,5 @@
 local Packages = script.Parent.Packages
-local Roact = require(Packages.Roact) :: Roact
+local Roact = require(Packages.Roact)
 local RoactRouter = require(Packages.RoactRouter)
 local InstanceQuerier = require(Packages.InstanceQuerier)
 local StudioComponents = require(Packages.StudioComponents)

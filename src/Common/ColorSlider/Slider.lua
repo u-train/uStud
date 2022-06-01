@@ -1,4 +1,4 @@
-local Roact = require(script.Parent.Parent.Parent.Packages.Roact) :: Roact
+local Roact = require(script.Parent.Parent.Parent.Packages.Roact)
 local Round = require(script.Parent.Parent.Parent.Common.Round)
 
 --[=[

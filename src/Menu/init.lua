@@ -15,7 +15,7 @@ local StudioComponents = require(Packages.StudioComponents)
 	@interface
 	.size UDim2
 	.position UDim2
-	.selections { string }
+	.selections { { .name string, .route string} }
 ]=]
 return function(props)
 	return RoactRouter.withRouter(function(routerInfo)

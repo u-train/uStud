@@ -56,7 +56,6 @@ Settings.DefaultSettings = {
 	PainterDefaultSecondaryColor = Color3.fromRGB(163, 162, 165),
 	PainterDefaultBrushDiameter = 2,
 	PainterDefaultSecondaryOnly = false,
-
 }
 
 Settings.SessionSettings = {}
@@ -83,7 +82,6 @@ Settings.set = function(settingName, value)
 	plugin:SetSetting(prefix:format(settingName), value)
 end
 
-Settings.Get = Settings.get
-Settings.Set = Settings.set
+
 
 return Settings

@@ -45,9 +45,7 @@ local ROUTES = {
 		by extracting the logic to figure out of the "Root is valid into a
 		static function. In render, if it's invaild then set the state
 		accordingly?
-	2.	InstanceQuerier needs to be fixed up as well, not sure why I set it up
-		the way I did. As soon I do, we'll get rid of the pcall.
-	3.	Make it so that the menu upon a invaild Root is its own component.
+	2.	Make it so that the menu upon a invaild Root is its own component.
 ]=]
 local App = Roact.Component:extend("App")
 

@@ -1,5 +1,5 @@
 local Roact = require(script.Parent.Parent.Parent.Packages.Roact)
-local Round = require(script.Parent.Parent.Parent.Common.Round)
+local round = require(script.Parent.Parent.Parent.Common.round)
 
 --[=[
 	@class Slider
@@ -119,7 +119,7 @@ function Slider:updateValueFromMousePosition(mousePosition)
 	local diff = math.abs(self.props.maxValue - self.props.minValue)
 	local newValue = newPercentage * diff + self.props.minValue
 
-	self.props.onValueChanged(Round(newValue, self.props.interval))
+	self.props.onValueChanged(round(newValue, self.props.interval))
 end
 
 --[=[

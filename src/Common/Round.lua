@@ -5,7 +5,7 @@
 
 --[=[
 	@within Round
-	@function Round
+	@function round
 	@param Value number
 	@param Interval number? -- default 1
 	@return number

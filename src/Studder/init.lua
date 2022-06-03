@@ -7,7 +7,8 @@ local Common = script.Parent.Common
 local LabelledInput = require(Common.LabelledInput)
 local ColorInput = require(Common.ColorInput)
 local ToolWrapper = require(Common.ToolWrapper)
-local wrapWithSettings = require(Common.wrapWithSettings)
+local SettingsContext = require(Common.SettingsContext)
+local getContextValue = require(Common.getContextValue)
 
 local StudderMouseControl = require(script.MouseController)
 
@@ -56,11 +57,13 @@ local actionNames = {
 	Sets state and binds hotkeys.
 ]=]
 function Studder:init()
+	local settingsManager = self:getSettings()
+
 	self:setState({
-		snappingInterval = self.props.settingsManager.get("StudderDefaultPartSize"),
-		partSize = self.props.settingsManager.get("StudderDefaultPartSize"),
-		partColor = self.props.settingsManager.get("StudderDefaultPartColor"),
-		partHeight = self.props.settingsManager.get("StudderDefaultPartHeight"),
+		snappingInterval = settingsManager.get("StudderDefaultPartSize"),
+		partSize = settingsManager.get("StudderDefaultPartSize"),
+		partColor = settingsManager.get("StudderDefaultPartColor"),
+		partHeight = settingsManager.get("StudderDefaultPartHeight"),
 		deleting = false,
 	})
 
@@ -116,8 +119,8 @@ function Studder:render()
 				self.props.heightOffsetChanged(
 					math.clamp(
 						newValue,
-						self.props.settingsManager.get("StudderMinHeightOffset"),
-						self.props.settingsManager.get("StudderMaxHeightOffset")
+						self:getSettings().get("StudderMinHeightOffset"),
+						self:getSettings().get("StudderMaxHeightOffset")
 					)
 				)
 			end,
@@ -136,8 +139,8 @@ function Studder:render()
 
 				newValue = math.clamp(
 					newValue,
-					self.props.settingsManager.get("StudderMinHeight"),
-					self.props.settingsManager.get("StudderMaxHeight")
+					self:getSettings().get("StudderMinHeight"),
+					self:getSettings().get("StudderMaxHeight")
 				)
 
 				self:setState({
@@ -194,14 +197,24 @@ function Studder:render()
 end
 
 --[=[
+	Fetches Settings from the context.
+	@returns Settings
+]=]
+
+function Studder:getSettings()
+	return assert(getContextValue(self, SettingsContext), "Missing Settings context.")
+end
+
+
+--[=[
 	Updates partSize, making sure it's bounded, with the given number.
 	@param To number
 ]=]
 function Studder:updatePartSize(to)
 	local newPartSize = math.clamp(
 		to,
-		self.props.settingsManager.get("StudderMinSize"),
-		self.props.settingsManager.get("StudderMaxSize")
+		self:getSettings().get("StudderMinSize"),
+		self:getSettings().get("StudderMaxSize")
 	)
 
 	self:setState({
@@ -217,7 +230,11 @@ end
 function Studder:updateSnappingInterval(to)
 	self:setState({
 		snappingInterval = math.min(
-			math.clamp(to, self.props.settingsManager.get("StudderMinSize"), self.props.settingsManager.get("StudderMaxSize")),
+			math.clamp(
+				to,
+				self:getSettings().get("StudderMinSize"),
+				self:getSettings().get("StudderMaxSize")
+			),
 			self.state.partSize
 		),
 	})
@@ -268,4 +285,4 @@ function Studder:bindHotkeys()
 	end, false, Enum.KeyCode.R)
 end
 
-return wrapWithSettings(Studder)
+return Studder

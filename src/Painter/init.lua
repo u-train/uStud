@@ -9,7 +9,8 @@ local Common = script.Parent.Common
 local LabelledInput = require(Common.LabelledInput)
 local ColorInput = require(Common.ColorInput)
 local ToolWrapper = require(Common.ToolWrapper)
-local wrapWithSettings = require(Common.wrapWithSettings)
+local SettingsContext = require(Common.SettingsContext)
+local getContextValue = require(Common.getContextValue)
 
 local GetRaycastResultFromMouse = require(Common.GetRaycastResultFromMouse)
 
@@ -55,11 +56,13 @@ local actionNames = {
 	Initalize state and bind hotkeys.
 ]=]
 function Painter:init()
+	local settingsManager = self:getSettings()
+
 	self:setState({
-		primaryColor = self.props.settingsManager.get("PainterDefaultPrimaryColor"),
-		secondaryColor = self.props.settingsManager.get("PainterDefaultSecondaryColor"),
-		brushDiameter = self.props.settingsManager.get("PainterDefaultBrushDiameter"),
-		secondaryOnly = self.props.settingsManager.get("PainterDefaultSecondaryOnly"),
+		primaryColor = settingsManager.get("PainterDefaultPrimaryColor"),
+		secondaryColor = settingsManager.get("PainterDefaultSecondaryColor"),
+		brushDiameter = settingsManager.get("PainterDefaultBrushDiameter"),
+		secondaryOnly = settingsManager.get("PainterDefaultSecondaryOnly"),
 	})
 
 	self:bindHotkeys()
@@ -213,4 +216,13 @@ function Painter:bindHotkeys()
 	end, false, Enum.KeyCode.F)
 end
 
-return wrapWithSettings(Painter)
+--[=[
+	Fetches Settings from the context.
+	@returns Settings
+]=]
+
+function Painter:getSettings()
+	return assert(getContextValue(self, SettingsContext), "Missing Settings context.")
+end
+
+return Painter

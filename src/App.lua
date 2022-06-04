@@ -26,8 +26,8 @@ local FolderController = require(Common.FolderController)
 local ROUTES = {
 	{ name = "Studder", path = "/Studder" },
 	{ name = "Painter", path = "/Painter" },
-	{ name = "About", path = "/About" },
 	{ name = "Fill", path = "/Fill" },
+	{ name = "About", path = "/About" },
 }
 
 --[=[

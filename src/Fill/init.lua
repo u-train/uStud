@@ -20,7 +20,7 @@ function Fill:init()
 		partSize = settingsManager.get("StudderDefaultPartSize"),
 		partColor = settingsManager.get("StudderDefaultPartColor"),
 		partHeight = settingsManager.get("StudderDefaultPartHeight"),
-		partHeightOffset = settingsManager.get("StudderDefaultHeightOffset")
+		heightOffset = settingsManager.get("StudderDefaultHeightOffset"),
 	})
 end
 
@@ -101,8 +101,12 @@ function Fill:render()
 		}),
 
 		MouseController = Roact.createElement(MouseController, {
-
-		})
+			partSize = self.state.partSize,
+			partColor = self.state.partColor,
+			partHeight = self.state.partHeight,
+			heightOffset = self.state.heightOffset,
+			root = self.props.root,
+		}),
 	})
 end
 

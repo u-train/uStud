@@ -8,6 +8,7 @@ local Studder = require(script.Parent.Studder)
 local Painter = require(script.Parent.Painter)
 local Menu = require(script.Parent.Menu)
 local About = require(script.Parent.About)
+local Fill = require(script.Parent.Fill)
 
 local Common = script.Parent.Common
 local LabelledInput = require(Common.LabelledInput)
@@ -26,6 +27,7 @@ local ROUTES = {
 	{ name = "Studder", path = "/Studder" },
 	{ name = "Painter", path = "/Painter" },
 	{ name = "About", path = "/About" },
+	{ name = "Fill", path = "/Fill" },
 }
 
 --[=[
@@ -182,6 +184,12 @@ function App:render()
 					path = "/About",
 					render = function(_)
 						return Roact.createElement(About, {})
+					end,
+				}),
+				Fill = Roact.createElement(RoactRouter.Route, {
+					path = "/Fill",
+					render = function(_)
+						return Roact.createElement(Fill, toolProps)
 					end,
 				}),
 			}),

@@ -64,6 +64,7 @@ function Studder:init()
 		partSize = settingsManager.get("StudderDefaultPartSize"),
 		partColor = settingsManager.get("StudderDefaultPartColor"),
 		partHeight = settingsManager.get("StudderDefaultPartHeight"),
+		partHeightOffset = settingsManager.get("StudderDefaultHeightOffset"),
 		deleting = false,
 	})
 

@@ -49,6 +49,7 @@ Settings.DefaultSettings = {
 	StudderDefaultPartSize = 1,
 	StudderDefaultPartColor = Color3.fromRGB(163, 162, 165),
 	StudderDefaultPartHeight = 1,
+	StudderDefaultHeightOffset = 1,
 
 	PainterBrushTransparency = 0.8,
 	PainterBrushThickness = 0.4,
@@ -81,7 +82,5 @@ Settings.set = function(settingName, value)
 	Settings.SessionSettings[settingName] = value
 	plugin:SetSetting(prefix:format(settingName), value)
 end
-
-
 
 return Settings

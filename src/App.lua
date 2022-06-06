@@ -107,7 +107,7 @@ function App:render()
 				TextWrap = true,
 			}),
 			Bottombar = Roact.createElement(LabelledInput, {
-				value = "Workspace.",
+				value = "Workplace.",
 				size = UDim2.new(1, 0, 0, 25),
 				position = UDim2.new(0, 0, 1, -25),
 				label = "Editing under",

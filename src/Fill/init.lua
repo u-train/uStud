@@ -1,6 +1,5 @@
 local Packages = script.Parent.Packages
 local Roact = require(Packages.Roact)
-local StudioComponents = require(Packages.StudioComponents)
 
 local Common = script.Parent.Common
 local ToolWrapper = require(Common.ToolWrapper)
@@ -104,7 +103,8 @@ function Fill:render()
 			partSize = self.state.partSize,
 			partColor = self.state.partColor,
 			partHeight = self.state.partHeight,
-			heightOffset = self.state.heightOffset,
+			heightOffset = self.props.heightOffset,
+			snappingInterval = self.state.partSize,
 			root = self.props.root,
 		}),
 	})
@@ -114,4 +114,19 @@ function Fill:getSettings()
 	return assert(getContextValue(self, SettingsContext), "Missing Settings context.")
 end
 
+--[=[
+	Updates partSize, making sure it's bounded, with the given number.
+	@param To number
+]=]
+function Fill:updatePartSize(to)
+	local newPartSize = math.clamp(
+		to,
+		self:getSettings().get("StudderMinSize"),
+		self:getSettings().get("StudderMaxSize")
+	)
+
+	self:setState({
+		partSize = newPartSize,
+	})
+end
 return Fill
